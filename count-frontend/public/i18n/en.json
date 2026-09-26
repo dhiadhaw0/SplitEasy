@@ -1,0 +1,125 @@
+{
+  "app": { "name": "SplitEasy" },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "faq": "FAQ",
+    "login": "Log in",
+    "openGroups": "Open my groups",
+    "createFirstGroup": "Create my first group"
+  },
+  "theme": {
+    "toggleToLight": "Switch to light mode",
+    "toggleToDark": "Switch to dark mode"
+  },
+  "lang": {
+    "switch": "Change language"
+  },
+  "seo": {
+    "title": "SplitEasy — Good accounts make good friends",
+    "description": "Log your group's expenses in seconds. SplitEasy works out who owes what, and tells you how to settle up with the fewest possible transfers."
+  },
+  "hero": {
+    "title": "Good accounts make good friends.",
+    "subtitle": "Log your group's expenses in seconds. SplitEasy works out who owes what, and tells you how to settle up with the fewest possible transfers.",
+    "cta": "Create my first group",
+    "secondaryCta": "See how it works",
+    "reassurance": "Free. Your friends don't even need an account.",
+    "imageAlt": "Two friends splitting their holiday expenses on the SplitEasy app",
+    "cardTitle": "Who owes what?",
+    "demoLine1": "Restaurant — 120.00",
+    "demoLine2": "Gas — 65.50",
+    "demoLine3": "Boat trip — 240.00"
+  },
+  "problem": {
+    "title": "Who paid for the gas, again?",
+    "text": "Receipts pile up in your pockets, the math happens on a napkin, and there's always that slightly awkward message: \"uh… you still owe me for the weekend, right?\". The result: nobody really knows who owes what anymore.",
+    "bubble1": "Did I pay you back for dinner or not?",
+    "bubble2": "Wait, who bought the groceries again?",
+    "bubble3": "Should we just split it evenly?",
+    "bubbleFinal": "I put it all on SplitEasy 👍"
+  },
+  "demo": {
+    "title": "Try it, right now.",
+    "subtitle": "No sign-up needed — change the amounts and watch the balances update live.",
+    "paidLabel": "paid",
+    "addParticipant": "Add a participant",
+    "namePlaceholder": "Name",
+    "amountPlaceholder": "Amount paid",
+    "total": "Total",
+    "share": "Each person's share",
+    "balances": "Balances",
+    "settlements": "Suggested settlements",
+    "noSettlements": "Everyone is settled up 🎉",
+    "owes": "owes",
+    "to": "to",
+    "cta": "Create a real group with these amounts",
+    "remove": "Remove"
+  },
+  "steps": {
+    "title": "How it works",
+    "step1Title": "Create a group",
+    "step1Text": "Trip, flat share, birthday… invite your friends with a simple link.",
+    "step2Title": "Add expenses",
+    "step2Text": "Who paid, for whom. Equal shares, exact amounts or percentages.",
+    "step3Title": "Settle with the fewest transfers",
+    "step3Text": "SplitEasy tells you exactly who pays back whom."
+  },
+  "settle": {
+    "title": "6 transfers? Try 2.",
+    "text": "When everyone owes everyone, SplitEasy simplifies the debts so each person makes as few transfers as possible.",
+    "imageAlt": "Six crossed reimbursements simplified into two transfers"
+  },
+  "features": {
+    "title": "What SplitEasy actually does",
+    "split": {
+      "title": "Everyone pays their exact share, down to the cent.",
+      "text": "Equal shares, exact amounts, weighted shares or percentages: leftover cents are always distributed automatically, never lost.",
+      "imageAlt": "A bill automatically split between three friends"
+    },
+    "currency": {
+      "title": "Pick your group's currency.",
+      "text": "Euro, US dollar, Tunisian dinar, pound sterling, Moroccan dirham or Swiss franc: each group has its own currency, shown everywhere it matters.",
+      "imageAlt": "A travel suitcase surrounded by euro, dollar and dinar coins"
+    },
+    "secondary": {
+      "splitTypes": "Equal shares, amounts, weighted shares or percentages",
+      "noAccount": "Participants without an account (like Grandma 👵)",
+      "inviteLink": "Join a group with a single link",
+      "filters": "Expenses filterable by category and participant",
+      "editDelete": "Expenses can be edited and deleted",
+      "darkMode": "Dark mode"
+    }
+  },
+  "audiences": {
+    "title": "Who is it for?",
+    "travel": { "label": "Trip with friends", "example": "Rental, gas, restaurants" },
+    "roommates": { "label": "Flat share", "example": "Rent, groceries, internet" },
+    "couple": { "label": "Couple", "example": "Groceries, outings, holidays" },
+    "event": { "label": "Event", "example": "Shared gift, birthday, wedding" }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "q1": "Is it really free?",
+    "a1": "Yes. SplitEasy is free, with no limit on the number of groups or expenses.",
+    "q2": "Do my friends need to create an account?",
+    "a2": "No. You can add a participant without an account (like \"Grandma\"); only the person who wants to check their expenses online needs to sign up.",
+    "q3": "Is my data secure?",
+    "a3": "Your data is protected by secure authentication and is only accessible to members of the relevant group.",
+    "q4": "Does it work with several currencies?",
+    "a4": "Each group has a single currency, chosen when it's created, among EUR, USD, TND, GBP, MAD and CHF.",
+    "q5": "Does SplitEasy make the transfers for me?",
+    "a5": "No. SplitEasy works out who owes what and shows you the transfers to make; you make them yourself, then mark them as settled in the app."
+  },
+  "finalCta": {
+    "title": "Your next weekend deserves better than a spreadsheet.",
+    "cta": "Create my first group",
+    "reassurance": "Free. Your friends don't even need an account."
+  },
+  "footer": {
+    "features": "Features",
+    "faq": "FAQ",
+    "login": "Log in",
+    "copyright": "© 2026 SplitEasy"
+  }
+}

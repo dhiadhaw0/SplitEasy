@@ -1,0 +1,73 @@
+<div class="pb-20">
+  <div class="mb-4 flex gap-4">
+    <div class="flex flex-1 flex-col gap-0.5 rounded-se bg-[var(--se-color-neutral-bg)] px-4 py-2 text-xs text-[var(--se-color-neutral)]">
+      <span>Mes dépenses</span>
+      <app-money-display [amount]="myConsumed() ?? 0" [currency]="groupStore.currency()" />
+    </div>
+    <div class="flex flex-1 flex-col gap-0.5 rounded-se bg-[var(--se-color-neutral-bg)] px-4 py-2 text-xs text-[var(--se-color-neutral)]">
+      <span>Total du groupe</span>
+      <app-money-display [amount]="groupTotal() ?? 0" [currency]="groupStore.currency()" />
+    </div>
+  </div>
+
+  <div class="mb-2 flex gap-2">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="flex-1">
+      <mat-label>Catégorie</mat-label>
+      <mat-select [value]="categoryFilter()" (selectionChange)="categoryFilter.set($event.value)">
+        <mat-option [value]="null">Toutes</mat-option>
+        @for (category of categories; track category) {
+          <mat-option [value]="category">{{ categoryLabels[category] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="flex-1">
+      <mat-label>Participant</mat-label>
+      <mat-select [value]="participantFilter()" (selectionChange)="participantFilter.set($event.value)">
+        <mat-option [value]="null">Tous</mat-option>
+        @for (participant of groupStore.participants(); track participant.id) {
+          <mat-option [value]="participant.id">{{ participant.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (loading()) {
+    <app-loading-spinner label="Chargement des dépenses…" />
+  } @else if (error()) {
+    <app-empty-state icon="error_outline" title="Oups !" [message]="error()!" />
+  } @else if (expenses().length === 0) {
+    <app-empty-state
+      icon="receipt_long"
+      title="Aucune dépense"
+      message="Ajoutez votre première dépense pour ce groupe."
+      actionLabel="Ajouter une dépense"
+      (action)="addExpense()"
+    />
+  } @else {
+    @for (group of groupedExpenses(); track group.label) {
+      <h3 class="mb-1 mt-4 text-xs uppercase tracking-wide text-[var(--se-color-neutral)]">{{ group.label }}</h3>
+      @for (expense of group.expenses; track expense.id; let i = $index) {
+        <app-expense-item
+          [appAnimateIn]="i"
+          [expense]="expense"
+          [currency]="groupStore.currency()"
+          [currentParticipantId]="groupStore.myParticipantId()"
+          (click)="openExpense(expense.id)"
+        />
+      }
+    }
+
+    @if (hasMore()) {
+      <div class="mt-4 flex justify-center">
+        <button mat-stroked-button type="button" [disabled]="loadingMore()" (click)="loadMore()">
+          {{ loadingMore() ? 'Chargement…' : 'Charger plus' }}
+        </button>
+      </div>
+    }
+  }
+
+  <button mat-fab color="primary" type="button" class="se-fab-mobile" aria-label="Ajouter une dépense" (click)="addExpense()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

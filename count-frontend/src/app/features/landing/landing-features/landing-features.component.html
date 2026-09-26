@@ -1,0 +1,48 @@
+<section id="features" class="mx-auto max-w-[1120px] px-4 py-16 sm:px-6">
+  <h2 class="se-font-display mb-12 text-center text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">
+    {{ 'features.title' | transloco }}
+  </h2>
+
+  <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+    <div class="rounded-[28px] bg-[var(--illustration-stage)] p-6">
+      <img
+        src="/illustrations/split.svg"
+        [attr.alt]="'features.split.imageAlt' | transloco"
+        width="400"
+        height="300"
+        loading="lazy"
+        class="block h-auto w-full"
+      />
+    </div>
+    <div>
+      <h3 class="se-font-display text-2xl font-extrabold text-[var(--se-ink)]">{{ 'features.split.title' | transloco }}</h3>
+      <p class="mt-3 max-w-[46ch] text-base leading-relaxed text-[var(--se-muted)]">{{ 'features.split.text' | transloco }}</p>
+    </div>
+  </div>
+
+  <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:items-center">
+    <div class="order-2 lg:order-1">
+      <h3 class="se-font-display text-2xl font-extrabold text-[var(--se-ink)]">{{ 'features.currency.title' | transloco }}</h3>
+      <p class="mt-3 max-w-[46ch] text-base leading-relaxed text-[var(--se-muted)]">{{ 'features.currency.text' | transloco }}</p>
+    </div>
+    <div class="order-1 rounded-[28px] bg-[var(--illustration-stage)] p-6 lg:order-2">
+      <img
+        src="/illustrations/currency.svg"
+        [attr.alt]="'features.currency.imageAlt' | transloco"
+        width="400"
+        height="300"
+        loading="lazy"
+        class="block h-auto w-full"
+      />
+    </div>
+  </div>
+
+  <ul class="mt-16 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+    @for (feature of secondaryFeatures; track feature.key) {
+      <li class="flex items-center gap-3 rounded-xl bg-[var(--se-color-neutral-bg)] px-4 py-3 text-sm text-[var(--se-ink)]">
+        <mat-icon class="flex-shrink-0 !text-[var(--se-teal)]">{{ feature.icon }}</mat-icon>
+        <span>{{ feature.key | transloco }}</span>
+      </li>
+    }
+  </ul>
+</section>

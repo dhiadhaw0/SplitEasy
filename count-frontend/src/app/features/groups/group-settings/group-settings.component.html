@@ -1,0 +1,69 @@
+<div class="flex flex-col gap-4">
+  <mat-card class="!rounded-se !shadow-card">
+    <mat-card-header>
+      <mat-card-title>Informations générales</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="saveChanges()" novalidate>
+        <mat-form-field appearance="outline" class="mb-1 w-full">
+          <mat-label>Nom du groupe</mat-label>
+          <input matInput type="text" formControlName="name" required maxlength="80" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mb-1 w-full">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="2" maxlength="255"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Devise</mat-label>
+          <mat-select formControlName="currency" required>
+            @for (currency of currencies; track currency) {
+              <mat-option [value]="currency">{{ currency }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving()">
+          Enregistrer
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="!rounded-se !shadow-card">
+    <mat-card-header>
+      <mat-card-title>Invitation</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (groupStore.group(); as group) {
+        <p class="text-base">Code : <strong>{{ group.inviteCode }}</strong></p>
+        <div class="flex flex-wrap gap-2">
+          <button mat-stroked-button type="button" (click)="copyInviteCode()">
+            <mat-icon>content_copy</mat-icon>
+            Copier le lien
+          </button>
+          <button mat-stroked-button type="button" [disabled]="regenerating()" (click)="regenerateInviteCode()">
+            <mat-icon>autorenew</mat-icon>
+            Régénérer le code
+          </button>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  @if (groupStore.isCreator()) {
+    <mat-card class="!rounded-se !shadow-card !border !border-[var(--se-color-negative)]">
+      <mat-card-header>
+        <mat-card-title>Zone de danger</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>La suppression du groupe est définitive et supprime toutes ses dépenses.</p>
+        <button mat-flat-button color="warn" type="button" [disabled]="deleting()" (click)="deleteGroup()">
+          <mat-icon>delete_forever</mat-icon>
+          Supprimer le groupe
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

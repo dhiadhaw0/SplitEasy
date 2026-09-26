@@ -1,0 +1,59 @@
+<app-landing-toolbar />
+
+<main>
+  <app-landing-hero />
+
+  @defer (on viewport) {
+    <app-landing-problem />
+  } @placeholder {
+    <div class="h-[200px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-demo />
+  } @placeholder {
+    <div class="h-[400px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-steps />
+  } @placeholder {
+    <div class="h-[300px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-settle />
+  } @placeholder {
+    <div class="h-[300px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-features />
+  } @placeholder {
+    <div class="h-[500px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-audiences />
+  } @placeholder {
+    <div class="h-[300px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-faq />
+  } @placeholder {
+    <div class="h-[300px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-final-cta />
+  } @placeholder {
+    <div class="h-[200px]"></div>
+  }
+
+  @defer (on viewport) {
+    <app-landing-footer />
+  } @placeholder {
+    <div class="h-[100px]"></div>
+  }
+</main>

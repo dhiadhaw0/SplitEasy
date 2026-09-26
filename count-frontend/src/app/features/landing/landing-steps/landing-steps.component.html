@@ -1,0 +1,21 @@
+<section id="steps" class="mx-auto max-w-[1120px] px-4 py-16 sm:px-6">
+  <h2 class="se-font-display mb-10 text-center text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">
+    {{ 'steps.title' | transloco }}
+  </h2>
+
+  <div class="relative grid gap-10 md:grid-cols-3 md:gap-6">
+    <div class="absolute start-[16.5%] top-6 hidden h-px w-[67%] bg-[var(--se-mint)] md:block" aria-hidden="true"></div>
+
+    @for (step of steps; track step.number) {
+      <div class="relative flex flex-col items-center text-center md:items-start md:text-start">
+        <div class="z-[1] flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[var(--se-teal)] text-white">
+          <mat-icon>{{ step.icon }}</mat-icon>
+        </div>
+        <h3 class="se-font-display mt-4 text-lg font-bold text-[var(--se-ink)]">
+          {{ step.number }}. {{ step.titleKey | transloco }}
+        </h3>
+        <p class="mt-2 max-w-[32ch] text-sm text-[var(--se-muted)]">{{ step.textKey | transloco }}</p>
+      </div>
+    }
+  </div>
+</section>

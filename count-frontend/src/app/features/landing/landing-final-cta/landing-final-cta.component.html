@@ -1,0 +1,19 @@
+<section class="bg-[var(--se-teal)] px-4 py-16 text-center sm:px-6">
+  <div class="mx-auto max-w-[640px]">
+    <h2 class="se-font-display text-3xl font-extrabold text-white sm:text-4xl">{{ 'finalCta.title' | transloco }}</h2>
+
+    <div class="mt-8">
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/groups" mat-flat-button class="!h-12 !rounded-full !bg-[var(--se-sun)] !px-8 !text-base !font-bold !text-[var(--se-ink)]">
+          {{ 'nav.openGroups' | transloco }}
+        </a>
+      } @else {
+        <a routerLink="/register" mat-flat-button class="!h-12 !rounded-full !bg-[var(--se-sun)] !px-8 !text-base !font-bold !text-[var(--se-ink)]">
+          {{ 'finalCta.cta' | transloco }}
+        </a>
+      }
+    </div>
+
+    <p class="mt-4 text-sm text-white/80">{{ 'finalCta.reassurance' | transloco }}</p>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" class="sticky top-0 z-[100] shadow-sm">
+  <a routerLink="/groups" class="flex items-center gap-2 text-lg font-medium text-inherit no-underline opacity-95 transition-opacity hover:opacity-100" aria-label="SplitEasy - Accueil">
+    <mat-icon aria-hidden="true">payments</mat-icon>
+    <span>SplitEasy</span>
+  </a>
+
+  <span class="se-spacer"></span>
+
+  @if (authService.currentUser(); as user) {
+    <button
+      mat-icon-button
+      type="button"
+      [matMenuTriggerFor]="userMenu"
+      class="transition-transform active:scale-90"
+      [attr.aria-label]="'Menu de ' + user.displayName"
+    >
+      <app-participant-avatar [name]="user.displayName" [size]="32" />
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <div class="flex flex-col gap-0.5 px-4 py-2 leading-tight">
+        <strong>{{ user.displayName }}</strong>
+        <span class="text-xs text-[var(--se-color-neutral)]">{{ user.email }}</span>
+      </div>
+      <button mat-menu-item type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Se déconnecter</span>
+      </button>
+    </mat-menu>
+  }
+</mat-toolbar>

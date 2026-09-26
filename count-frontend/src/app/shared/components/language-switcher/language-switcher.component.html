@@ -1,0 +1,20 @@
+<button
+  mat-icon-button
+  type="button"
+  [matMenuTriggerFor]="menu"
+  [attr.aria-label]="'lang.switch' | transloco"
+>
+  <mat-icon>translate</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  @for (language of languages; track language.code) {
+    <button
+      mat-menu-item
+      type="button"
+      [class.font-bold]="languageService.currentLang() === language.code"
+      (click)="select(language.code)"
+    >
+      {{ language.label }}
+    </button>
+  }
+</mat-menu>

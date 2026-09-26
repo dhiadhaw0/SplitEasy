@@ -1,0 +1,62 @@
+<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-neutral-50 p-4">
+  @if (loading()) {
+    <app-loading-spinner label="Chargement de l'invitation…" />
+  } @else if (error()) {
+    <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] !rounded-se !shadow-card">
+      <app-empty-state icon="link_off" title="Invitation invalide" [message]="error()!" />
+    </mat-card>
+  } @else {
+    @if (preview(); as preview) {
+      <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] !rounded-se !shadow-card">
+        <mat-card-header>
+          <mat-card-title>Rejoindre {{ preview.groupName }}</mat-card-title>
+          <mat-card-subtitle>Dites-nous qui vous êtes dans ce groupe</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <mat-radio-group formControlName="choice" class="flex flex-col gap-2">
+              @if (preview.unlinkedParticipants.length > 0) {
+                <mat-radio-button value="existing">Je suis l'un des participants existants</mat-radio-button>
+
+                @if (form.controls.choice.value === 'existing') {
+                  <div class="mb-1 flex flex-col gap-1 pl-8">
+                    @for (participant of preview.unlinkedParticipants; track participant.id) {
+                      <label class="flex cursor-pointer items-center gap-2">
+                        <input
+                          type="radio"
+                          name="participantId"
+                          [value]="participant.id"
+                          [checked]="form.controls.participantId.value === participant.id"
+                          (change)="form.controls.participantId.setValue(participant.id)"
+                        />
+                        <app-participant-avatar [name]="participant.name" [size]="28" />
+                        <span>{{ participant.name }}</span>
+                      </label>
+                    }
+                  </div>
+                }
+              }
+
+              <mat-radio-button value="new">Je suis un nouveau participant</mat-radio-button>
+              @if (form.controls.choice.value === 'new') {
+                <mat-form-field appearance="outline" class="ml-8 w-[calc(100%-2rem)]">
+                  <mat-label>Votre nom</mat-label>
+                  <input matInput type="text" formControlName="newParticipantName" maxlength="50" />
+                </mat-form-field>
+              }
+            </mat-radio-group>
+
+            <button mat-flat-button color="primary" type="submit" class="mt-4 h-10 w-full" [disabled]="!canSubmit()">
+              @if (submitting()) {
+                <mat-spinner diameter="20" />
+              } @else {
+                Rejoindre le groupe
+              }
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>

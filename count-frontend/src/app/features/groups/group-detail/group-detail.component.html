@@ -1,0 +1,40 @@
+@if (groupStore.loading()) {
+  <app-loading-spinner label="Chargement du groupe…" />
+} @else if (groupStore.error()) {
+  <app-empty-state
+    icon="error_outline"
+    title="Oups !"
+    [message]="groupStore.error()!"
+    actionLabel="Réessayer"
+    (action)="groupStore.reload()"
+  />
+} @else {
+  @if (groupStore.group(); as group) {
+    <div class="se-page group-detail">
+      <app-page-header [title]="group.name" [subtitle]="subtitle()" backRoute="/groups">
+        <button actions mat-stroked-button type="button" (click)="shareInvite()">
+          <mat-icon>share</mat-icon>
+          Inviter
+        </button>
+      </app-page-header>
+
+      <nav mat-tab-nav-bar matTabNavBar class="mb-4 border-b border-black/[0.08]" [tabPanel]="tabPanel">
+        @for (tab of tabs; track tab.path) {
+          <a
+            mat-tab-link
+            [routerLink]="tab.path"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [active]="rla.isActive"
+          >
+            <mat-icon>{{ tab.icon }}</mat-icon>
+            <span>{{ tab.label }}</span>
+          </a>
+        }
+      </nav>
+      <mat-tab-nav-panel #tabPanel>
+        <router-outlet />
+      </mat-tab-nav-panel>
+    </div>
+  }
+}

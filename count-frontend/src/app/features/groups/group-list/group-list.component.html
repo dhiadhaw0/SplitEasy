@@ -1,0 +1,68 @@
+<div class="se-page group-list">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="m-0 text-2xl font-medium">Mes groupes</h1>
+    <button mat-flat-button color="primary" type="button" (click)="openCreateDialog()" class="hidden sm:inline-flex">
+      <mat-icon>add</mat-icon>
+      Nouveau groupe
+    </button>
+  </div>
+
+  @if (loading()) {
+    <app-loading-spinner label="Chargement de vos groupes…" />
+  } @else if (error()) {
+    <app-empty-state icon="error_outline" title="Oups !" [message]="error()!" actionLabel="Réessayer" (action)="loadGroups()" />
+  } @else if (groups().length === 0) {
+    <app-empty-state
+      icon="groups"
+      title="Aucun groupe pour le moment"
+      message="Créez votre premier groupe pour commencer à partager des dépenses avec vos amis."
+      actionLabel="Créer mon premier groupe"
+      (action)="openCreateDialog()"
+    />
+  } @else {
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
+      @for (group of groups(); track group.id; let i = $index) {
+        <mat-card
+          [appAnimateIn]="i"
+          (click)="openGroup(group.id)"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="group.name"
+          class="cursor-pointer !rounded-se !shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:!shadow-card-hover"
+        >
+          <mat-card-header>
+            <mat-card-title>{{ group.name }}</mat-card-title>
+            @if (group.description) {
+              <mat-card-subtitle class="truncate">{{ group.description }}</mat-card-subtitle>
+            }
+          </mat-card-header>
+          <mat-card-content>
+            <div class="mb-1 flex items-center gap-1.5 text-sm text-[var(--se-color-neutral)]">
+              <mat-icon class="!h-[18px] !w-[18px] !text-[18px]" aria-hidden="true">group</mat-icon>
+              <span>{{ group.participantCount }} participant{{ group.participantCount > 1 ? 's' : '' }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-sm text-[var(--se-color-neutral)]">
+              <mat-icon class="!h-[18px] !w-[18px] !text-[18px]" aria-hidden="true">payments</mat-icon>
+              <span>Total dépensé : <app-money-display [amount]="group.totalSpent" [currency]="group.currency" /></span>
+            </div>
+            <div class="mt-3 flex items-center justify-between border-t border-black/[0.08] pt-3 text-sm">
+              <span>Votre solde</span>
+              <app-money-display [amount]="group.myBalance" [currency]="group.currency" [colored]="true" />
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
+  <button
+    mat-fab
+    color="primary"
+    type="button"
+    class="se-fab-mobile sm:!hidden"
+    aria-label="Nouveau groupe"
+    (click)="openCreateDialog()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

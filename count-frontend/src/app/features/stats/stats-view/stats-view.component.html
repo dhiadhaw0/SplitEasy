@@ -1,0 +1,42 @@
+<div class="se-page">
+  <h1 class="mb-4 text-xl font-medium">Statistiques</h1>
+
+  @if (loading()) {
+    <app-loading-spinner label="Chargement des statistiques…" />
+  } @else if (error()) {
+    <app-empty-state icon="error_outline" title="Oups !" [message]="error()!" />
+  } @else if (!hasExpenses()) {
+    <app-empty-state icon="bar_chart" title="Pas encore de statistiques" message="Ajoutez des dépenses pour voir apparaître les statistiques du groupe." />
+  } @else {
+    @if (stats(); as stats) {
+      <div class="mb-4 flex gap-4">
+        <mat-card class="flex flex-1 flex-col gap-1 !rounded-se !shadow-card p-4">
+          <span class="text-xs text-[var(--se-color-neutral)]">Total dépensé</span>
+          <app-money-display class="text-2xl font-medium" [amount]="stats.totalSpent" [currency]="groupStore.currency()" />
+        </mat-card>
+        <mat-card class="flex flex-1 flex-col gap-1 !rounded-se !shadow-card p-4">
+          <span class="text-xs text-[var(--se-color-neutral)]">Nombre de dépenses</span>
+          <span class="text-2xl font-medium">{{ stats.expenseCount }}</span>
+        </mat-card>
+      </div>
+
+      <mat-card class="mb-4 !rounded-se !shadow-card">
+        <mat-card-header>
+          <mat-card-title>Par catégorie</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="relative mx-auto h-[260px] max-w-xs">
+          <canvas baseChart [data]="doughnutData()" [options]="doughnutOptions" type="doughnut"></canvas>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="mb-4 !rounded-se !shadow-card">
+        <mat-card-header>
+          <mat-card-title>Payé / consommé par participant</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="relative h-[280px]">
+          <canvas baseChart [data]="barData()" [options]="barOptions" type="bar"></canvas>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>

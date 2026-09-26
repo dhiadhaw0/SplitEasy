@@ -1,0 +1,19 @@
+<footer class="border-t border-black/[0.06] px-4 py-10 sm:px-6 dark:border-white/10">
+  <div class="mx-auto flex max-w-[1120px] flex-col items-center gap-4 text-sm text-[var(--se-muted)] sm:flex-row sm:justify-between">
+    <a routerLink="/" class="se-font-display flex items-center gap-2 text-base font-extrabold text-[var(--se-ink)] no-underline">
+      <span class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--se-teal)] text-white">
+        <mat-icon class="!text-base">payments</mat-icon>
+      </span>
+      {{ 'app.name' | transloco }}
+    </a>
+
+    <nav class="flex items-center gap-4">
+      <a href="#features" class="no-underline hover:text-[var(--se-teal)]">{{ 'footer.features' | transloco }}</a>
+      <a href="#faq" class="no-underline hover:text-[var(--se-teal)]">{{ 'footer.faq' | transloco }}</a>
+      <a routerLink="/login" class="no-underline hover:text-[var(--se-teal)]">{{ 'footer.login' | transloco }}</a>
+      <app-language-switcher />
+    </nav>
+
+    <p class="m-0">{{ 'footer.copyright' | transloco }}</p>
+  </div>
+</footer>

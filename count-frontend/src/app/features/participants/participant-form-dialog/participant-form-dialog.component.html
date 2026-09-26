@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ data.mode === 'add' ? 'Ajouter un participant' : 'Renommer le participant' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full min-w-[280px]">
+      <mat-label>Nom</mat-label>
+      <input matInput type="text" formControlName="name" required maxlength="50" />
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <mat-error>Le nom est obligatoire.</mat-error>
+      }
+    </mat-form-field>
+
+    @if (errorMessage()) {
+      <p class="m-0 text-sm text-[var(--se-color-negative)]" role="alert">{{ errorMessage() }}</p>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving()">
+      @if (saving()) {
+        <mat-spinner diameter="20" />
+      } @else {
+        {{ data.mode === 'add' ? 'Ajouter' : 'Enregistrer' }}
+      }
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,125 @@
+{
+  "app": { "name": "SplitEasy" },
+  "nav": {
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "faq": "FAQ",
+    "login": "Se connecter",
+    "openGroups": "Ouvrir mes groupes",
+    "createFirstGroup": "Créer mon premier groupe"
+  },
+  "theme": {
+    "toggleToLight": "Passer au mode clair",
+    "toggleToDark": "Passer au mode sombre"
+  },
+  "lang": {
+    "switch": "Changer de langue"
+  },
+  "seo": {
+    "title": "SplitEasy — Les bons comptes font les bons amis",
+    "description": "Notez vos dépenses de groupe en quelques secondes. SplitEasy calcule qui doit quoi et vous dit comment tout régler avec le moins de virements possible."
+  },
+  "hero": {
+    "title": "Les bons comptes font les bons amis.",
+    "subtitle": "Notez les dépenses du groupe en quelques secondes. SplitEasy calcule qui doit quoi, et vous dit comment tout régler avec le moins de virements possible.",
+    "cta": "Créer mon premier groupe",
+    "secondaryCta": "Voir comment ça marche",
+    "reassurance": "Gratuit. Vos amis n'ont même pas besoin de compte.",
+    "imageAlt": "Deux amis partagent leurs dépenses de vacances sur l'application SplitEasy",
+    "cardTitle": "Qui doit quoi ?",
+    "demoLine1": "Restaurant — 120,00",
+    "demoLine2": "Essence — 65,50",
+    "demoLine3": "Bateau — 240,00"
+  },
+  "problem": {
+    "title": "Qui a payé l'essence, déjà ?",
+    "text": "Les tickets s'accumulent dans les poches, les calculs se font sur un coin de nappe, et vient toujours ce message un peu gênant : « euh… tu me dois toujours de l'argent pour le week-end ? ». Résultat : personne ne sait plus vraiment qui doit quoi.",
+    "bubble1": "Je t'ai remboursé le resto ou pas ?",
+    "bubble2": "Attends, c'est qui qui a pris les courses ?",
+    "bubble3": "On fait moitié-moitié ?",
+    "bubbleFinal": "J'ai tout mis sur SplitEasy 👍"
+  },
+  "demo": {
+    "title": "Essayez, là, tout de suite.",
+    "subtitle": "Aucune inscription nécessaire — modifiez les montants et regardez les soldes se recalculer.",
+    "paidLabel": "a payé",
+    "addParticipant": "Ajouter un participant",
+    "namePlaceholder": "Nom",
+    "amountPlaceholder": "Montant payé",
+    "total": "Total",
+    "share": "Part de chacun",
+    "balances": "Soldes",
+    "settlements": "Remboursements suggérés",
+    "noSettlements": "Tout le monde est quitte 🎉",
+    "owes": "doit",
+    "to": "à",
+    "cta": "Créer un vrai groupe avec ces montants",
+    "remove": "Retirer"
+  },
+  "steps": {
+    "title": "Comment ça marche",
+    "step1Title": "Créez un groupe",
+    "step1Text": "Voyage, coloc, anniversaire… invitez vos amis avec un simple lien.",
+    "step2Title": "Ajoutez les dépenses",
+    "step2Text": "Qui a payé, pour qui. Parts égales, montants exacts ou pourcentages.",
+    "step3Title": "Réglez en un minimum de virements",
+    "step3Text": "SplitEasy vous dit exactement qui rembourse qui."
+  },
+  "settle": {
+    "title": "6 virements ? Non, 2.",
+    "text": "Quand tout le monde doit de l'argent à tout le monde, SplitEasy simplifie les dettes pour que chacun fasse le moins de virements possible.",
+    "imageAlt": "Six remboursements croisés simplifiés en deux virements"
+  },
+  "features": {
+    "title": "Ce que SplitEasy fait vraiment",
+    "split": {
+      "title": "Chacun paie sa part, au centime près.",
+      "text": "Parts égales, montants exacts, pondérées ou en pourcentages : les centimes restants sont toujours répartis automatiquement, jamais perdus.",
+      "imageAlt": "Une addition répartie automatiquement entre trois amis"
+    },
+    "currency": {
+      "title": "Choisissez la devise de votre groupe.",
+      "text": "Euro, dollar, dinar tunisien, livre sterling, dirham marocain ou franc suisse : chaque groupe a sa devise, affichée partout où ça compte.",
+      "imageAlt": "Une valise de voyage entourée de pièces en euros, dollars et dinars"
+    },
+    "secondary": {
+      "splitTypes": "Parts égales, montants, parts ou pourcentages",
+      "noAccount": "Participants sans compte (comme Mamie 👵)",
+      "inviteLink": "Rejoindre un groupe via un simple lien",
+      "filters": "Dépenses filtrables par catégorie et participant",
+      "editDelete": "Dépenses modifiables et supprimables",
+      "darkMode": "Mode sombre"
+    }
+  },
+  "audiences": {
+    "title": "Pour qui ?",
+    "travel": { "label": "Voyage entre amis", "example": "Location, essence, restos" },
+    "roommates": { "label": "Colocation", "example": "Loyer, courses, internet" },
+    "couple": { "label": "Couple", "example": "Courses, sorties, vacances" },
+    "event": { "label": "Événement", "example": "Cadeau commun, anniversaire, mariage" }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "q1": "C'est vraiment gratuit ?",
+    "a1": "Oui. SplitEasy est gratuit, sans limite sur le nombre de groupes ou de dépenses.",
+    "q2": "Mes amis doivent-ils créer un compte ?",
+    "a2": "Non. Vous pouvez ajouter un participant sans compte (comme « Mamie ») ; seule la personne qui veut consulter ses dépenses en ligne doit s'inscrire.",
+    "q3": "Mes données sont-elles en sécurité ?",
+    "a3": "Vos données sont protégées par une authentification sécurisée et ne sont accessibles qu'aux membres du groupe concerné.",
+    "q4": "Est-ce que ça marche avec plusieurs devises ?",
+    "a4": "Chaque groupe a une devise unique, choisie à la création parmi EUR, USD, TND, GBP, MAD et CHF.",
+    "q5": "SplitEasy fait-il les virements à ma place ?",
+    "a5": "Non. SplitEasy calcule qui doit quoi et vous montre les remboursements à faire ; c'est à vous de les effectuer, puis de les marquer comme remboursés dans l'application."
+  },
+  "finalCta": {
+    "title": "Votre prochain week-end mérite mieux qu'un tableur.",
+    "cta": "Créer mon premier groupe",
+    "reassurance": "Gratuit. Vos amis n'ont même pas besoin de compte."
+  },
+  "footer": {
+    "features": "Fonctionnalités",
+    "faq": "FAQ",
+    "login": "Se connecter",
+    "copyright": "© 2026 SplitEasy"
+  }
+}

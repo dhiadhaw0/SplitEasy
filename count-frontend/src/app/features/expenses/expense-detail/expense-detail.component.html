@@ -1,0 +1,45 @@
+@if (loading()) {
+  <app-loading-spinner label="Chargement de la dépense…" />
+} @else if (error()) {
+  <div class="se-page">
+    <p class="m-0 text-sm text-[var(--se-color-negative)]" role="alert">{{ error() }}</p>
+  </div>
+} @else {
+  @if (expense(); as expense) {
+    <div class="se-page">
+      <app-page-header [title]="expense.title" [backRoute]="'/groups/' + groupId() + '/expenses'">
+        <button actions mat-icon-button type="button" aria-label="Modifier" (click)="edit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button actions mat-icon-button type="button" aria-label="Supprimer" [disabled]="deleting()" (click)="delete()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </app-page-header>
+
+      <div class="mb-6 rounded-se bg-[var(--se-color-neutral-bg)] p-4">
+        <div class="mb-2 text-3xl">
+          <app-money-display [amount]="expense.amount" [currency]="currency()" />
+        </div>
+        <div class="flex flex-col gap-1 text-sm text-[var(--se-color-neutral)]">
+          <span><mat-icon inline class="align-middle !text-base">{{ expense.category | categoryIcon }}</mat-icon> {{ expense.category | categoryLabel }}</span>
+          <span><mat-icon inline class="align-middle !text-base">event</mat-icon> {{ expense.date }}</span>
+          <span><mat-icon inline class="align-middle !text-base">person</mat-icon> Payé par {{ expense.paidBy.name }}</span>
+        </div>
+      </div>
+
+      <h3 class="mb-2 text-base font-medium">Répartition</h3>
+      <table mat-table [dataSource]="expense.shares" class="w-full">
+        <ng-container matColumnDef="participant">
+          <th mat-header-cell *matHeaderCellDef>Participant</th>
+          <td mat-cell *matCellDef="let share">{{ share.participantName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Montant</th>
+          <td mat-cell *matCellDef="let share"><app-money-display [amount]="share.amount" [currency]="currency()" /></td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="shareColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: shareColumns"></tr>
+      </table>
+    </div>
+  }
+}

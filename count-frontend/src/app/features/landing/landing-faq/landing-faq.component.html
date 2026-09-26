@@ -1,0 +1,18 @@
+<section id="faq" class="mx-auto max-w-[720px] px-4 py-16 sm:px-6">
+  <h2 class="se-font-display mb-8 text-center text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">
+    {{ 'faq.title' | transloco }}
+  </h2>
+
+  <mat-accordion>
+    @for (item of items; track item) {
+      <mat-expansion-panel class="!shadow-none !rounded-xl !mb-2 !bg-[var(--se-color-neutral-bg)]">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="se-font-display !font-bold !text-[var(--se-ink)]">
+            {{ 'faq.q' + item | transloco }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="text-sm leading-relaxed text-[var(--se-muted)]">{{ 'faq.a' + item | transloco }}</p>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</section>

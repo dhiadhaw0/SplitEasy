@@ -1,0 +1,43 @@
+<div class="se-page">
+  <h1 class="mb-4 text-xl font-medium">Équilibre</h1>
+
+  @if (loading()) {
+    <app-loading-spinner label="Chargement des soldes…" />
+  } @else if (error()) {
+    <app-empty-state icon="error_outline" title="Oups !" [message]="error()!" />
+  } @else {
+    <div class="flex flex-col gap-2">
+      @for (balance of balances(); track balance.participantId; let i = $index) {
+        <div
+          [appAnimateIn]="i"
+          class="grid grid-cols-[100px_1fr_80px] items-center gap-2 rounded-se px-2 py-1 sm:grid-cols-[140px_1fr_90px]"
+          [class.bg-gray-100]="balance.participantId === groupStore.myParticipantId()"
+        >
+          <div class="flex min-w-0 items-center gap-2">
+            <app-participant-avatar [name]="balance.participantName" [size]="32" />
+            <span class="truncate text-sm">{{ balance.participantName }}</span>
+          </div>
+
+          <div class="flex h-2.5 items-center">
+            <div class="flex h-full flex-1 justify-end">
+              <div class="h-full rounded bg-[var(--se-color-negative)] transition-[width] duration-300" [style.width.%]="leftWidthPercent(balance)"></div>
+            </div>
+            <div class="h-4 w-px flex-shrink-0 bg-black/20"></div>
+            <div class="flex h-full flex-1 justify-start">
+              <div class="h-full rounded bg-[var(--se-color-positive)] transition-[width] duration-300" [style.width.%]="rightWidthPercent(balance)"></div>
+            </div>
+          </div>
+
+          <app-money-display class="text-right" [amount]="balance.balance" [currency]="groupStore.currency()" [colored]="true" />
+        </div>
+      }
+    </div>
+
+    <app-settlement-list
+      [settlements]="settlements()"
+      [groupId]="groupStore.group()!.id"
+      [currency]="groupStore.currency()"
+      (recorded)="onSettlementRecorded()"
+    />
+  }
+</div>

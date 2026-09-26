@@ -1,0 +1,157 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@include mat.core();
+
+// SplitEasy palette: green/teal primary, cyan tertiary accent.
+$spliteasy-web-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$green-palette,
+    tertiary: mat.$cyan-palette,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+$spliteasy-web-dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$green-palette,
+    tertiary: mat.$cyan-palette,
+  )
+));
+
+:root {
+  @include mat.all-component-themes($spliteasy-web-theme);
+
+  // ---- App-wide design tokens (used outside Material components too) ----
+  --se-color-positive: #2e7d32;
+  --se-color-positive-bg: #e8f5e9;
+  --se-color-negative: #c62828;
+  --se-color-negative-bg: #fdecea;
+  --se-color-neutral: #757575;
+  --se-color-neutral-bg: #f5f5f5;
+
+  --se-space-xs: 4px;
+  --se-space-sm: 8px;
+  --se-space-md: 16px;
+  --se-space-lg: 24px;
+  --se-space-xl: 32px;
+
+  --se-content-max-width: 800px;
+  --se-radius: 12px;
+
+  // ---- Landing page palette (from the illustrations) ----
+  --se-ink: #1d2a3a;
+  --se-teal: #0f5e5c;
+  --se-mint: #7fd1b9;
+  --se-mint-bg: #e6f2f1;
+  --se-sun: #f6c945;
+  --se-coral: #f2767a;
+  --se-leaf: #22a884;
+  --se-surface: #ffffff;
+  --se-muted: #6b7c8f;
+  /* Light, neutral backdrop so light-background illustrations stay readable in dark mode. */
+  --illustration-stage: #f2f6f5;
+
+  // ---- Fonts ----
+  --se-font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --se-font-body: 'Nunito Sans', system-ui, sans-serif;
+  --se-font-body-ar: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  @include mat.all-component-colors($spliteasy-web-dark-theme);
+
+  --se-color-positive: #66bb6a;
+  --se-color-positive-bg: #1b3a1d;
+  --se-color-negative: #ef5350;
+  --se-color-negative-bg: #3a1f1f;
+  --se-color-neutral: #a0a8b0;
+  --se-color-neutral-bg: #22282e;
+
+  --se-ink: #eef2f5;
+  --se-surface: #171c20;
+  --se-muted: #a0a8b0;
+  --se-mint-bg: #12302d;
+  --illustration-stage: #f2f6f5;
+
+  color-scheme: dark;
+}
+
+@include mat.typography-hierarchy($spliteasy-web-theme);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--se-font-body);
+  background: #fafafa;
+  color: var(--se-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:root[data-theme='dark'] body {
+  background: #101418;
+}
+
+[lang='ar'] body {
+  font-family: var(--se-font-body-ar);
+}
+
+h1, h2, h3, .se-font-display {
+  font-family: var(--se-font-display);
+}
+
+// Utility classes shared across features.
+.se-page {
+  max-width: var(--se-content-max-width);
+  margin: 0 auto;
+  padding: var(--se-space-md);
+  box-sizing: border-box;
+}
+
+.se-positive {
+  color: var(--se-color-positive) !important;
+}
+
+.se-negative {
+  color: var(--se-color-negative) !important;
+}
+
+.se-neutral {
+  color: var(--se-color-neutral) !important;
+}
+
+.se-spacer {
+  flex: 1 1 auto;
+}
+
+.se-fab-mobile {
+  position: fixed;
+  inset-inline-end: var(--se-space-lg);
+  bottom: var(--se-space-lg);
+  z-index: 10;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

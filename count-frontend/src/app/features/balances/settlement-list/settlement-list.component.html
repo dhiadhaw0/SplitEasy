@@ -1,0 +1,21 @@
+<div class="mt-6">
+  <h3 class="mb-2 text-base font-medium">Remboursements suggérés</h3>
+
+  @if (settlements().length === 0) {
+    <app-empty-state icon="celebration" title="Tout le monde est quitte 🎉" message="Aucun remboursement n'est nécessaire." />
+  } @else {
+    @for (settlement of settlements(); track settlement.fromParticipantId + '-' + settlement.toParticipantId; let i = $index) {
+      <div [appAnimateIn]="i" class="flex flex-col items-start justify-between gap-2 border-b border-black/[0.06] py-2 sm:flex-row sm:items-center">
+        <p class="m-0 flex flex-wrap items-center gap-1">
+          <strong>{{ settlement.fromName }}</strong> doit
+          <app-money-display [amount]="settlement.amount" [currency]="currency()" />
+          à <strong>{{ settlement.toName }}</strong>
+        </p>
+        <button mat-stroked-button type="button" (click)="markAsReimbursed(settlement)">
+          <mat-icon>check_circle</mat-icon>
+          Marquer comme remboursé
+        </button>
+      </div>
+    }
+  }
+</div>

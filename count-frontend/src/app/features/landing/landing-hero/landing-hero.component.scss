@@ -1,0 +1,11 @@
+// Initial hidden state so the intro animation has something to animate *from* instead of a
+// one-frame flash of the fully-visible card before JS runs. playIntroAnimation() (or the
+// prefers-reduced-motion fallback) always ends by setting these to their visible state.
+.se-hero-demo-line {
+  opacity: 0;
+}
+
+.se-hero-demo-bar {
+  transform: scaleX(0);
+  transform-origin: center;
+}

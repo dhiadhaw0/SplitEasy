@@ -1,0 +1,36 @@
+<section class="mx-auto max-w-[1120px] px-4 py-16 sm:px-6">
+  <h2 class="se-font-display mb-8 text-center text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">
+    {{ 'audiences.title' | transloco }}
+  </h2>
+
+  <div class="mb-8 flex flex-wrap justify-center gap-3">
+    @for (audience of audiences; track audience.key) {
+      <button
+        type="button"
+        class="flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors"
+        [class]="
+          selectedKey() === audience.key
+            ? 'border-[var(--se-teal)] bg-[var(--se-teal)] text-white'
+            : 'border-black/10 bg-transparent text-[var(--se-ink)] hover:border-[var(--se-teal)] dark:border-white/15'
+        "
+        (click)="select(audience.key)"
+      >
+        <mat-icon class="!text-lg">{{ audience.icon }}</mat-icon>
+        {{ 'audiences.' + audience.key + '.label' | transloco }}
+      </button>
+    }
+  </div>
+
+  <div class="mx-auto max-w-[380px] rounded-[20px] bg-[var(--se-color-neutral-bg)] p-5">
+    @for (label of selectedItemLabels(); track $index) {
+      <div class="flex items-center justify-between border-b border-black/[0.06] py-2 text-sm text-[var(--se-ink)] last:border-0 dark:border-white/10">
+        <span>{{ label }}</span>
+        <app-money-display [amount]="selected().amounts[$index]" currency="EUR" />
+      </div>
+    }
+    <div class="mt-3 flex items-center justify-between pt-1 text-sm font-semibold">
+      <span>{{ selected().balanceName }}</span>
+      <app-money-display [amount]="selected().balanceAmount" currency="EUR" [colored]="true" />
+    </div>
+  </div>
+</section>

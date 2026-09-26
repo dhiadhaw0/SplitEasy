@@ -1,0 +1,36 @@
+<div class="se-page">
+  <div class="mb-4 flex items-center justify-between">
+    <h1 class="m-0 text-xl font-medium">Participants</h1>
+    <button mat-flat-button color="primary" type="button" (click)="openAddDialog()">
+      <mat-icon>person_add</mat-icon>
+      Ajouter
+    </button>
+  </div>
+
+  @for (participant of groupStore.participants(); track participant.id; let i = $index) {
+    <div [appAnimateIn]="i" class="flex items-center gap-3 border-b border-black/[0.06] py-2">
+      <app-participant-avatar [name]="participant.name" [size]="40" />
+
+      <div class="flex min-w-0 flex-1 items-center gap-2">
+        <span class="truncate">{{ participant.name }}</span>
+        @if (isMe(participant)) {
+          <mat-chip class="!min-h-[22px] !bg-[var(--se-color-positive-bg)] !text-xs !text-[var(--se-color-positive)]">Vous</mat-chip>
+        } @else if (participant.linked) {
+          <mat-chip class="!min-h-[22px] !text-xs">Compte lié</mat-chip>
+        }
+      </div>
+
+      <div class="flex flex-shrink-0 items-center gap-1">
+        @if (!participant.linked && groupStore.myParticipantId() === null) {
+          <button mat-stroked-button type="button" (click)="claimParticipant(participant)">C'est moi</button>
+        }
+        <button mat-icon-button type="button" aria-label="Renommer" (click)="openRenameDialog(participant)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button type="button" aria-label="Supprimer" (click)="deleteParticipant(participant)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+</div>

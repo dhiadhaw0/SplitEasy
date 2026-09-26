@@ -1,0 +1,77 @@
+<section class="overflow-hidden bg-[var(--se-mint-bg)]">
+  <div class="mx-auto grid max-w-[1120px] gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-2 lg:items-center lg:pt-16">
+    <div>
+      <h1 class="se-font-display max-w-[16ch] text-4xl font-extrabold leading-[1.08] text-[var(--se-ink)] sm:text-5xl">
+        {{ 'hero.title' | transloco }}
+      </h1>
+      <p class="mt-4 max-w-[46ch] text-lg text-[var(--se-muted)]">{{ 'hero.subtitle' | transloco }}</p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        @if (authService.isLoggedIn()) {
+          <a
+            routerLink="/groups"
+            mat-flat-button
+            class="!h-12 !rounded-full !bg-[var(--se-sun)] !px-6 !text-base !font-bold !text-[var(--se-ink)]"
+          >
+            {{ 'nav.openGroups' | transloco }}
+          </a>
+        } @else {
+          <a
+            routerLink="/register"
+            mat-flat-button
+            class="!h-12 !rounded-full !bg-[var(--se-sun)] !px-6 !text-base !font-bold !text-[var(--se-ink)]"
+          >
+            {{ 'hero.cta' | transloco }}
+          </a>
+        }
+        <a
+          href="#steps"
+          (click)="scrollToSteps($event)"
+          class="text-sm font-semibold text-[var(--se-teal)] no-underline hover:underline"
+        >
+          {{ 'hero.secondaryCta' | transloco }}
+        </a>
+      </div>
+
+      <p class="mt-3 text-sm text-[var(--se-muted)]">{{ 'hero.reassurance' | transloco }}</p>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-[420px] pb-10">
+      <div class="rounded-[28px] bg-[var(--illustration-stage)] p-4">
+        <img
+          src="/illustrations/hero.svg"
+          [attr.alt]="'hero.imageAlt' | transloco"
+          width="800"
+          height="580"
+          fetchpriority="high"
+          class="block h-auto w-full"
+        />
+      </div>
+
+      <div
+        #card
+        class="absolute -bottom-4 -start-4 w-[230px] rounded-2xl bg-[var(--se-surface)] p-4 shadow-[0_12px_32px_rgba(29,42,58,0.18)] sm:w-[250px]"
+      >
+        <p class="se-font-display mb-2 text-[11px] font-extrabold text-[var(--se-ink)]">{{ 'hero.cardTitle' | transloco }}</p>
+
+        @for (lineKey of demoLineKeys; track lineKey) {
+          <p class="se-hero-demo-line mb-1 truncate text-[11px] text-[var(--se-muted)]">{{ lineKey | transloco }}</p>
+        }
+
+        <div class="my-2 h-px bg-black/10 dark:bg-white/10"></div>
+
+        @for (row of balanceRows; track row.name) {
+          <div class="mb-1.5 flex items-center gap-2 text-[10px] text-[var(--se-ink)]">
+            <app-participant-avatar [name]="row.name" [size]="18" />
+            <span class="w-9 flex-shrink-0">{{ row.name }}</span>
+            <span
+              class="se-hero-demo-bar h-2 flex-1 rounded-full"
+              [class]="row.positive ? 'bg-[var(--se-leaf)]' : 'bg-[var(--se-coral)]'"
+              [style.width.%]="row.widthPercent"
+            ></span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

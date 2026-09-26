@@ -1,0 +1,33 @@
+<div class="flex cursor-pointer items-center gap-4 rounded-se px-2 py-2 transition-colors hover:bg-black/[0.03]">
+  <div
+    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
+    [class]="isTransfer() ? 'bg-sky-50 text-sky-700' : 'bg-[var(--se-color-neutral-bg)]'"
+  >
+    <mat-icon aria-hidden="true">{{ isTransfer() ? 'swap_horiz' : (expense().category | categoryIcon) }}</mat-icon>
+  </div>
+
+  <div class="min-w-0 flex-1">
+    @if (isTransfer()) {
+      <p class="m-0 truncate italic text-[var(--se-color-neutral)]">
+        {{ expense().paidBy.name }} a remboursé {{ transferBeneficiaryName() }}
+      </p>
+    } @else {
+      <p class="m-0 truncate font-medium">{{ expense().title }}</p>
+      <p class="m-0 text-xs text-[var(--se-color-neutral)]">Payé par {{ expense().paidBy.name }}</p>
+    }
+  </div>
+
+  <div class="flex flex-shrink-0 flex-col items-end gap-0.5 text-right">
+    <app-money-display [amount]="expense().amount" [currency]="currency()" />
+    @if (!isTransfer() && myNetAmount() !== null) {
+      <span
+        class="flex items-center gap-1 text-xs"
+        [class.se-positive]="myNetAmount()! > 0"
+        [class.se-negative]="myNetAmount()! < 0"
+      >
+        {{ myNetAmount()! > 0 ? 'On vous doit' : 'Vous devez' }}
+        <app-money-display [amount]="myNetAmountAbs()" [currency]="currency()" />
+      </span>
+    }
+  </div>
+</div>
