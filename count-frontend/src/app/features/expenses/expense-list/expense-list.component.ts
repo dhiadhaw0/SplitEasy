@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { Subject, catchError, map, of, switchMap } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ExpenseService } from '../../../core/services/expense.service';
 import { StatsService } from '../../../core/services/stats.service';
 import { Expense } from '../../../core/models/expense.model';
+import { Page } from '../../../core/models/page.model';
 import { CATEGORIES, CATEGORY_LABELS, Category } from '../../../core/models/enums';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
@@ -19,6 +21,12 @@ import { ExpenseItemComponent } from '../expense-item/expense-item.component';
 interface ExpenseGroupByDate {
   label: string;
   expenses: Expense[];
+}
+
+interface FilterChange {
+  groupId: number;
+  category: Category | null;
+  participantId: number | null;
 }
 
 const PAGE_SIZE = 20;
@@ -81,22 +89,55 @@ export class ExpenseListComponent {
 
   private readonly groupId = computed(() => this.groupStore.group()?.id ?? null);
 
+  /**
+   * Filter changes are funneled through a Subject + switchMap so that if the user flips
+   * category/participant filters quickly, only the response to the LATEST request is ever
+   * applied — switchMap cancels/ignores any still-in-flight previous request automatically.
+   */
+  private readonly filterChange$ = new Subject<FilterChange>();
+
   constructor() {
+    this.filterChange$
+      .pipe(
+        switchMap(({ groupId, category, participantId }) =>
+          this.expenseService.list(groupId, { page: 0, size: PAGE_SIZE, category, participantId }).pipe(
+            map(result => ({ ok: true as const, result })),
+            catchError(() => of({ ok: false as const, result: null as Page<Expense> | null }))
+          )
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(outcome => {
+        if (outcome.ok && outcome.result) {
+          this.expenses.set(outcome.result.content);
+          this.page.set(outcome.result.page);
+          this.totalPages.set(outcome.result.totalPages);
+          this.error.set(null);
+        } else {
+          this.error.set('Impossible de charger les dépenses.');
+        }
+        this.loading.set(false);
+      });
+
     effect(() => {
       const groupId = this.groupId();
       const category = this.categoryFilter();
       const participantId = this.participantFilter();
       if (groupId != null) {
-        this.resetAndLoad(groupId, category, participantId);
+        this.expenses.set([]);
+        this.page.set(0);
+        this.loading.set(true);
+        this.error.set(null);
+        this.filterChange$.next({ groupId, category, participantId });
       }
-    });
+    }, { allowSignalWrites: true });
 
     effect(() => {
       const groupId = this.groupId();
       if (groupId != null) {
         this.loadTotals(groupId);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   protected loadMore(): void {
@@ -104,7 +145,20 @@ export class ExpenseListComponent {
     if (groupId == null || this.loadingMore()) {
       return;
     }
-    this.loadPage(groupId, this.page() + 1, this.categoryFilter(), this.participantFilter(), true);
+
+    this.loadingMore.set(true);
+    this.expenseService
+      .list(groupId, { page: this.page() + 1, size: PAGE_SIZE, category: this.categoryFilter(), participantId: this.participantFilter() })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: result => {
+          this.expenses.update(current => [...current, ...result.content]);
+          this.page.set(result.page);
+          this.totalPages.set(result.totalPages);
+          this.loadingMore.set(false);
+        },
+        error: () => this.loadingMore.set(false)
+      });
   }
 
   protected addExpense(): void {
@@ -119,33 +173,6 @@ export class ExpenseListComponent {
     if (groupId != null) {
       this.router.navigate(['/groups', groupId, 'expenses', expenseId]);
     }
-  }
-
-  private resetAndLoad(groupId: number, category: Category | null, participantId: number | null): void {
-    this.expenses.set([]);
-    this.page.set(0);
-    this.loadPage(groupId, 0, category, participantId, false);
-  }
-
-  private loadPage(groupId: number, page: number, category: Category | null, participantId: number | null, append: boolean): void {
-    const loadingSignal = append ? this.loadingMore : this.loading;
-    loadingSignal.set(true);
-    this.error.set(null);
-
-    this.expenseService.list(groupId, { page, size: PAGE_SIZE, category, participantId })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: result => {
-          this.expenses.update(current => (append ? [...current, ...result.content] : result.content));
-          this.page.set(result.page);
-          this.totalPages.set(result.totalPages);
-          loadingSignal.set(false);
-        },
-        error: () => {
-          this.error.set('Impossible de charger les dépenses.');
-          loadingSignal.set(false);
-        }
-      });
   }
 
   private loadTotals(groupId: number): void {

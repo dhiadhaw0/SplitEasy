@@ -154,7 +154,7 @@ class SplitEasyIntegrationTest {
 
         ExpenseRequest expense = new ExpenseRequest(
                 "Restaurant", new BigDecimal("100.00"), LocalDate.now(), null, farid, SplitType.EQUAL,
-                List.of(new ShareRequest(farid, null), new ShareRequest(grandma, null)));
+                List.of(new ShareRequest(farid, null), new ShareRequest(grandma, null)), null, null, null);
 
         mockMvc.perform(post("/api/groups/" + groupId + "/expenses")
                         .header("Authorization", "Bearer " + token)

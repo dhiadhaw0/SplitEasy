@@ -1,4 +1,4 @@
-import { Category, ExpenseType, SplitType } from './enums';
+import { Category, Currency, ExpenseType, RecurrenceInterval, SplitType } from './enums';
 import { Participant } from './participant.model';
 
 export interface Share {
@@ -18,6 +18,13 @@ export interface Expense {
   splitType: SplitType;
   paidBy: Participant;
   shares: Share[];
+  recurring: boolean;
+  recurrenceInterval: RecurrenceInterval | null;
+  nextOccurrenceDate: string | null;
+  /** Set only when this expense was entered in a currency other than the group's. */
+  originalCurrency: Currency | null;
+  originalAmount: number | null;
+  exchangeRate: number | null;
   createdAt: string;
 }
 
@@ -34,6 +41,10 @@ export interface ExpenseRequest {
   paidById: number;
   splitType: SplitType;
   shares: ShareRequest[];
+  recurring: boolean;
+  recurrenceInterval: RecurrenceInterval | null;
+  /** Null means "the group's currency" (no conversion). */
+  currency: Currency | null;
 }
 
 export interface ExpenseListFilters {

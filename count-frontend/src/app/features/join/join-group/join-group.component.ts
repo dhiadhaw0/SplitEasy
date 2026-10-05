@@ -72,7 +72,7 @@ export class JoinGroupComponent {
       if (code) {
         this.loadPreview(code);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   private loadPreview(code: string): void {

@@ -9,13 +9,16 @@ import { Settlement } from '../../../core/models/balance.model';
 import { Currency } from '../../../core/models/enums';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { ParticipantAvatarComponent } from '../../../shared/components/participant-avatar/participant-avatar.component';
 import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 import { ConfirmDialogComponent, ConfirmDialogResult } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+
+const ACCENT_BACKGROUNDS = ['var(--se-mint-bg)', 'var(--se-sun-bg)', 'var(--se-coral-bg)', 'var(--se-violet-bg)'];
 
 @Component({
   selector: 'app-settlement-list',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MoneyDisplayComponent, EmptyStateComponent, AnimateInDirective],
+  imports: [MatButtonModule, MatIconModule, MoneyDisplayComponent, EmptyStateComponent, ParticipantAvatarComponent, AnimateInDirective],
   templateUrl: './settlement-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -31,6 +34,10 @@ export class SettlementListComponent {
 
   /** Emitted once a settlement has been recorded, so the parent can reload balances + suggestions. */
   readonly recorded = output<void>();
+
+  protected accentBg(index: number): string {
+    return ACCENT_BACKGROUNDS[index % ACCENT_BACKGROUNDS.length];
+  }
 
   protected markAsReimbursed(settlement: Settlement): void {
     const dialogRef = this.dialog.open<ConfirmDialogComponent, unknown, ConfirmDialogResult>(ConfirmDialogComponent, {

@@ -7,7 +7,6 @@ import { LandingHeroComponent } from './landing-hero/landing-hero.component';
 import { LandingProblemComponent } from './landing-problem/landing-problem.component';
 import { LandingDemoComponent } from './landing-demo/landing-demo.component';
 import { LandingStepsComponent } from './landing-steps/landing-steps.component';
-import { LandingSettleComponent } from './landing-settle/landing-settle.component';
 import { LandingFeaturesComponent } from './landing-features/landing-features.component';
 import { LandingAudiencesComponent } from './landing-audiences/landing-audiences.component';
 import { LandingFaqComponent } from './landing-faq/landing-faq.component';
@@ -28,7 +27,6 @@ interface SeoTranslation {
     LandingProblemComponent,
     LandingDemoComponent,
     LandingStepsComponent,
-    LandingSettleComponent,
     LandingFeaturesComponent,
     LandingAudiencesComponent,
     LandingFaqComponent,
@@ -54,9 +52,13 @@ export class LandingComponent implements OnInit {
         this.metaService.updateTag({ property: 'og:title', content: seo.title });
         this.metaService.updateTag({ property: 'og:description', content: seo.description });
         this.metaService.updateTag({ property: 'og:type', content: 'website' });
+        // Locale-independent, so set once here rather than duplicated across seo.* translations;
+        // index.html carries the same path as a static fallback for crawlers that never run this JS.
+        this.metaService.updateTag({ property: 'og:image', content: '/og-image.png' });
         this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
         this.metaService.updateTag({ name: 'twitter:title', content: seo.title });
         this.metaService.updateTag({ name: 'twitter:description', content: seo.description });
+        this.metaService.updateTag({ name: 'twitter:image', content: '/og-image.png' });
       });
   }
 }

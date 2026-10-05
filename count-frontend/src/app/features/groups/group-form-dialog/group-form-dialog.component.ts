@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,6 +29,7 @@ export interface GroupFormDialogResult {
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule
@@ -64,8 +66,8 @@ export class GroupFormDialogComponent {
 
     const call$ =
       this.data.mode === 'create'
-        ? this.groupService.create(request)
-        : this.groupService.update(this.data.group!.id, request);
+        ? this.groupService.create(request, true)
+        : this.groupService.update(this.data.group!.id, request, true);
 
     call$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: group => this.dialogRef.close({ group }),

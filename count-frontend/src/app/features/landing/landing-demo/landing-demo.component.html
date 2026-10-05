@@ -1,127 +1,142 @@
-<section class="mx-auto max-w-[760px] px-4 py-16 sm:px-6">
-  <h2 class="se-font-display text-center text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">
-    {{ 'demo.title' | transloco }}
-  </h2>
-  <p class="mx-auto mt-3 max-w-[46ch] text-center text-base text-[var(--se-muted)]">{{ 'demo.subtitle' | transloco }}</p>
+<section class="relative mx-auto max-w-[820px] px-4 py-20 sm:px-6">
+  <div class="se-float se-blob pointer-events-none absolute end-0 top-0 h-64 w-64 bg-[var(--se-mint)] opacity-15 blur-3xl" aria-hidden="true"></div>
 
-  <div class="mt-8 rounded-[28px] bg-[var(--se-color-neutral-bg)] p-5 sm:p-8">
-    <!-- Participants -->
-    <div class="flex flex-col gap-3">
-      @for (participant of participants(); track participant.id) {
-        <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
-          <app-participant-avatar [name]="participant.name || '?'" [size]="32" />
+  <div class="relative z-[1] text-center">
+    <span class="se-sticker inline-flex items-center gap-1.5 rounded-full bg-[var(--se-mint-bg)] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--se-teal)]">
+      <mat-icon class="!text-sm" inline>bolt</mat-icon>
+      {{ 'demo.title' | transloco }}
+    </span>
+    <h2 class="se-font-display mt-4 text-3xl font-extrabold text-[var(--se-ink)] sm:text-4xl">{{ 'demo.title' | transloco }}</h2>
+    <p class="mx-auto mt-3 max-w-[46ch] text-base text-[var(--se-muted)]">{{ 'demo.subtitle' | transloco }}</p>
+  </div>
 
-          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-32 flex-1 sm:flex-none">
+  <div class="se-card relative z-[1] mt-10 overflow-hidden !shadow-[0_24px_60px_rgba(139,92,246,0.14)]">
+    <div class="p-5 text-white sm:p-7" [style.background-image]="'var(--se-gradient-brand)'">
+      <p class="se-font-display m-0 text-sm font-bold uppercase tracking-wide text-white/80">{{ 'demo.balances' | transloco }}</p>
+
+      <div class="mt-4 flex flex-col gap-3">
+        @for (participant of participants(); track participant.id) {
+          <div class="flex flex-wrap items-center gap-2 rounded-2xl bg-white/10 p-2 pe-3 backdrop-blur-sm sm:flex-nowrap">
+            <app-participant-avatar [name]="participant.name || '?'" [size]="34" />
+
             <input
-              matInput
               type="text"
+              class="se-demo-input min-w-0 flex-1 bg-transparent text-sm font-semibold text-white placeholder:text-white/60 focus:outline-none"
               [attr.aria-label]="'demo.namePlaceholder' | transloco"
               [placeholder]="'demo.namePlaceholder' | transloco"
               [ngModel]="participant.name"
               (ngModelChange)="updateName(participant.id, $event)"
             />
-          </mat-form-field>
 
-          <span class="flex-shrink-0 text-sm text-[var(--se-muted)]">{{ 'demo.paidLabel' | transloco }}</span>
+            <span class="flex-shrink-0 text-xs text-white/70">{{ 'demo.paidLabel' | transloco }}</span>
 
-          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-28 flex-1 sm:flex-none">
-            <input
-              matInput
-              type="number"
-              min="0"
-              step="1"
-              [attr.aria-label]="'demo.amountPlaceholder' | transloco"
-              [ngModel]="participant.paid"
-              (ngModelChange)="updatePaid(participant.id, $event)"
-            />
-          </mat-form-field>
+            <div class="flex flex-shrink-0 items-center gap-1 rounded-full bg-white/15 px-3 py-1.5">
+              <input
+                type="number"
+                min="0"
+                step="1"
+                class="se-demo-input w-16 bg-transparent text-end text-sm font-bold text-white focus:outline-none"
+                [attr.aria-label]="'demo.amountPlaceholder' | transloco"
+                [ngModel]="participant.paid"
+                (ngModelChange)="updatePaid(participant.id, $event)"
+              />
+              <span class="text-xs text-white/70">€</span>
+            </div>
 
-          @if (canRemoveParticipant()) {
-            <button
-              mat-icon-button
-              type="button"
-              [attr.aria-label]="'demo.remove' | transloco"
-              (click)="removeParticipant(participant.id)"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          }
-        </div>
+            @if (canRemoveParticipant()) {
+              <button
+                mat-icon-button
+                type="button"
+                class="!h-8 !w-8 !text-white/70"
+                [attr.aria-label]="'demo.remove' | transloco"
+                (click)="removeParticipant(participant.id)"
+              >
+                <mat-icon class="!text-lg">close</mat-icon>
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      @if (canAddParticipant()) {
+        <button
+          mat-stroked-button
+          type="button"
+          class="se-pop mt-3 !rounded-full !border-white/40 !text-white"
+          (click)="addParticipant()"
+        >
+          <mat-icon>person_add</mat-icon>
+          {{ 'demo.addParticipant' | transloco }}
+        </button>
       }
-    </div>
 
-    @if (canAddParticipant()) {
-      <button mat-stroked-button type="button" class="mt-3" (click)="addParticipant()">
-        <mat-icon>person_add</mat-icon>
-        {{ 'demo.addParticipant' | transloco }}
-      </button>
-    }
-
-    <!-- Totals -->
-    <div class="mt-6 flex flex-wrap gap-4 border-t border-black/10 pt-6 dark:border-white/10">
-      <div class="flex-1">
-        <p class="m-0 text-xs text-[var(--se-muted)]">{{ 'demo.total' | transloco }}</p>
-        <app-money-display class="text-xl" [amount]="total()" currency="EUR" />
-      </div>
-      <div class="flex-1">
-        <p class="m-0 text-xs text-[var(--se-muted)]">{{ 'demo.share' | transloco }}</p>
-        <app-money-display class="text-xl" [amount]="shareAmount()" currency="EUR" />
+      <div class="mt-6 flex gap-6 border-t border-white/15 pt-5">
+        <div class="flex-1">
+          <p class="m-0 text-xs font-semibold uppercase tracking-wide text-white/70">{{ 'demo.total' | transloco }}</p>
+          <app-money-display class="se-font-display text-2xl font-extrabold text-white" [amount]="total()" currency="EUR" />
+        </div>
+        <div class="flex-1">
+          <p class="m-0 text-xs font-semibold uppercase tracking-wide text-white/70">{{ 'demo.share' | transloco }}</p>
+          <app-money-display class="se-font-display text-2xl font-extrabold text-white" [amount]="shareAmount()" currency="EUR" />
+        </div>
       </div>
     </div>
 
-    <!-- Balances -->
-    <div class="mt-6">
+    <div class="bg-[var(--se-surface)] p-5 sm:p-7">
       <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--se-muted)]">{{ 'demo.balances' | transloco }}</p>
-      <div class="flex flex-col gap-1.5">
+      <div class="flex flex-col gap-2">
         @for (balance of balances(); track balance.id) {
           <div class="grid grid-cols-[80px_1fr_70px] items-center gap-2 sm:grid-cols-[110px_1fr_80px]">
-            <span class="truncate text-sm">{{ balance.name }}</span>
-            <div class="flex h-2 items-center">
-              <div class="flex h-full flex-1 justify-end">
+            <span class="truncate text-sm font-medium text-[var(--se-ink)]">{{ balance.name }}</span>
+            <div class="flex h-2.5 items-center">
+              <div class="flex h-full flex-1 justify-end overflow-hidden rounded-l-full bg-black/[0.04] dark:bg-white/[0.06]">
                 <div
-                  class="h-full rounded-full bg-[var(--se-color-negative)] transition-[width] duration-300"
+                  class="h-full rounded-l-full bg-[var(--se-color-negative)] transition-[width] duration-300"
                   [style.width.%]="leftWidthPercent(balance.balance)"
                 ></div>
               </div>
-              <div class="h-3.5 w-px flex-shrink-0 bg-black/20 dark:bg-white/20"></div>
-              <div class="flex h-full flex-1 justify-start">
+              <div class="h-4 w-px flex-shrink-0 bg-black/20 dark:bg-white/20"></div>
+              <div class="flex h-full flex-1 justify-start overflow-hidden rounded-r-full bg-black/[0.04] dark:bg-white/[0.06]">
                 <div
-                  class="h-full rounded-full bg-[var(--se-color-positive)] transition-[width] duration-300"
+                  class="h-full rounded-r-full bg-[var(--se-color-positive)] transition-[width] duration-300"
                   [style.width.%]="rightWidthPercent(balance.balance)"
                 ></div>
               </div>
             </div>
-            <app-money-display class="text-right text-sm" [amount]="balance.balance" currency="EUR" [colored]="true" />
+            <app-money-display class="text-end text-sm font-semibold" [amount]="balance.balance" currency="EUR" [colored]="true" />
           </div>
         }
       </div>
-    </div>
 
-    <!-- Settlements -->
-    <div class="mt-6">
-      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--se-muted)]">{{ 'demo.settlements' | transloco }}</p>
+      <p class="mb-2 mt-6 text-xs font-semibold uppercase tracking-wide text-[var(--se-muted)]">{{ 'demo.settlements' | transloco }}</p>
       @if (settlements().length === 0) {
-        <p class="text-sm text-[var(--se-muted)]">{{ 'demo.noSettlements' | transloco }}</p>
+        <p class="m-0 flex items-center gap-1.5 text-sm text-[var(--se-color-positive)]">
+          <mat-icon class="!text-lg" inline>celebration</mat-icon>
+          {{ 'demo.noSettlements' | transloco }}
+        </p>
       } @else {
-        @for (settlement of settlements(); track settlement.fromId + '-' + settlement.toId) {
-          <p class="m-0 mb-1 flex flex-wrap items-center gap-1 text-sm text-[var(--se-ink)]">
-            <strong>{{ settlement.fromName }}</strong>
-            {{ 'demo.owes' | transloco }}
-            <app-money-display [amount]="settlement.amount" currency="EUR" />
-            {{ 'demo.to' | transloco }}
-            <strong>{{ settlement.toName }}</strong>
-          </p>
-        }
+        <div class="flex flex-col gap-1.5">
+          @for (settlement of settlements(); track settlement.fromId + '-' + settlement.toId) {
+            <p class="se-pop m-0 flex flex-wrap items-center gap-1 rounded-full bg-[var(--se-color-neutral-bg)] px-3 py-2 text-sm text-[var(--se-ink)]">
+              <strong>{{ settlement.fromName }}</strong>
+              {{ 'demo.owes' | transloco }}
+              <app-money-display class="font-bold text-[var(--se-violet)]" [amount]="settlement.amount" currency="EUR" />
+              {{ 'demo.to' | transloco }}
+              <strong>{{ settlement.toName }}</strong>
+            </p>
+          }
+        </div>
       }
-    </div>
 
-    <button
-      mat-flat-button
-      type="button"
-      class="mt-6 !h-11 !w-full !rounded-full !bg-[var(--se-teal)] !text-base !font-bold !text-white"
-      (click)="createRealGroup()"
-    >
-      {{ 'demo.cta' | transloco }}
-    </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="se-pop mt-6 !h-14 !w-full !rounded-full !text-base !font-bold !text-white"
+        [style.background-image]="'var(--se-gradient-brand)'"
+        (click)="createRealGroup()"
+      >
+        {{ 'demo.cta' | transloco }}
+      </button>
+    </div>
   </div>
 </section>

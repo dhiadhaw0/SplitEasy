@@ -18,6 +18,12 @@ export class PageHeaderComponent {
   readonly title = input.required<string>();
   readonly subtitle = input<string>('');
   readonly showBack = input<boolean>(true);
+  /**
+   * Pairs this header's title with a same-named element on the page navigated *from* (e.g. a
+   * list card) so the native View Transitions API morphs one into the other instead of just
+   * cross-fading. Give it a value unique to the specific record, e.g. `'group-title-' + group.id`.
+   */
+  readonly transitionName = input<string | undefined>();
   /** Optional explicit route to navigate back to; falls back to browser history. */
   readonly backRoute = input<string | undefined>();
 

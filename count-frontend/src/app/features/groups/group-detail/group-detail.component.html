@@ -11,30 +11,34 @@
 } @else {
   @if (groupStore.group(); as group) {
     <div class="se-page group-detail">
-      <app-page-header [title]="group.name" [subtitle]="subtitle()" backRoute="/groups">
+      <app-page-header
+        [title]="group.name"
+        [subtitle]="subtitle()"
+        [transitionName]="'group-title-' + group.id"
+        backRoute="/groups"
+      >
         <button actions mat-stroked-button type="button" (click)="shareInvite()">
           <mat-icon>share</mat-icon>
           Inviter
         </button>
       </app-page-header>
 
-      <nav mat-tab-nav-bar matTabNavBar class="mb-4 border-b border-black/[0.08]" [tabPanel]="tabPanel">
+      <nav class="se-group-tabs mb-6 flex gap-1 overflow-x-auto rounded-full bg-[var(--se-color-neutral-bg)] p-1">
         @for (tab of tabs; track tab.path) {
           <a
-            mat-tab-link
             [routerLink]="tab.path"
             routerLinkActive
             #rla="routerLinkActive"
-            [active]="rla.isActive"
+            class="se-pop flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold no-underline transition-colors"
+            [class]="rla.isActive ? 'text-white shadow-md' : 'text-[var(--se-ink)] hover:bg-black/5 dark:hover:bg-white/10'"
+            [style.background-image]="rla.isActive ? 'var(--se-gradient-brand)' : null"
           >
-            <mat-icon>{{ tab.icon }}</mat-icon>
+            <mat-icon class="!text-lg">{{ tab.icon }}</mat-icon>
             <span>{{ tab.label }}</span>
           </a>
         }
       </nav>
-      <mat-tab-nav-panel #tabPanel>
-        <router-outlet />
-      </mat-tab-nav-panel>
+      <router-outlet />
     </div>
   }
 }

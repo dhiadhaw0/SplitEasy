@@ -1,0 +1,31 @@
+// Material's own .mat-expansion-panel styles (border-radius, box-shadow, margin) are applied by
+// its component stylesheet at a specificity plain Tailwind utility classes on the host element
+// can't reliably beat — same class of issue as elsewhere in this app. ::ng-deep, scoped to this
+// component only, is the practical way to actually override them here.
+:host ::ng-deep {
+  .se-faq-panel {
+    margin-bottom: 12px !important;
+    border-radius: var(--se-radius-lg) !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background-color: var(--se-surface) !important;
+    overflow: hidden;
+
+    &.mat-expanded {
+      border-color: transparent;
+      box-shadow: 0 12px 28px rgba(139, 92, 246, 0.12) !important;
+    }
+  }
+
+  :root[data-theme='dark'] .se-faq-panel {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .mat-expansion-panel-header {
+    padding: 0 20px !important;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0 20px 18px !important;
+  }
+}

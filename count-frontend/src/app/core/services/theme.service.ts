@@ -7,7 +7,8 @@ const STORAGE_KEY = 'spliteasy_theme';
 /**
  * Real, app-wide dark mode: applies `data-theme` on <html> (read by both the Material dark
  * theme overrides and Tailwind's `dark:` variant in styles.scss / tailwind.config.js) and
- * persists the choice. Defaults to the OS preference on first visit.
+ * persists the choice. The app's primary identity is the light, pastel "cute" theme — it's the
+ * default on first visit; dark mode remains a full, equally supported alternative via the toggle.
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -37,10 +38,9 @@ function restoreInitialTheme(): Theme {
       return saved;
     }
   } catch {
-    // localStorage unavailable (private browsing, etc.): fall through to OS preference.
+    // localStorage unavailable (private browsing, etc.): fall through to the default below.
   }
-  const prefersDark = typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
+  return 'light';
 }
 
 function applyToDocument(theme: Theme): void {

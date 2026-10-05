@@ -2,12 +2,12 @@
   @if (loading()) {
     <app-loading-spinner label="Chargement de l'invitation…" />
   } @else if (error()) {
-    <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] !rounded-se !shadow-card">
+    <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] se-card">
       <app-empty-state icon="link_off" title="Invitation invalide" [message]="error()!" />
     </mat-card>
   } @else {
     @if (preview(); as preview) {
-      <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] !rounded-se !shadow-card">
+      <mat-card [appAnimateIn]="0" class="w-full max-w-[420px] se-card">
         <mat-card-header>
           <mat-card-title>Rejoindre {{ preview.groupName }}</mat-card-title>
           <mat-card-subtitle>Dites-nous qui vous êtes dans ce groupe</mat-card-subtitle>
@@ -47,7 +47,7 @@
               }
             </mat-radio-group>
 
-            <button mat-flat-button color="primary" type="submit" class="mt-4 h-10 w-full" [disabled]="!canSubmit()">
+            <button mat-flat-button color="primary" type="submit" class="se-pop mt-4 !h-11 w-full !rounded-full" [disabled]="!canSubmit()">
               @if (submitting()) {
                 <mat-spinner diameter="20" />
               } @else {

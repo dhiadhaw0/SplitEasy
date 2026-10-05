@@ -6,44 +6,137 @@
   </div>
 } @else {
   <div class="se-page pb-8">
-    <app-page-header
-      [title]="isEditMode() ? 'Modifier la dépense' : 'Nouvelle dépense'"
-      [backRoute]="'/groups/' + groupId() + '/expenses'"
-    />
+    <div class="mb-2 flex items-center gap-3">
+      <span
+        class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-xl text-white shadow-md"
+        [style.background-image]="isEditMode() ? 'var(--se-gradient-warm)' : 'var(--se-gradient-brand)'"
+      >
+        <mat-icon>{{ isEditMode() ? 'edit' : 'receipt_long' }}</mat-icon>
+      </span>
+      <app-page-header
+        class="mb-0 flex-1"
+        [title]="isEditMode() ? 'Modifier la dépense' : 'Nouvelle dépense'"
+        [backRoute]="'/groups/' + groupId() + '/expenses'"
+      />
+    </div>
+
+    <div class="se-card mb-4 flex items-center justify-between gap-3 !shadow-none border border-dashed border-[var(--se-teal)]/40 bg-[var(--se-mint-bg)] p-3">
+      <div class="flex min-w-0 items-center gap-3">
+        <span class="se-blob se-wiggle flex h-10 w-10 flex-shrink-0 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
+          <mat-icon>document_scanner</mat-icon>
+        </span>
+        <div class="min-w-0">
+          <p class="m-0 text-sm font-semibold text-[var(--se-ink)]">Scanner un reçu</p>
+          <p class="m-0 truncate text-xs text-[var(--se-color-neutral)]">
+            {{ scanning() ? 'Lecture en cours…' : 'Le montant, la date et le nom seront pré-remplis' }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="se-pop flex-shrink-0 !rounded-full"
+        [disabled]="scanning()"
+        (click)="receiptInput.click()"
+      >
+        @if (scanning()) {
+          <mat-spinner diameter="18" />
+        } @else {
+          <ng-container>
+            <mat-icon>photo_camera</mat-icon>
+            Scanner
+          </ng-container>
+        }
+      </button>
+      <input
+        #receiptInput
+        type="file"
+        accept="image/*"
+        capture="environment"
+        class="hidden"
+        [disabled]="scanning()"
+        (change)="onReceiptSelected($event)"
+      />
+    </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Titre</mat-label>
-        <input matInput type="text" formControlName="title" required maxlength="100" />
+        <input matInput type="text" formControlName="title" required maxlength="100" placeholder="Ex : Restaurant, essence, courses…" />
         @if (form.controls.title.invalid && form.controls.title.touched) {
           <mat-error>Le titre est obligatoire.</mat-error>
         }
       </mat-form-field>
 
       <div class="flex flex-col gap-0 sm:flex-row sm:gap-4">
-        <mat-form-field appearance="outline" class="w-full sm:flex-1">
+        <mat-form-field appearance="outline" class="w-full sm:flex-[2]">
           <mat-label>Montant</mat-label>
           <input matInput type="number" step="0.01" min="0.01" formControlName="amount" required />
-          <span matTextSuffix>{{ group()?.currency }}</span>
           @if (form.controls.amount.invalid && form.controls.amount.touched) {
             <mat-error>Le montant doit être supérieur à 0.</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full sm:flex-1">
-          <mat-label>Date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="date" required />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-label>Devise</mat-label>
+          <mat-select formControlName="currency">
+            @for (currency of currencies; track currency) {
+              <mat-option [value]="currency">{{ currency }}</mat-option>
+            }
+          </mat-select>
         </mat-form-field>
       </div>
+
+      @if (group() && form.controls.currency.value && form.controls.currency.value !== group()!.currency) {
+        <p class="-mt-2 mb-2 flex items-center gap-1.5 text-xs text-[var(--se-color-neutral)]">
+          <mat-icon class="!text-sm" inline>currency_exchange</mat-icon>
+          Converti automatiquement en {{ group()!.currency }} au taux du jour.
+        </p>
+      }
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" required />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
       <div class="flex flex-col gap-0 sm:flex-row sm:gap-4">
         <mat-form-field appearance="outline" class="w-full sm:flex-1">
           <mat-label>Catégorie</mat-label>
           <mat-select formControlName="category">
+            <!-- mat-select's closed trigger otherwise falls back to the selected option's raw
+                 textContent, which includes the <mat-icon> ligature name as literal text (e.g.
+                 "more_horiz Autre") instead of rendering it as an icon — this trigger template
+                 gives it the same colored-badge markup as the open option list. -->
+            <mat-select-trigger>
+              @if (form.controls.category.value; as selected) {
+                <span class="inline-flex items-center gap-2">
+                  <span
+                    class="flex h-6 w-6 items-center justify-center rounded-full"
+                    [style.background-color]="categoryColors[selected].bg"
+                    [style.color]="categoryColors[selected].fg"
+                  >
+                    <mat-icon class="!text-base" [style.font-size.px]="15" [style.width.px]="15" [style.height.px]="15">{{ categoryIcons[selected] }}</mat-icon>
+                  </span>
+                  {{ categoryLabels[selected] }}
+                </span>
+              }
+            </mat-select-trigger>
             @for (category of categories; track category) {
-              <mat-option [value]="category">{{ categoryLabels[category] }}</mat-option>
+              <mat-option [value]="category">
+                <span class="inline-flex items-center gap-2">
+                  <span
+                    class="flex h-6 w-6 items-center justify-center rounded-full"
+                    [style.background-color]="categoryColors[category].bg"
+                    [style.color]="categoryColors[category].fg"
+                  >
+                    <mat-icon class="!text-base" [style.font-size.px]="15" [style.width.px]="15" [style.height.px]="15">{{ categoryIcons[category] }}</mat-icon>
+                  </span>
+                  {{ categoryLabels[category] }}
+                </span>
+              </mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -60,18 +153,46 @@
 
       <div class="mb-4 mt-1">
         <label class="mb-2 block text-xs text-[var(--se-color-neutral)]">Type de répartition</label>
-        <mat-button-toggle-group formControlName="splitType" aria-label="Type de répartition" class="w-full sm:w-auto">
+        <mat-button-toggle-group formControlName="splitType" aria-label="Type de répartition" class="!rounded-full w-full sm:w-auto">
           @for (type of splitTypes; track type) {
             <mat-button-toggle [value]="type" class="flex-1 sm:flex-none">{{ splitTypeLabels[type] }}</mat-button-toggle>
           }
         </mat-button-toggle-group>
       </div>
 
-      <div class="mb-4 rounded-se bg-[var(--se-color-neutral-bg)] p-3" formArrayName="shares">
-        <label class="mb-1 block text-xs text-[var(--se-color-neutral)]">Bénéficiaires</label>
+      <div class="se-card mb-4 flex flex-col gap-3 !shadow-none border border-black/[0.06] bg-[var(--se-surface)] p-3 dark:border-white/10">
+        <label class="flex cursor-pointer items-center justify-between gap-3">
+          <span class="flex items-center gap-2 text-sm font-medium text-[var(--se-ink)]">
+            <mat-icon class="!text-lg text-[var(--se-teal)]">event_repeat</mat-icon>
+            Dépense récurrente
+          </span>
+          <mat-slide-toggle formControlName="recurring" />
+        </label>
+        @if (form.controls.recurring.value) {
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full">
+            <mat-label>Fréquence</mat-label>
+            <mat-select formControlName="recurrenceInterval" required>
+              @for (interval of recurrenceIntervals; track interval) {
+                <mat-option [value]="interval">{{ recurrenceIntervalLabels[interval] }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </div>
+
+      <div class="se-card mb-4 !shadow-none border border-black/[0.06] bg-[var(--se-surface)] p-3 dark:border-white/10" formArrayName="shares">
+        <div class="mb-1 flex items-center justify-between">
+          <label class="block text-xs font-semibold uppercase tracking-wide text-[var(--se-color-neutral)]">Bénéficiaires</label>
+          <span class="text-xs text-[var(--se-color-neutral)]">{{ includedShareInputs().length }} sélectionné{{ includedShareInputs().length > 1 ? 's' : '' }}</span>
+        </div>
 
         @for (row of sharesArray.controls; track row; let i = $index) {
-          <div [appAnimateIn]="i" class="flex items-center gap-3 py-1.5" [formGroupName]="i">
+          <div
+            [appAnimateIn]="i"
+            class="flex items-center gap-3 rounded-xl px-1 py-1.5 transition-colors"
+            [class]="row.controls.included.value ? 'hover:bg-black/[0.03] dark:hover:bg-white/[0.04]' : 'opacity-50'"
+            [formGroupName]="i"
+          >
             <mat-checkbox formControlName="included" />
             <app-participant-avatar [name]="shareNameFor(row.controls.participantId.value)" [size]="28" />
             <span class="min-w-0 flex-1 truncate">{{ shareNameFor(row.controls.participantId.value) }}</span>
@@ -87,7 +208,7 @@
 
             @if (row.controls.included.value) {
               <app-money-display
-                class="min-w-[70px] flex-shrink-0 text-right"
+                class="min-w-[70px] flex-shrink-0 text-right font-semibold text-[var(--se-teal)]"
                 [amount]="previewAmountFor(row.controls.participantId.value)"
                 [currency]="group()?.currency ?? 'EUR'"
               />
@@ -99,22 +220,28 @@
           <p class="m-0 mt-1 text-sm text-[var(--se-color-negative)]">Il faut inclure au moins un bénéficiaire.</p>
         }
         @if (form.controls.splitType.value === 'AMOUNTS' && atLeastOneIncluded()) {
-          <p class="m-0 mt-1 text-sm" [class]="remainingAmount() !== 0 ? 'text-[var(--se-color-negative)]' : 'text-[var(--se-color-neutral)]'">
+          <p class="m-0 mt-2 rounded-lg px-2 py-1 text-sm" [class]="remainingAmount() !== 0 ? 'bg-[var(--se-color-negative-bg)] text-[var(--se-color-negative)]' : 'bg-[var(--se-color-positive-bg)] text-[var(--se-color-positive)]'">
             Reste à répartir : <app-money-display [amount]="remainingAmount()" [currency]="group()?.currency ?? 'EUR'" />
           </p>
         }
         @if (form.controls.splitType.value === 'PERCENTAGES' && atLeastOneIncluded()) {
-          <p class="m-0 mt-1 text-sm" [class]="remainingPercentage() !== 0 ? 'text-[var(--se-color-negative)]' : 'text-[var(--se-color-neutral)]'">
+          <p class="m-0 mt-2 rounded-lg px-2 py-1 text-sm" [class]="remainingPercentage() !== 0 ? 'bg-[var(--se-color-negative-bg)] text-[var(--se-color-negative)]' : 'bg-[var(--se-color-positive-bg)] text-[var(--se-color-positive)]'">
             Reste : {{ remainingPercentage() }} %
           </p>
         }
         @if (form.controls.splitType.value === 'SHARES' && atLeastOneIncluded() && !sharesAreValid()) {
-          <p class="m-0 mt-1 text-sm text-[var(--se-color-negative)]">Chaque part doit être strictement positive.</p>
+          <p class="m-0 mt-2 rounded-lg bg-[var(--se-color-negative-bg)] px-2 py-1 text-sm text-[var(--se-color-negative)]">Chaque part doit être strictement positive.</p>
         }
       </div>
 
       <div class="flex justify-end">
-        <button mat-flat-button color="primary" type="submit" class="w-full sm:w-auto" [disabled]="!canSubmit()">
+        <button
+          mat-flat-button
+          type="submit"
+          class="se-pop !h-11 w-full !rounded-full !text-base !font-bold !text-white sm:w-auto sm:!px-8"
+          [style.background-image]="'var(--se-gradient-brand)'"
+          [disabled]="!canSubmit()"
+        >
           @if (saving()) {
             <mat-spinner diameter="20" />
           } @else {

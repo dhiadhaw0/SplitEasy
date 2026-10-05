@@ -1,7 +1,9 @@
 package com.spliteasy.entity;
 
 import com.spliteasy.entity.enums.Category;
+import com.spliteasy.entity.enums.Currency;
 import com.spliteasy.entity.enums.ExpenseType;
+import com.spliteasy.entity.enums.RecurrenceInterval;
 import com.spliteasy.entity.enums.SplitType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -61,6 +63,35 @@ public class Expense extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "split_type", nullable = false, length = 20)
     private SplitType splitType;
+
+    /** When true, {@link com.spliteasy.service.RecurringExpenseScheduler} generates a fresh copy on each due date. */
+    @Builder.Default
+    @Column(name = "is_recurring", nullable = false)
+    private boolean recurring = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recurrence_interval", length = 20)
+    private RecurrenceInterval recurrenceInterval;
+
+    /** Date the next occurrence should be generated on; null when not recurring. */
+    @Column(name = "next_occurrence_date")
+    private LocalDate nextOccurrenceDate;
+
+    /**
+     * Null unless this expense was entered in a currency other than the group's: {@link #amount}
+     * always stays in the group's currency (converted at creation time) so every balance,
+     * settlement and stats computation keeps summing a single consistent currency. These three
+     * fields are purely a record of what was actually typed and at what rate, for display.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "original_currency", length = 3)
+    private Currency originalCurrency;
+
+    @Column(name = "original_amount", precision = 12, scale = 2)
+    private BigDecimal originalAmount;
+
+    @Column(name = "exchange_rate", precision = 14, scale = 6)
+    private BigDecimal exchangeRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)

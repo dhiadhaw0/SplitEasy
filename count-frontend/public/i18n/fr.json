@@ -6,7 +6,9 @@
     "faq": "FAQ",
     "login": "Se connecter",
     "openGroups": "Ouvrir mes groupes",
-    "createFirstGroup": "Créer mon premier groupe"
+    "openGroupsShort": "Mes groupes",
+    "createFirstGroup": "Créer mon premier groupe",
+    "createFirstGroupShort": "Essayer"
   },
   "theme": {
     "toggleToLight": "Passer au mode clair",
@@ -29,7 +31,10 @@
     "cardTitle": "Qui doit quoi ?",
     "demoLine1": "Restaurant — 120,00",
     "demoLine2": "Essence — 65,50",
-    "demoLine3": "Bateau — 240,00"
+    "demoLine3": "Bateau — 240,00",
+    "totalLabel": "Total dépensé",
+    "groupLabel": "Weekend entre amis",
+    "settledBadge": "Réglé en 2 virements"
   },
   "problem": {
     "title": "Qui a payé l'essence, déjà ?",
@@ -80,7 +85,14 @@
     "currency": {
       "title": "Choisissez la devise de votre groupe.",
       "text": "Euro, dollar, dinar tunisien, livre sterling, dirham marocain ou franc suisse : chaque groupe a sa devise, affichée partout où ça compte.",
-      "imageAlt": "Une valise de voyage entourée de pièces en euros, dollars et dinars"
+      "imageAlt": "Une valise de voyage entourée de pièces en euros, dollars et dinars",
+      "conversionNote": "Quelqu'un paie dans une autre devise ? SplitEasy convertit automatiquement au taux du jour."
+    },
+    "budgetGoals": {
+      "title": "Fixez un budget, épargnez pour un objectif.",
+      "text": "Limitez vos dépenses par catégorie ou pour tout le groupe, et suivez une cagnotte commune pour votre prochain voyage, cadeau ou événement. SplitEasy vous alerte dès qu'un budget est dépassé.",
+      "budgetLabel": "Budget nourriture",
+      "goalLabel": "Cagnotte voyage"
     },
     "secondary": {
       "splitTypes": "Parts égales, montants, parts ou pourcentages",
@@ -88,7 +100,12 @@
       "inviteLink": "Rejoindre un groupe via un simple lien",
       "filters": "Dépenses filtrables par catégorie et participant",
       "editDelete": "Dépenses modifiables et supprimables",
-      "darkMode": "Mode sombre"
+      "darkMode": "Mode sombre",
+      "currencyConversion": "Conversion de devise en direct",
+      "recurring": "Dépenses récurrentes",
+      "ocrScan": "Scan de reçu automatique",
+      "pdfExport": "Export PDF et CSV",
+      "biometric": "Déverrouillage biométrique"
     }
   },
   "audiences": {
@@ -120,6 +137,36 @@
     "features": "Fonctionnalités",
     "faq": "FAQ",
     "login": "Se connecter",
+    "privacy": "Confidentialité",
+    "terms": "CGU",
     "copyright": "© 2026 SplitEasy"
+  },
+  "legal": {
+    "backHome": "Retour à l'accueil",
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "updated": "Dernière mise à jour : octobre 2026",
+      "p1Title": "Quelles données sont collectées ?",
+      "p1Text": "Votre nom, votre adresse email, et les dépenses/groupes que vous créez. C'est tout : pas de suivi publicitaire, pas de revente à des tiers.",
+      "p2Title": "Qui peut voir mes données ?",
+      "p2Text": "Seuls les membres d'un groupe peuvent voir les dépenses de ce groupe. Personne d'autre n'y a accès.",
+      "p3Title": "Stockage local",
+      "p3Text": "Votre jeton de connexion et votre préférence de thème (clair/sombre) sont stockés localement sur votre appareil, jamais partagés.",
+      "p4Title": "Suppression de vos données",
+      "p4Text": "Vous pouvez supprimer un groupe à tout moment depuis ses paramètres. Pour supprimer votre compte entièrement, contactez-nous.",
+      "contact": "Des questions ? Écrivez-nous."
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "updated": "Dernière mise à jour : octobre 2026",
+      "p1Title": "Un outil, pas une banque",
+      "p1Text": "SplitEasy calcule qui doit quoi et suggère des remboursements. L'application n'effectue aucun virement réel : c'est à vous d'effectuer les paiements, puis de les marquer comme réglés.",
+      "p2Title": "Service gratuit",
+      "p2Text": "SplitEasy est gratuit, sans limite de groupes ou de dépenses, fourni « tel quel » sans garantie de disponibilité continue.",
+      "p3Title": "Votre responsabilité",
+      "p3Text": "Vous êtes responsable de l'exactitude des montants saisis et des remboursements effectués en dehors de l'application.",
+      "p4Title": "Suppression de compte",
+      "p4Text": "Vous pouvez cesser d'utiliser SplitEasy à tout moment. Supprimer un groupe supprime définitivement ses dépenses."
+    }
   }
 }

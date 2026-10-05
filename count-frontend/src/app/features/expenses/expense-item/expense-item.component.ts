@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Expense } from '../../../core/models/expense.model';
-import { Currency } from '../../../core/models/enums';
+import { CATEGORY_COLORS, Currency } from '../../../core/models/enums';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display.component';
 import { CategoryIconPipe } from '../../../shared/pipes/category-icon.pipe';
 
@@ -21,6 +21,8 @@ export class ExpenseItemComponent {
   protected readonly isTransfer = computed(() => this.expense().type === 'TRANSFER');
 
   protected readonly transferBeneficiaryName = computed(() => this.expense().shares[0]?.participantName ?? '');
+
+  protected readonly categoryColors = computed(() => CATEGORY_COLORS[this.expense().category]);
 
   /** Positive: the current user is owed this much for this expense. Negative: they owe it. Null: not involved. */
   protected readonly myNetAmount = computed<number | null>(() => {

@@ -1,6 +1,14 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<div
+  class="se-dialog-header"
+  [style.background-image]="isWarn ? 'linear-gradient(135deg, #ff5d8f, #ef4565)' : 'var(--se-gradient-brand)'"
+>
+  <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center bg-white/20">
+    <mat-icon>{{ icon }}</mat-icon>
+  </span>
+  <h2 class="se-font-display m-0 text-lg font-extrabold">{{ data.title }}</h2>
+</div>
 
-<mat-dialog-content>
+<mat-dialog-content class="!pt-5">
   <p>{{ data.message }}</p>
 
   @if (data.numberField; as numberField) {
@@ -30,12 +38,13 @@
   }
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="cancel()">{{ data.cancelLabel ?? 'Annuler' }}</button>
+<mat-dialog-actions align="end" class="!pb-5 !pe-6">
+  <button mat-button type="button" class="se-pop !rounded-full" (click)="cancel()">{{ data.cancelLabel ?? 'Annuler' }}</button>
   <button
     mat-flat-button
     type="button"
-    [color]="data.color ?? 'primary'"
+    class="se-pop !rounded-full !px-6 !text-white"
+    [style.background-image]="isWarn ? 'linear-gradient(135deg, #ff5d8f, #ef4565)' : 'var(--se-gradient-brand)'"
     [disabled]="!canConfirm()"
     (click)="confirm()"
   >

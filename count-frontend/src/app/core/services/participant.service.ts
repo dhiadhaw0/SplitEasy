@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Participant } from '../models/participant.model';
+import { withSilentErrors } from '../interceptors/error.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class ParticipantService {
@@ -17,12 +18,14 @@ export class ParticipantService {
     return this.http.get<Participant[]>(this.baseUrl(groupId));
   }
 
-  add(groupId: number, name: string): Observable<Participant> {
-    return this.http.post<Participant>(this.baseUrl(groupId), { name });
+  /** @param silent when true, suppresses the global error snackbar (the caller shows the error itself). */
+  add(groupId: number, name: string, silent = false): Observable<Participant> {
+    return this.http.post<Participant>(this.baseUrl(groupId), { name }, silent ? withSilentErrors() : {});
   }
 
-  rename(groupId: number, participantId: number, name: string): Observable<Participant> {
-    return this.http.put<Participant>(`${this.baseUrl(groupId)}/${participantId}`, { name });
+  /** @param silent when true, suppresses the global error snackbar (the caller shows the error itself). */
+  rename(groupId: number, participantId: number, name: string, silent = false): Observable<Participant> {
+    return this.http.put<Participant>(`${this.baseUrl(groupId)}/${participantId}`, { name }, silent ? withSilentErrors() : {});
   }
 
   delete(groupId: number, participantId: number): Observable<void> {

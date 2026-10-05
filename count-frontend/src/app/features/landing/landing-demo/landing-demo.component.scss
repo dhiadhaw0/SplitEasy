@@ -1,0 +1,17 @@
+// Plain <input> fields replacing mat-form-field here (bare text/number inputs sitting directly on
+// the gradient header look cleaner than boxed Material fields on a colored background). Browsers'
+// default number-input spinner arrows don't match that bare style, so they're removed explicitly.
+.se-demo-input {
+  border: none;
+  padding: 0;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+}

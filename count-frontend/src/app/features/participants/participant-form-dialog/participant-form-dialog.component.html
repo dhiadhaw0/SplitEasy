@@ -1,10 +1,17 @@
-<h2 mat-dialog-title>{{ data.mode === 'add' ? 'Ajouter un participant' : 'Renommer le participant' }}</h2>
+<div class="se-dialog-header" [style.background-image]="'var(--se-gradient-brand)'">
+  <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center bg-white/20">
+    <mat-icon>{{ data.mode === 'add' ? 'person_add' : 'edit' }}</mat-icon>
+  </span>
+  <h2 class="se-font-display m-0 text-lg font-extrabold">
+    {{ data.mode === 'add' ? 'Ajouter un participant' : 'Renommer le participant' }}
+  </h2>
+</div>
 
 <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-  <mat-dialog-content>
+  <mat-dialog-content class="!pt-5">
     <mat-form-field appearance="outline" class="w-full min-w-[280px]">
       <mat-label>Nom</mat-label>
-      <input matInput type="text" formControlName="name" required maxlength="50" />
+      <input matInput type="text" formControlName="name" required maxlength="50" placeholder="Ex : Sara" />
       @if (form.controls.name.invalid && form.controls.name.touched) {
         <mat-error>Le nom est obligatoire.</mat-error>
       }
@@ -15,9 +22,15 @@
     }
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="cancel()">Annuler</button>
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving()">
+  <mat-dialog-actions align="end" class="!pb-5 !pe-6">
+    <button mat-button type="button" class="se-pop !rounded-full" (click)="cancel()">Annuler</button>
+    <button
+      mat-flat-button
+      type="submit"
+      class="se-pop !rounded-full !px-6 !text-white"
+      [style.background-image]="'var(--se-gradient-brand)'"
+      [disabled]="form.invalid || saving()"
+    >
       @if (saving()) {
         <mat-spinner diameter="20" />
       } @else {

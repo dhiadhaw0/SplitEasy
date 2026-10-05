@@ -99,20 +99,4 @@ export class ParticipantListComponent {
           });
       });
   }
-
-  protected claimParticipant(participant: Participant): void {
-    const group = this.groupStore.group();
-    if (!group) {
-      return;
-    }
-
-    this.participantService.claim(group.id, participant.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.notification.success(`Vous êtes maintenant lié à "${participant.name}".`);
-          this.groupStore.reload();
-        }
-      });
-  }
 }

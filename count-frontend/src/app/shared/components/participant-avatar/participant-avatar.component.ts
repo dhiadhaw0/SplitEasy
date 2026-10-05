@@ -1,7 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-// A small, fixed palette so the same name always maps to the same color.
-const PALETTE = ['#00897b', '#3949ab', '#8e24aa', '#d81b60', '#f4511e', '#6d4c41', '#00acc1', '#7cb342', '#5e35b1', '#546e7a'];
+// Fun gradient pairs so the same name always maps to the same colorful avatar.
+const GRADIENTS: [string, string][] = [
+  ['#00897b', '#4fd1c5'],
+  ['#3949ab', '#7c8cf8'],
+  ['#8e24aa', '#e879f9'],
+  ['#d81b60', '#ff8fab'],
+  ['#f4511e', '#ffb26b'],
+  ['#00838f', '#4dd0e1'],
+  ['#7cb342', '#c6e377'],
+  ['#5e35b1', '#b39ddb'],
+  ['#ef6c00', '#ffca7a'],
+  ['#c2185b', '#f48fb1']
+];
 
 @Component({
   selector: 'app-participant-avatar',
@@ -24,11 +35,12 @@ export class ParticipantAvatarComponent {
     return (words[0][0] + words[1][0]).toUpperCase();
   });
 
-  protected readonly backgroundColor = computed(() => {
+  protected readonly gradient = computed(() => {
     let hash = 0;
     for (const char of this.name()) {
       hash = char.charCodeAt(0) + ((hash << 5) - hash);
     }
-    return PALETTE[Math.abs(hash) % PALETTE.length];
+    const [from, to] = GRADIENTS[Math.abs(hash) % GRADIENTS.length];
+    return `linear-gradient(135deg, ${from}, ${to})`;
   });
 }

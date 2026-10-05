@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -16,7 +15,6 @@ import { GroupStore } from './group-store';
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
-    MatTabsModule,
     MatButtonModule,
     MatIconModule,
     LoadingSpinnerComponent,
@@ -38,6 +36,7 @@ export class GroupDetailComponent {
     { path: 'expenses', label: 'Dépenses', icon: 'receipt_long' },
     { path: 'balances', label: 'Équilibre', icon: 'balance' },
     { path: 'stats', label: 'Statistiques', icon: 'bar_chart' },
+    { path: 'budget', label: 'Budget', icon: 'savings' },
     { path: 'participants', label: 'Participants', icon: 'group' },
     { path: 'settings', label: 'Paramètres', icon: 'settings' }
   ];
@@ -57,7 +56,7 @@ export class GroupDetailComponent {
       if (!Number.isNaN(id)) {
         this.groupStore.load(id);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   protected shareInvite(): void {

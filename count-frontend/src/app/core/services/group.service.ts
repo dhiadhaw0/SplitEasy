@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { GroupDetail, GroupRequest, GroupSummary, InvitePreview, JoinGroupRequest } from '../models/group.model';
+import { withSilentErrors } from '../interceptors/error.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class GroupService {
@@ -18,12 +19,14 @@ export class GroupService {
     return this.http.get<GroupDetail>(`${this.baseUrl}/${groupId}`);
   }
 
-  create(request: GroupRequest): Observable<GroupDetail> {
-    return this.http.post<GroupDetail>(this.baseUrl, request);
+  /** @param silent when true, suppresses the global error snackbar (the caller shows the error itself). */
+  create(request: GroupRequest, silent = false): Observable<GroupDetail> {
+    return this.http.post<GroupDetail>(this.baseUrl, request, silent ? withSilentErrors() : {});
   }
 
-  update(groupId: number, request: GroupRequest): Observable<GroupDetail> {
-    return this.http.put<GroupDetail>(`${this.baseUrl}/${groupId}`, request);
+  /** @param silent when true, suppresses the global error snackbar (the caller shows the error itself). */
+  update(groupId: number, request: GroupRequest, silent = false): Observable<GroupDetail> {
+    return this.http.put<GroupDetail>(`${this.baseUrl}/${groupId}`, request, silent ? withSilentErrors() : {});
   }
 
   delete(groupId: number): Observable<void> {

@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { computeShares } from '../../../core/utils/split-calculator';
 import { computeSettlements } from '../../../core/utils/settlement-calculator';
@@ -28,13 +26,12 @@ const MAX_PARTICIPANTS = 8;
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
     TranslocoPipe,
     MoneyDisplayComponent,
     ParticipantAvatarComponent
   ],
   templateUrl: './landing-demo.component.html',
+  styleUrl: './landing-demo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingDemoComponent {

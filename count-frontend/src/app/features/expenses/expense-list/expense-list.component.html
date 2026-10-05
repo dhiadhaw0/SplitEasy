@@ -1,12 +1,22 @@
 <div class="pb-20">
   <div class="mb-4 flex gap-4">
-    <div class="flex flex-1 flex-col gap-0.5 rounded-se bg-[var(--se-color-neutral-bg)] px-4 py-2 text-xs text-[var(--se-color-neutral)]">
-      <span>Mes dépenses</span>
-      <app-money-display [amount]="myConsumed() ?? 0" [currency]="groupStore.currency()" />
+    <div class="se-card flex flex-1 items-center gap-3 !shadow-none bg-[var(--se-mint-bg)] px-4 py-3">
+      <span class="se-blob flex h-10 w-10 flex-shrink-0 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
+        <mat-icon class="!text-lg">person</mat-icon>
+      </span>
+      <div class="flex flex-col gap-0.5 text-xs text-[var(--se-color-neutral)]">
+        <span>Mes dépenses</span>
+        <app-money-display class="text-base font-semibold text-[var(--se-ink)]" [amount]="myConsumed() ?? 0" [currency]="groupStore.currency()" />
+      </div>
     </div>
-    <div class="flex flex-1 flex-col gap-0.5 rounded-se bg-[var(--se-color-neutral-bg)] px-4 py-2 text-xs text-[var(--se-color-neutral)]">
-      <span>Total du groupe</span>
-      <app-money-display [amount]="groupTotal() ?? 0" [currency]="groupStore.currency()" />
+    <div class="se-card flex flex-1 items-center gap-3 !shadow-none bg-[var(--se-color-neutral-bg)] px-4 py-3">
+      <span class="se-blob flex h-10 w-10 flex-shrink-0 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-warm)'">
+        <mat-icon class="!text-lg">groups</mat-icon>
+      </span>
+      <div class="flex flex-col gap-0.5 text-xs text-[var(--se-color-neutral)]">
+        <span>Total du groupe</span>
+        <app-money-display class="text-base font-semibold text-[var(--se-ink)]" [amount]="groupTotal() ?? 0" [currency]="groupStore.currency()" />
+      </div>
     </div>
   </div>
 
@@ -67,7 +77,14 @@
     }
   }
 
-  <button mat-fab color="primary" type="button" class="se-fab-mobile" aria-label="Ajouter une dépense" (click)="addExpense()">
+  <button
+    mat-fab
+    type="button"
+    class="se-fab-mobile !text-white"
+    [style.background-image]="'var(--se-gradient-brand)'"
+    aria-label="Ajouter une dépense"
+    (click)="addExpense()"
+  >
     <mat-icon>add</mat-icon>
   </button>
 </div>

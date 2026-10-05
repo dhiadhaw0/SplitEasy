@@ -8,12 +8,13 @@
 
 @include mat.core();
 
-// SplitEasy palette: green/teal primary, cyan tertiary accent.
+// SplitEasy palette v2: violet/pink primary ("cute & dynamic" identity, not generic bank-green),
+// warm orange tertiary accent. Green is kept only as the semantic "positive balance" color.
 $spliteasy-web-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$green-palette,
-    tertiary: mat.$cyan-palette,
+    primary: mat.$violet-palette,
+    tertiary: mat.$orange-palette,
   ),
   density: (
     scale: 0,
@@ -23,8 +24,8 @@ $spliteasy-web-theme: mat.define-theme((
 $spliteasy-web-dark-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$green-palette,
-    tertiary: mat.$cyan-palette,
+    primary: mat.$violet-palette,
+    tertiary: mat.$orange-palette,
   )
 ));
 
@@ -32,12 +33,12 @@ $spliteasy-web-dark-theme: mat.define-theme((
   @include mat.all-component-themes($spliteasy-web-theme);
 
   // ---- App-wide design tokens (used outside Material components too) ----
-  --se-color-positive: #2e7d32;
-  --se-color-positive-bg: #e8f5e9;
-  --se-color-negative: #c62828;
-  --se-color-negative-bg: #fdecea;
-  --se-color-neutral: #757575;
-  --se-color-neutral-bg: #f5f5f5;
+  --se-color-positive: #1b9c6e;
+  --se-color-positive-bg: #e3f9ee;
+  --se-color-negative: #ef4565;
+  --se-color-negative-bg: #ffe8ec;
+  --se-color-neutral: #867ca3;
+  --se-color-neutral-bg: #f1edfb;
 
   --se-space-xs: 4px;
   --se-space-sm: 8px;
@@ -46,18 +47,29 @@ $spliteasy-web-dark-theme: mat.define-theme((
   --se-space-xl: 32px;
 
   --se-content-max-width: 800px;
-  --se-radius: 12px;
+  --se-radius: 16px;
+  // Extra-rounded "blobby" corners everywhere — the cute, friendly signature shape of this app.
+  --se-radius-lg: 28px;
+  --se-gradient-brand: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  --se-gradient-warm: linear-gradient(135deg, #ffd166 0%, #ff6b81 100%);
+  --se-glow-brand: radial-gradient(circle at 85% -10%, rgba(139, 92, 246, 0.22), transparent 55%);
 
-  // ---- Landing page palette (from the illustrations) ----
-  --se-ink: #1d2a3a;
-  --se-teal: #0f5e5c;
-  --se-mint: #7fd1b9;
-  --se-mint-bg: #e6f2f1;
-  --se-sun: #f6c945;
-  --se-coral: #f2767a;
-  --se-leaf: #22a884;
+  // ---- Core palette ----
+  --se-ink: #2a2250;
+  --se-teal: #0d9488;
+  --se-mint: #2dd4bf;
+  --se-mint-bg: #e3fbf6;
+  --se-sun: #ffb703;
+  --se-sun-bg: #fff3d6;
+  --se-coral: #ff5d8f;
+  --se-coral-bg: #ffe3ec;
+  --se-violet: #8b5cf6;
+  --se-violet-bg: #f1eaff;
+  --se-leaf: #2dd4bf;
   --se-surface: #ffffff;
-  --se-muted: #6b7c8f;
+  --se-muted: #7a7196;
+  // Soft tinted page backdrop instead of sterile flat gray — part of the "cute" identity.
+  --se-bg: #fdf7ff;
   /* Light, neutral backdrop so light-background illustrations stay readable in dark mode. */
   --illustration-stage: #f2f6f5;
 
@@ -70,23 +82,35 @@ $spliteasy-web-dark-theme: mat.define-theme((
 :root[data-theme='dark'] {
   @include mat.all-component-colors($spliteasy-web-dark-theme);
 
-  --se-color-positive: #66bb6a;
-  --se-color-positive-bg: #1b3a1d;
-  --se-color-negative: #ef5350;
-  --se-color-negative-bg: #3a1f1f;
-  --se-color-neutral: #a0a8b0;
-  --se-color-neutral-bg: #22282e;
+  --se-color-positive: #4ade80;
+  --se-color-positive-bg: #15301f;
+  --se-color-negative: #ff7a9c;
+  --se-color-negative-bg: #3a1a28;
+  --se-color-neutral: #ada3cf;
+  --se-color-neutral-bg: #2a2246;
 
-  --se-ink: #eef2f5;
-  --se-surface: #171c20;
-  --se-muted: #a0a8b0;
-  --se-mint-bg: #12302d;
+  --se-ink: #f3f0ff;
+  // A soft dark plum rather than a charcoal/near-black — keeps the "cute", not "serious fintech".
+  --se-surface: #241c3f;
+  --se-muted: #ada3cf;
+  --se-teal: #2dd4bf;
+  --se-mint-bg: #163833;
+  --se-sun-bg: #3d2f12;
+  --se-coral-bg: #3d1a2a;
+  --se-violet-bg: #332761;
   --illustration-stage: #f2f6f5;
+
+  // Soft radial glow used behind hero-style sections (login, welcome, group header) — see
+  // `.se-glow` below. Kept as a token so both the color and its light-mode no-op live together.
+  --se-glow-brand: radial-gradient(circle at 85% -10%, rgba(236, 72, 153, 0.28), transparent 55%);
 
   color-scheme: dark;
 }
 
-@include mat.typography-hierarchy($spliteasy-web-theme);
+// Deliberately NOT including mat.typography-hierarchy(): it styles bare h1-h6/p tags under
+// `.mat-typography` (on <body>) with Material's M3 type scale (e.g. `.mat-typography h2` at
+// 45px/400), which silently wins over a single Tailwind size utility like `.text-lg` on
+// specificity — every heading in this app is sized explicitly via Tailwind classes instead.
 
 html, body {
   height: 100%;
@@ -95,13 +119,31 @@ html, body {
 body {
   margin: 0;
   font-family: var(--se-font-body);
-  background: #fafafa;
+  background-color: var(--se-bg);
+  background-image:
+    radial-gradient(circle at 92% -6%, rgba(255, 183, 3, 0.16), transparent 40%),
+    radial-gradient(circle at -8% 18%, rgba(139, 92, 246, 0.12), transparent 38%),
+    radial-gradient(circle at 100% 85%, rgba(255, 93, 143, 0.1), transparent 40%);
+  background-attachment: fixed;
   color: var(--se-ink);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 :root[data-theme='dark'] body {
-  background: #101418;
+  // A soft deep plum rather than near-black, with colorful glows — "cute dark", not fintech-serious.
+  background-color: #15102b;
+  background-image:
+    radial-gradient(circle at 92% -6%, rgba(236, 72, 153, 0.18), transparent 42%),
+    radial-gradient(circle at -8% 20%, rgba(139, 92, 246, 0.22), transparent 40%),
+    radial-gradient(circle at 100% 90%, rgba(45, 212, 191, 0.12), transparent 42%);
+  background-attachment: fixed;
+}
+
+// Stronger, closer glow for hero-style sections (login/register/welcome screens, group header).
+// Layer it as a background-image alongside a section's own gradient/color — it composes cleanly
+// because it's `none` in light mode (see --se-glow-brand above).
+.se-glow {
+  background-image: var(--se-glow-brand);
 }
 
 [lang='ar'] body {
@@ -136,15 +178,243 @@ h1, h2, h3, .se-font-display {
   flex: 1 1 auto;
 }
 
+// !important: Angular Material's own .mat-mdc-fab structural CSS sets position: relative at a
+// specificity/load-order this plain class can't otherwise beat, which silently broke the fixed
+// positioning entirely (button rendered inline in the document flow instead of pinned on-screen).
 .se-fab-mobile {
-  position: fixed;
+  position: fixed !important;
   inset-inline-end: var(--se-space-lg);
   bottom: var(--se-space-lg);
   z-index: 10;
+  animation: se-fab-pulse 2.4s ease-in-out infinite;
+}
+
+.se-fab-mobile:hover,
+.se-fab-mobile:focus-visible {
+  animation-play-state: paused;
+}
+
+// A slightly bouncier, friendlier standard for cards across the app.
+.se-card {
+  border-radius: var(--se-radius-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.se-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+// Every Material button (flat, stroked, icon, fab, mini-fab, menu-triggering...) gets the same
+// playful press feedback app-wide, for free — no need to remember to add a class per button.
+.mat-mdc-button-base,
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.mat-mdc-button-base:not(:disabled):hover,
+.mat-mdc-fab:not(:disabled):hover,
+.mat-mdc-mini-fab:not(:disabled):hover {
+  transform: scale(1.05);
+}
+
+.mat-mdc-button-base:not(:disabled):active,
+.mat-mdc-fab:not(:disabled):active,
+.mat-mdc-mini-fab:not(:disabled):active {
+  transform: scale(0.93);
+}
+
+// Frosted circular "chip" look for icon buttons projected into <app-page-header>'s actions
+// slot (back button already gets this treatment inline; this covers the ng-content ones).
+button[actions].mat-mdc-icon-button {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme='dark'] button[actions].mat-mdc-icon-button {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+// The group-detail tab bar (Dépenses/Équilibre/Statistiques/...) overflows its width on phone
+// screens by design (so it can scroll horizontally), but that left Chrome's bare gray scrollbar
+// track visible right under the pills — hide it, the pills themselves are the scroll affordance.
+.se-group-tabs {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+}
+
+.se-group-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.se-group-tabs > a {
+  scroll-snap-align: start;
+}
+
+// Colored snackbars for NotificationService.success/error/warning — previously these panelClass
+// hooks existed but had no matching CSS, so every toast fell back to Material's plain dark default.
+.se-snackbar-success .mdc-snackbar__surface {
+  background-color: var(--se-color-positive) !important;
+}
+
+.se-snackbar-error .mdc-snackbar__surface {
+  background-color: var(--se-color-negative) !important;
+}
+
+.se-snackbar-warning .mdc-snackbar__surface {
+  background-color: var(--se-sun) !important;
+}
+
+.se-snackbar-warning .mdc-snackbar__label,
+.se-snackbar-warning .mat-mdc-snack-bar-action {
+  color: #2a2250 !important;
+}
+
+// Rounded "cute" panel for every mat-dialog app-wide (see MAT_DIALOG_DEFAULT_OPTIONS in app.config.ts).
+.se-dialog-panel .mat-mdc-dialog-surface {
+  border-radius: var(--se-radius-lg) !important;
+  overflow: hidden;
+}
+
+.se-dialog-panel .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--se-surface);
+}
+
+// Gradient blob header used at the top of redesigned dialogs (group/participant forms, confirm).
+// Sits as a plain sibling before <mat-dialog-content> (not wrapped in mat-dialog-title), so it
+// has no ambient Material padding to fight — it owns its own padding and bleeds edge-to-edge.
+.se-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  color: white;
+}
+
+// Playful press feedback for non-Material elements (avatars, custom rows...): same idea, opt-in.
+.se-pop {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.se-pop:hover {
+  transform: scale(1.05);
+}
+
+.se-pop:active {
+  transform: scale(0.94);
+}
+
+@keyframes se-fab-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(15, 94, 92, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(15, 94, 92, 0);
+  }
+}
+
+@keyframes se-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.se-float {
+  animation: se-float 3s ease-in-out infinite;
+}
+
+// Organic "blob" silhouette for decorative background shapes (replaces plain circles/blurs
+// with something less generic-SaaS, more hand-drawn/cute).
+.se-blob {
+  border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%;
+}
+
+// A second blob variant (different corners) so two blobs stacked/overlapping don't read as
+// identical copy-pasted shapes — used on the landing page where several appear close together.
+.se-blob-alt {
+  border-radius: 58% 42% 37% 63% / 55% 60% 40% 45%;
+}
+
+// Gradient text for emphasis words inside an otherwise plain headline (landing page only).
+.se-gradient-text {
+  background-image: var(--se-gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+// Diagonal section divider: put on a section's own top/bottom edge (via ::before positioned
+// off-canvas) to break the "stack of rectangles" look between landing page sections without
+// needing an SVG asset per divider. Use se-tilt-up / se-tilt-down for the two directions.
+.se-tilt-up {
+  clip-path: polygon(0 3.5vw, 100% 0, 100% 100%, 0 100%);
+}
+
+.se-tilt-down {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3.5vw));
+}
+
+// Small rotated "sticker" look for badges/chips/icons — part of the cute, scrapbook-y identity.
+.se-sticker {
+  display: inline-flex;
+  transform: rotate(-4deg);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.se-sticker:hover {
+  transform: rotate(0deg) scale(1.08);
+}
+
+@keyframes se-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+.se-wiggle:hover {
+  animation: se-wiggle 0.4s ease-in-out;
+}
+
+@keyframes se-bounce-in {
+  0% { opacity: 0; transform: scale(0.82) translateY(10px); }
+  60% { opacity: 1; transform: scale(1.03) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.se-bounce-in {
+  animation: se-bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 * {
   box-sizing: border-box;
+}
+
+// Angular Router's withViewTransitions() wraps every navigation in the native View Transitions
+// API; this just swaps the browser's plain cross-fade for something with the app's own easing.
+::view-transition-old(root) {
+  animation: se-view-transition-out 0.18s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: se-view-transition-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes se-view-transition-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes se-view-transition-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -153,5 +423,12 @@ h1, h2, h3, .se-font-display {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  // ::before/::after coverage above doesn't reach these — the View Transitions API's own
+  // pseudo-element types — so they need an explicit override.
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
 }

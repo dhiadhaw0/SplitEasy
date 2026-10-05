@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, afterNextRender, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { animate, stagger } from 'motion';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../../core/services/auth.service';
@@ -9,7 +10,7 @@ import { ParticipantAvatarComponent } from '../../../shared/components/participa
 @Component({
   selector: 'app-landing-hero',
   standalone: true,
-  imports: [RouterLink, MatButtonModule, TranslocoPipe, ParticipantAvatarComponent],
+  imports: [RouterLink, MatButtonModule, MatIconModule, TranslocoPipe, ParticipantAvatarComponent],
   templateUrl: './landing-hero.component.html',
   styleUrl: './landing-hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

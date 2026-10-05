@@ -6,7 +6,9 @@
     "faq": "FAQ",
     "login": "Log in",
     "openGroups": "Open my groups",
-    "createFirstGroup": "Create my first group"
+    "openGroupsShort": "My groups",
+    "createFirstGroup": "Create my first group",
+    "createFirstGroupShort": "Try it"
   },
   "theme": {
     "toggleToLight": "Switch to light mode",
@@ -29,7 +31,10 @@
     "cardTitle": "Who owes what?",
     "demoLine1": "Restaurant — 120.00",
     "demoLine2": "Gas — 65.50",
-    "demoLine3": "Boat trip — 240.00"
+    "demoLine3": "Boat trip — 240.00",
+    "totalLabel": "Total spent",
+    "groupLabel": "Friends' weekend",
+    "settledBadge": "Settled in 2 transfers"
   },
   "problem": {
     "title": "Who paid for the gas, again?",
@@ -80,7 +85,14 @@
     "currency": {
       "title": "Pick your group's currency.",
       "text": "Euro, US dollar, Tunisian dinar, pound sterling, Moroccan dirham or Swiss franc: each group has its own currency, shown everywhere it matters.",
-      "imageAlt": "A travel suitcase surrounded by euro, dollar and dinar coins"
+      "imageAlt": "A travel suitcase surrounded by euro, dollar and dinar coins",
+      "conversionNote": "Someone paid in another currency? SplitEasy converts it automatically at the day's rate."
+    },
+    "budgetGoals": {
+      "title": "Set a budget, save toward a goal.",
+      "text": "Cap your spending by category or for the whole group, and track a shared pot for your next trip, gift or event. SplitEasy alerts you the moment a budget is blown.",
+      "budgetLabel": "Food budget",
+      "goalLabel": "Trip fund"
     },
     "secondary": {
       "splitTypes": "Equal shares, amounts, weighted shares or percentages",
@@ -88,7 +100,12 @@
       "inviteLink": "Join a group with a single link",
       "filters": "Expenses filterable by category and participant",
       "editDelete": "Expenses can be edited and deleted",
-      "darkMode": "Dark mode"
+      "darkMode": "Dark mode",
+      "currencyConversion": "Live currency conversion",
+      "recurring": "Recurring expenses",
+      "ocrScan": "Automatic receipt scanning",
+      "pdfExport": "PDF and CSV export",
+      "biometric": "Biometric unlock"
     }
   },
   "audiences": {
@@ -120,6 +137,36 @@
     "features": "Features",
     "faq": "FAQ",
     "login": "Log in",
+    "privacy": "Privacy",
+    "terms": "Terms",
     "copyright": "© 2026 SplitEasy"
+  },
+  "legal": {
+    "backHome": "Back to home",
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "Last updated: October 2026",
+      "p1Title": "What data is collected?",
+      "p1Text": "Your name, email address, and the expenses/groups you create. That's it: no ad tracking, no reselling to third parties.",
+      "p2Title": "Who can see my data?",
+      "p2Text": "Only the members of a group can see that group's expenses. No one else has access.",
+      "p3Title": "Local storage",
+      "p3Text": "Your login token and theme preference (light/dark) are stored locally on your device, never shared.",
+      "p4Title": "Deleting your data",
+      "p4Text": "You can delete a group at any time from its settings. To delete your account entirely, contact us.",
+      "contact": "Questions? Get in touch."
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "updated": "Last updated: October 2026",
+      "p1Title": "A tool, not a bank",
+      "p1Text": "SplitEasy works out who owes what and suggests settlements. The app never makes real transfers: you make the payments yourself, then mark them as settled.",
+      "p2Title": "Free service",
+      "p2Text": "SplitEasy is free, with no limit on groups or expenses, provided \"as is\" without a guarantee of continuous availability.",
+      "p3Title": "Your responsibility",
+      "p3Text": "You're responsible for the accuracy of amounts entered and for any repayments made outside the app.",
+      "p4Title": "Account deletion",
+      "p4Text": "You can stop using SplitEasy at any time. Deleting a group permanently deletes its expenses."
+    }
   }
 }

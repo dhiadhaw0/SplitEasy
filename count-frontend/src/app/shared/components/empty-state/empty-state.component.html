@@ -1,11 +1,16 @@
 <div [appAnimateIn]="0" class="flex flex-col items-center px-4 py-12 text-center text-[var(--se-color-neutral)]">
-  <mat-icon class="mb-4 !h-14 !w-14 !text-5xl opacity-50" aria-hidden="true">{{ icon() }}</mat-icon>
-  <h3 class="m-0 mb-1 text-base font-medium text-black/[0.87]">{{ title() }}</h3>
+  <div
+    class="se-float se-blob se-bounce-in mb-4 flex h-24 w-24 items-center justify-center shadow-lg"
+    [style.background-image]="'var(--se-gradient-brand)'"
+  >
+    <mat-icon class="se-wiggle !h-10 !w-10 !text-[40px] !text-white" aria-hidden="true">{{ icon() }}</mat-icon>
+  </div>
+  <h3 class="se-font-display m-0 mb-1 text-lg font-bold text-black/[0.87] dark:text-white/90">{{ title() }}</h3>
   @if (message()) {
     <p class="m-0 mb-4 max-w-xs">{{ message() }}</p>
   }
   @if (actionLabel()) {
-    <button mat-flat-button color="primary" type="button" (click)="action.emit()">
+    <button mat-flat-button color="primary" type="button" class="se-pop !rounded-full" (click)="action.emit()">
       {{ actionLabel() }}
     </button>
   }

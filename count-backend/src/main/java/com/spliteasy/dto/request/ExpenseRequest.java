@@ -1,6 +1,8 @@
 package com.spliteasy.dto.request;
 
 import com.spliteasy.entity.enums.Category;
+import com.spliteasy.entity.enums.Currency;
+import com.spliteasy.entity.enums.RecurrenceInterval;
 import com.spliteasy.entity.enums.SplitType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -38,6 +40,19 @@ public record ExpenseRequest(
 
         @NotEmpty(message = "Il faut au moins un bénéficiaire")
         @Valid
-        List<ShareRequest> shares
+        List<ShareRequest> shares,
+
+        /** Null/false means a one-off expense; the transfer type ignores this entirely. */
+        Boolean recurring,
+
+        /** Required when {@code recurring} is true; validated in the service layer. */
+        RecurrenceInterval recurrenceInterval,
+
+        /** Null means "the group's currency" (no conversion). Otherwise {@code amount} is read as
+         * this currency and converted to the group's currency via a live exchange rate. */
+        Currency currency
 ) {
+    public boolean isRecurring() {
+        return Boolean.TRUE.equals(recurring);
+    }
 }

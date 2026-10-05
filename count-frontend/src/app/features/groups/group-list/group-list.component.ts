@@ -14,6 +14,14 @@ import { MoneyDisplayComponent } from '../../../shared/components/money-display/
 import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 import { GroupFormDialogComponent, GroupFormDialogResult } from '../group-form-dialog/group-form-dialog.component';
 
+const ACCENT_GRADIENTS = [
+  'linear-gradient(135deg, #8b5cf6, #ec4899)',
+  'linear-gradient(135deg, #ff5d8f, #ffb703)',
+  'linear-gradient(135deg, #0d9488, #2dd4bf)',
+  'linear-gradient(135deg, #3b82f6, #67e8f9)',
+  'linear-gradient(135deg, #ffb703, #ff5d8f)'
+];
+
 @Component({
   selector: 'app-group-list',
   standalone: true,
@@ -60,6 +68,14 @@ export class GroupListComponent implements OnInit {
           this.loading.set(false);
         }
       });
+  }
+
+  protected accentFor(name: string): string {
+    let hash = 0;
+    for (const char of name) {
+      hash = char.charCodeAt(0) + ((hash << 5) - hash);
+    }
+    return ACCENT_GRADIENTS[Math.abs(hash) % ACCENT_GRADIENTS.length];
   }
 
   protected openGroup(groupId: number): void {

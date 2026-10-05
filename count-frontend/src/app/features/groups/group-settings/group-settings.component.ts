@@ -8,10 +8,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupService } from '../../../core/services/group.service';
+import { ExpenseService } from '../../../core/services/expense.service';
+import { ExportService } from '../../../core/services/export.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { CURRENCIES, Currency } from '../../../core/models/enums';
+import { GroupDetail } from '../../../core/models/group.model';
+import { Expense } from '../../../core/models/expense.model';
 import { ConfirmDialogComponent, ConfirmDialogResult } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { GroupStore } from '../group-detail/group-store';
 
@@ -25,7 +30,8 @@ import { GroupStore } from '../group-detail/group-store';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './group-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,6 +39,8 @@ import { GroupStore } from '../group-detail/group-store';
 export class GroupSettingsComponent {
   private readonly fb = inject(FormBuilder);
   private readonly groupService = inject(GroupService);
+  private readonly expenseService = inject(ExpenseService);
+  private readonly exportService = inject(ExportService);
   private readonly notification = inject(NotificationService);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
@@ -43,6 +51,7 @@ export class GroupSettingsComponent {
   protected readonly saving = signal(false);
   protected readonly regenerating = signal(false);
   protected readonly deleting = signal(false);
+  protected readonly exporting = signal<'csv' | 'pdf' | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(80)]],
@@ -125,6 +134,36 @@ export class GroupSettingsComponent {
     }
     navigator.clipboard.writeText(`${window.location.origin}/join/${group.inviteCode}`)
       .then(() => this.notification.success('Lien copié dans le presse-papiers.'));
+  }
+
+  protected exportCsv(): void {
+    this.runExport('csv', (group, expenses) => this.exportService.exportCsv(group, expenses));
+  }
+
+  protected exportPdf(): void {
+    this.runExport('pdf', (group, expenses) => this.exportService.exportPdf(group, expenses));
+  }
+
+  private runExport(kind: 'csv' | 'pdf', doExport: (group: GroupDetail, expenses: Expense[]) => Promise<void>): void {
+    const group = this.groupStore.group();
+    if (!group || this.exporting()) {
+      return;
+    }
+
+    this.exporting.set(kind);
+    this.expenseService.list(group.id, { size: 10000 })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: page => {
+          doExport(group, page.content)
+            .catch(() => this.notification.error("Impossible de générer l'export."))
+            .finally(() => this.exporting.set(null));
+        },
+        error: () => {
+          this.notification.error('Impossible de charger les dépenses à exporter.');
+          this.exporting.set(null);
+        }
+      });
   }
 
   protected deleteGroup(): void {

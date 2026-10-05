@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ParticipantService } from '../../../core/services/participant.service';
@@ -22,7 +23,7 @@ export interface ParticipantFormDialogResult {
 @Component({
   selector: 'app-participant-form-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressSpinnerModule],
   templateUrl: './participant-form-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -52,8 +53,8 @@ export class ParticipantFormDialogComponent {
 
     const call$ =
       this.data.mode === 'add'
-        ? this.participantService.add(this.data.groupId, name)
-        : this.participantService.rename(this.data.groupId, this.data.participant!.id, name);
+        ? this.participantService.add(this.data.groupId, name, true)
+        : this.participantService.rename(this.data.groupId, this.data.participant!.id, name, true);
 
     call$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: participant => this.dialogRef.close({ participant }),

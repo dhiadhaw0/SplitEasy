@@ -1,0 +1,43 @@
+<div class="relative min-h-screen overflow-hidden bg-[var(--se-bg)]">
+  <div class="se-float se-blob pointer-events-none absolute -top-20 -end-20 h-72 w-72 bg-[var(--se-violet)] opacity-15 blur-3xl" aria-hidden="true"></div>
+
+  <header class="relative z-[1] mx-auto flex max-w-[760px] items-center gap-3 px-4 pb-4 pt-8 sm:px-6">
+    <a routerLink="/" class="se-font-display se-sticker flex items-center gap-2 text-lg font-extrabold text-[var(--se-ink)] no-underline">
+      <span class="se-blob flex h-9 w-9 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
+        <mat-icon class="!text-lg">payments</mat-icon>
+      </span>
+      {{ 'app.name' | transloco }}
+    </a>
+  </header>
+
+  <main class="relative z-[1] mx-auto max-w-[760px] px-4 pb-16 sm:px-6">
+    <div class="mb-6 flex items-center gap-3">
+      <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-brand)'">
+        <mat-icon>{{ icon() }}</mat-icon>
+      </span>
+      <div>
+        <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">{{ prefix() + '.title' | transloco }}</h1>
+        <p class="m-0 text-sm text-[var(--se-muted)]">{{ prefix() + '.updated' | transloco }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      @for (n of [1, 2, 3, 4]; track n) {
+        <div class="se-card !shadow-none border border-black/[0.06] bg-[var(--se-surface)] p-5 dark:border-white/10">
+          <h2 class="se-font-display m-0 mb-2 text-base font-bold text-[var(--se-ink)]">{{ prefix() + '.p' + n + 'Title' | transloco }}</h2>
+          <p class="m-0 text-sm leading-relaxed text-[var(--se-muted)]">{{ prefix() + '.p' + n + 'Text' | transloco }}</p>
+        </div>
+      }
+    </div>
+
+    @if (type() === 'privacy') {
+      <p class="mt-6 text-center text-sm text-[var(--se-muted)]">{{ 'legal.privacy.contact' | transloco }}</p>
+    }
+
+    <div class="mt-8 text-center">
+      <a routerLink="/" class="se-pop text-sm font-semibold text-[var(--se-teal)] no-underline hover:underline">
+        ← {{ 'legal.backHome' | transloco }}
+      </a>
+    </div>
+  </main>
+</div>

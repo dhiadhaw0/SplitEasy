@@ -1,6 +1,8 @@
-<mat-toolbar color="primary" class="sticky top-0 z-[100] shadow-sm">
-  <a routerLink="/groups" class="flex items-center gap-2 text-lg font-medium text-inherit no-underline opacity-95 transition-opacity hover:opacity-100" aria-label="SplitEasy - Accueil">
-    <mat-icon aria-hidden="true">payments</mat-icon>
+<mat-toolbar class="sticky top-0 z-[100] !text-white shadow-md" [style.background-image]="'var(--se-gradient-brand)'">
+  <a routerLink="/groups" class="se-font-display se-sticker flex items-center gap-2 text-lg font-extrabold text-inherit no-underline" aria-label="SplitEasy - Accueil">
+    <span class="se-blob flex h-9 w-9 items-center justify-center bg-white/20 shadow-md">
+      <mat-icon class="se-wiggle !text-lg" aria-hidden="true">payments</mat-icon>
+    </span>
     <span>SplitEasy</span>
   </a>
 
@@ -11,7 +13,7 @@
       mat-icon-button
       type="button"
       [matMenuTriggerFor]="userMenu"
-      class="transition-transform active:scale-90"
+      class="se-pop !bg-white/15"
       [attr.aria-label]="'Menu de ' + user.displayName"
     >
       <app-participant-avatar [name]="user.displayName" [size]="32" />
@@ -21,6 +23,10 @@
         <strong>{{ user.displayName }}</strong>
         <span class="text-xs text-[var(--se-color-neutral)]">{{ user.email }}</span>
       </div>
+      <button mat-menu-item type="button" (click)="themeService.toggle()">
+        <mat-icon>{{ themeService.theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        <span>{{ themeService.theme() === 'dark' ? 'Mode clair' : 'Mode sombre' }}</span>
+      </button>
       <button mat-menu-item type="button" (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Se déconnecter</span>

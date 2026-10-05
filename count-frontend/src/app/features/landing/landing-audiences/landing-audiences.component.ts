@@ -1,8 +1,19 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  viewChild
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import type { SwiperContainer } from 'swiper/element';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display.component';
+import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 
 interface Audience {
   key: string;
@@ -15,13 +26,17 @@ interface Audience {
 @Component({
   selector: 'app-landing-audiences',
   standalone: true,
-  imports: [MatIconModule, TranslocoPipe, MoneyDisplayComponent],
+  imports: [MatIconModule, TranslocoPipe, MoneyDisplayComponent, AnimateInDirective],
   templateUrl: './landing-audiences.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // <swiper-container>/<swiper-slide> are custom elements (registered once in main.ts), not
+  // Angular components — this tells the template compiler not to expect metadata for them.
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class LandingAudiencesComponent {
+export class LandingAudiencesComponent implements AfterViewInit {
   private readonly transloco = inject(TranslocoService);
   private readonly currentLang = toSignal(this.transloco.langChanges$, { initialValue: this.transloco.getActiveLang() });
+  private readonly swiperRef = viewChild<ElementRef<SwiperContainer>>('swiperEl');
 
   protected readonly audiences: Audience[] = [
     { key: 'travel', icon: 'flight', balanceName: 'Sara', balanceAmount: 45, amounts: [320, 65, 180] },
@@ -32,17 +47,40 @@ export class LandingAudiencesComponent {
 
   protected readonly selectedKey = signal(this.audiences[0].key);
 
-  protected readonly selected = computed(
-    () => this.audiences.find(a => a.key === this.selectedKey()) ?? this.audiences[0]
-  );
-
-  protected readonly selectedItemLabels = computed(() => {
+  protected itemLabelsFor(key: string): string[] {
     this.currentLang(); // recompute whenever the active language changes
-    const example = this.transloco.translate(`audiences.${this.selectedKey()}.example`);
+    const example = this.transloco.translate(`audiences.${key}.example`);
     return example.split(',').map((label: string) => label.trim());
-  });
+  }
 
+  async ngAfterViewInit(): Promise<void> {
+    const swiperEl = this.swiperRef()?.nativeElement;
+    if (!swiperEl) {
+      return;
+    }
+
+    // Loaded here, not app-wide, so this ~30kB only ever ships to visitors who reach this one
+    // landing-page section instead of bloating every route's initial bundle.
+    const { register } = await import('swiper/element');
+    register();
+
+    Object.assign(swiperEl, {
+      slidesPerView: 1.08,
+      centeredSlides: true,
+      spaceBetween: 16,
+      grabCursor: true
+    });
+    swiperEl.initialize();
+    swiperEl.addEventListener('slidechange', () => {
+      const index = swiperEl.swiper.activeIndex;
+      this.selectedKey.set(this.audiences[index]?.key ?? this.audiences[0].key);
+    });
+  }
+
+  /** Pill tap: moves the swiper too, so both controls always agree on the current audience. */
   protected select(key: string): void {
     this.selectedKey.set(key);
+    const index = this.audiences.findIndex(a => a.key === key);
+    this.swiperRef()?.nativeElement.swiper?.slideTo(index);
   }
 }

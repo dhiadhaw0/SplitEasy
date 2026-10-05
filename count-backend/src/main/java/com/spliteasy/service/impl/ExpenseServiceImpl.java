@@ -9,6 +9,7 @@ import com.spliteasy.entity.ExpenseShare;
 import com.spliteasy.entity.Participant;
 import com.spliteasy.entity.User;
 import com.spliteasy.entity.enums.Category;
+import com.spliteasy.entity.enums.Currency;
 import com.spliteasy.entity.enums.ExpenseType;
 import com.spliteasy.exception.BadRequestException;
 import com.spliteasy.exception.ResourceNotFoundException;
@@ -17,6 +18,7 @@ import com.spliteasy.repository.ExpenseRepository;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.UserRepository;
 import com.spliteasy.repository.spec.ExpenseSpecifications;
+import com.spliteasy.service.ExchangeRateService;
 import com.spliteasy.service.ExpenseService;
 import com.spliteasy.service.GroupAccessService;
 import com.spliteasy.service.SplitCalculator;
@@ -30,6 +32,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -49,6 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final GroupAccessService groupAccessService;
     private final SplitCalculator splitCalculator;
     private final ExpenseMapper expenseMapper;
+    private final ExchangeRateService exchangeRateService;
 
     @Override
     @Transactional(readOnly = true)
@@ -80,18 +84,28 @@ public class ExpenseServiceImpl implements ExpenseService {
         User createdBy = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable."));
 
+        ConvertedAmount converted = convert(request.amount(), request.currency(), group.getCurrency());
+
         List<ExpenseShare> shares = splitCalculator.computeShares(
-                MoneyUtils.scale(request.amount()), request.splitType(), request.shares(), participantsById);
+                converted.amount(), request.splitType(), request.shares(), participantsById);
+
+        validateRecurrence(request);
 
         Expense expense = Expense.builder()
                 .title(request.title())
-                .amount(MoneyUtils.scale(request.amount()))
+                .amount(converted.amount())
+                .originalCurrency(converted.originalCurrency())
+                .originalAmount(converted.originalAmount())
+                .exchangeRate(converted.exchangeRate())
                 .date(request.date())
                 .category(request.category() != null ? request.category() : Category.OTHER)
                 .type(ExpenseType.EXPENSE)
                 .splitType(request.splitType())
                 .paidBy(paidBy)
                 .createdBy(createdBy)
+                .recurring(request.isRecurring())
+                .recurrenceInterval(request.isRecurring() ? request.recurrenceInterval() : null)
+                .nextOccurrenceDate(request.isRecurring() ? request.recurrenceInterval().nextAfter(request.date()) : null)
                 .build();
         group.addExpense(expense);
         shares.forEach(expense::addShare);
@@ -111,15 +125,25 @@ public class ExpenseServiceImpl implements ExpenseService {
         Map<Long, Participant> participantsById = loadGroupParticipantsById(groupId);
         Participant paidBy = requirePayer(participantsById, request.paidById());
 
+        ConvertedAmount converted = convert(request.amount(), request.currency(), expense.getGroup().getCurrency());
+
         List<ExpenseShare> newShares = splitCalculator.computeShares(
-                MoneyUtils.scale(request.amount()), request.splitType(), request.shares(), participantsById);
+                converted.amount(), request.splitType(), request.shares(), participantsById);
+
+        validateRecurrence(request);
 
         expense.setTitle(request.title());
-        expense.setAmount(MoneyUtils.scale(request.amount()));
+        expense.setAmount(converted.amount());
+        expense.setOriginalCurrency(converted.originalCurrency());
+        expense.setOriginalAmount(converted.originalAmount());
+        expense.setExchangeRate(converted.exchangeRate());
         expense.setDate(request.date());
         expense.setCategory(request.category() != null ? request.category() : Category.OTHER);
         expense.setSplitType(request.splitType());
         expense.setPaidBy(paidBy);
+        expense.setRecurring(request.isRecurring());
+        expense.setRecurrenceInterval(request.isRecurring() ? request.recurrenceInterval() : null);
+        expense.setNextOccurrenceDate(request.isRecurring() ? request.recurrenceInterval().nextAfter(request.date()) : null);
 
         expense.clearShares();
         newShares.forEach(expense::addShare);
@@ -144,11 +168,33 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .collect(Collectors.toMap(Participant::getId, Function.identity()));
     }
 
+    private void validateRecurrence(ExpenseRequest request) {
+        if (request.isRecurring() && request.recurrenceInterval() == null) {
+            throw new BadRequestException("La fréquence de répétition est obligatoire pour une dépense récurrente.");
+        }
+    }
+
     private Participant requirePayer(Map<Long, Participant> participantsById, Long paidById) {
         Participant paidBy = participantsById.get(paidById);
         if (paidBy == null) {
             throw new BadRequestException("Le payeur n'appartient pas au groupe de la dépense.");
         }
         return paidBy;
+    }
+
+    /** {@code amount}, already scaled to 2 decimals and expressed in the group's currency. The other
+     * three fields are null unless a conversion actually happened (request currency != group currency). */
+    private record ConvertedAmount(BigDecimal amount, Currency originalCurrency, BigDecimal originalAmount, BigDecimal exchangeRate) {
+    }
+
+    private ConvertedAmount convert(BigDecimal requestAmount, Currency requestCurrency, Currency groupCurrency) {
+        BigDecimal scaledRequestAmount = MoneyUtils.scale(requestAmount);
+        if (requestCurrency == null || requestCurrency == groupCurrency) {
+            return new ConvertedAmount(scaledRequestAmount, null, null, null);
+        }
+
+        BigDecimal rate = exchangeRateService.getRate(requestCurrency, groupCurrency);
+        BigDecimal converted = MoneyUtils.scale(scaledRequestAmount.multiply(rate));
+        return new ConvertedAmount(converted, requestCurrency, scaledRequestAmount, rate);
     }
 }

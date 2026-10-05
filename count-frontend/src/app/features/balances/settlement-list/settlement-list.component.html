@@ -1,21 +1,37 @@
-<div class="mt-6">
-  <h3 class="mb-2 text-base font-medium">Remboursements suggérés</h3>
+<div class="mt-8">
+  <h3 class="mb-3 text-base font-semibold text-[var(--se-ink)]">Remboursements suggérés</h3>
 
   @if (settlements().length === 0) {
     <app-empty-state icon="celebration" title="Tout le monde est quitte 🎉" message="Aucun remboursement n'est nécessaire." />
   } @else {
-    @for (settlement of settlements(); track settlement.fromParticipantId + '-' + settlement.toParticipantId; let i = $index) {
-      <div [appAnimateIn]="i" class="flex flex-col items-start justify-between gap-2 border-b border-black/[0.06] py-2 sm:flex-row sm:items-center">
-        <p class="m-0 flex flex-wrap items-center gap-1">
-          <strong>{{ settlement.fromName }}</strong> doit
-          <app-money-display [amount]="settlement.amount" [currency]="currency()" />
-          à <strong>{{ settlement.toName }}</strong>
-        </p>
-        <button mat-stroked-button type="button" (click)="markAsReimbursed(settlement)">
-          <mat-icon>check_circle</mat-icon>
-          Marquer comme remboursé
-        </button>
-      </div>
-    }
+    <div class="flex flex-col gap-3">
+      @for (settlement of settlements(); track settlement.fromParticipantId + '-' + settlement.toParticipantId; let i = $index) {
+        <div
+          [appAnimateIn]="i"
+          class="se-card flex flex-col gap-3 !shadow-none p-4 sm:flex-row sm:items-center sm:justify-between"
+          [style.background-color]="accentBg(i)"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <app-participant-avatar [name]="settlement.fromName" [size]="34" />
+            <mat-icon class="!text-lg text-[var(--se-ink)] opacity-40">arrow_forward</mat-icon>
+            <app-participant-avatar [name]="settlement.toName" [size]="34" />
+            <p class="m-0 flex flex-wrap items-center gap-1 text-sm text-[var(--se-ink)]">
+              <strong>{{ settlement.fromName }}</strong> doit
+              <app-money-display class="font-bold" [amount]="settlement.amount" [currency]="currency()" />
+              à <strong>{{ settlement.toName }}</strong>
+            </p>
+          </div>
+          <button
+            mat-flat-button
+            type="button"
+            class="se-pop !rounded-full !bg-white/70 !text-[var(--se-ink)] dark:!bg-black/30 dark:!text-white"
+            (click)="markAsReimbursed(settlement)"
+          >
+            <mat-icon>check_circle</mat-icon>
+            Marquer remboursé
+          </button>
+        </div>
+      }
+    </div>
   }
 </div>

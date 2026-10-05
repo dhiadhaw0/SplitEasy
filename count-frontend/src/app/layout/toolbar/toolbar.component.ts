@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { ParticipantAvatarComponent } from '../../shared/components/participant-avatar/participant-avatar.component';
 
 @Component({
@@ -17,6 +18,7 @@ import { ParticipantAvatarComponent } from '../../shared/components/participant-
 })
 export class ToolbarComponent {
   protected readonly authService = inject(AuthService);
+  protected readonly themeService = inject(ThemeService);
 
   protected logout(): void {
     this.authService.logout();

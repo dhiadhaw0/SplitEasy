@@ -42,7 +42,8 @@ describe('ExpenseService', () => {
   it('create() posts to /groups/:id/expenses', () => {
     const request = {
       title: 'Restaurant', amount: 50, date: '2026-01-01', category: 'FOOD' as const,
-      paidById: 1, splitType: 'EQUAL' as const, shares: [{ participantId: 1, value: null }]
+      paidById: 1, splitType: 'EQUAL' as const, shares: [{ participantId: 1, value: null }],
+      recurring: false, recurrenceInterval: null, currency: null
     };
 
     service.create(1, request).subscribe();

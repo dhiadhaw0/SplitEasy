@@ -1,7 +1,13 @@
 <div class="se-page group-list">
   <div class="mb-6 flex items-center justify-between">
-    <h1 class="m-0 text-2xl font-medium">Mes groupes</h1>
-    <button mat-flat-button color="primary" type="button" (click)="openCreateDialog()" class="hidden sm:inline-flex">
+    <h1 class="se-font-display m-0 text-2xl font-extrabold">Mes groupes <span class="se-wiggle inline-block">👥</span></h1>
+    <button
+      mat-flat-button
+      type="button"
+      (click)="openCreateDialog()"
+      class="se-pop !hidden !rounded-full !text-white sm:!inline-flex"
+      [style.background-image]="'var(--se-gradient-brand)'"
+    >
       <mat-icon>add</mat-icon>
       Nouveau groupe
     </button>
@@ -28,10 +34,18 @@
           tabindex="0"
           role="button"
           [attr.aria-label]="group.name"
-          class="cursor-pointer !rounded-se !shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:!shadow-card-hover"
+          class="se-card se-bounce-in !overflow-hidden cursor-pointer"
+          [style.animation-delay]="(i * 0.06) + 's'"
         >
+          <div class="relative h-14 w-full overflow-hidden" [style.background-image]="accentFor(group.name)">
+            <span class="se-blob pointer-events-none absolute -right-4 -top-6 h-20 w-20 bg-white/15" aria-hidden="true"></span>
+            <span class="se-blob pointer-events-none absolute -bottom-8 left-6 h-14 w-14 bg-white/10" aria-hidden="true"></span>
+          </div>
           <mat-card-header>
-            <mat-card-title>{{ group.name }}</mat-card-title>
+            <mat-card-title
+              class="se-font-display !font-bold"
+              [style.view-transition-name]="'group-title-' + group.id"
+            >{{ group.name }}</mat-card-title>
             @if (group.description) {
               <mat-card-subtitle class="truncate">{{ group.description }}</mat-card-subtitle>
             }
@@ -57,9 +71,9 @@
 
   <button
     mat-fab
-    color="primary"
     type="button"
-    class="se-fab-mobile sm:!hidden"
+    class="se-fab-mobile !text-white sm:!hidden"
+    [style.background-image]="'var(--se-gradient-brand)'"
     aria-label="Nouveau groupe"
     (click)="openCreateDialog()"
   >

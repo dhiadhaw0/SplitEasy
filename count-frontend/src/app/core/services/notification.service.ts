@@ -23,4 +23,12 @@ export class NotificationService {
       panelClass: 'se-snackbar-error'
     });
   }
+
+  warning(message: string): void {
+    this.snackBar.open(message, 'Fermer', {
+      duration: DURATION_MS,
+      verticalPosition: 'bottom',
+      panelClass: 'se-snackbar-warning'
+    });
+  }
 }

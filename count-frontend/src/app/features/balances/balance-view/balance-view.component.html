@@ -1,34 +1,39 @@
 <div class="se-page">
-  <h1 class="mb-4 text-xl font-medium">Équilibre</h1>
+  <div class="mb-4 flex items-center gap-3">
+    <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-brand)'">
+      <mat-icon>balance</mat-icon>
+    </span>
+    <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">Équilibre ⚖️</h1>
+  </div>
 
   @if (loading()) {
     <app-loading-spinner label="Chargement des soldes…" />
   } @else if (error()) {
     <app-empty-state icon="error_outline" title="Oups !" [message]="error()!" />
   } @else {
-    <div class="flex flex-col gap-2">
+    <div class="se-card mb-6 flex flex-col divide-y divide-black/[0.06] overflow-hidden !shadow-none border border-black/[0.06] bg-[var(--se-surface)] dark:divide-white/10 dark:border-white/10">
       @for (balance of balances(); track balance.participantId; let i = $index) {
         <div
           [appAnimateIn]="i"
-          class="grid grid-cols-[100px_1fr_80px] items-center gap-2 rounded-se px-2 py-1 sm:grid-cols-[140px_1fr_90px]"
-          [class.bg-gray-100]="balance.participantId === groupStore.myParticipantId()"
+          class="grid grid-cols-[100px_1fr_80px] items-center gap-2 px-4 py-3 transition-colors sm:grid-cols-[140px_1fr_90px]"
+          [class]="balance.participantId === groupStore.myParticipantId() ? 'bg-[var(--se-mint-bg)]' : ''"
         >
           <div class="flex min-w-0 items-center gap-2">
             <app-participant-avatar [name]="balance.participantName" [size]="32" />
-            <span class="truncate text-sm">{{ balance.participantName }}</span>
+            <span class="truncate text-sm font-medium">{{ balance.participantName }}</span>
           </div>
 
           <div class="flex h-2.5 items-center">
-            <div class="flex h-full flex-1 justify-end">
-              <div class="h-full rounded bg-[var(--se-color-negative)] transition-[width] duration-300" [style.width.%]="leftWidthPercent(balance)"></div>
+            <div class="flex h-full flex-1 justify-end overflow-hidden rounded-l-full bg-black/[0.04] dark:bg-white/[0.06]">
+              <div class="h-full rounded-l-full bg-[var(--se-color-negative)] transition-[width] duration-300" [style.width.%]="leftWidthPercent(balance)"></div>
             </div>
-            <div class="h-4 w-px flex-shrink-0 bg-black/20"></div>
-            <div class="flex h-full flex-1 justify-start">
-              <div class="h-full rounded bg-[var(--se-color-positive)] transition-[width] duration-300" [style.width.%]="rightWidthPercent(balance)"></div>
+            <div class="h-4 w-px flex-shrink-0 bg-black/20 dark:bg-white/20"></div>
+            <div class="flex h-full flex-1 justify-start overflow-hidden rounded-r-full bg-black/[0.04] dark:bg-white/[0.06]">
+              <div class="h-full rounded-r-full bg-[var(--se-color-positive)] transition-[width] duration-300" [style.width.%]="rightWidthPercent(balance)"></div>
             </div>
           </div>
 
-          <app-money-display class="text-right" [amount]="balance.balance" [currency]="groupStore.currency()" [colored]="true" />
+          <app-money-display class="text-right font-semibold" [amount]="balance.balance" [currency]="groupStore.currency()" [colored]="true" />
         </div>
       }
     </div>
