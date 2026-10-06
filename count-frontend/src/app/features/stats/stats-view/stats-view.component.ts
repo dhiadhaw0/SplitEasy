@@ -10,6 +10,7 @@ import { CATEGORY_LABELS } from '../../../core/models/enums';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display.component';
+import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 import { GroupStore } from '../../groups/group-detail/group-store';
 
 const CATEGORY_COLORS = ['#8b5cf6', '#ec4899', '#ffb703', '#0d9488', '#ff5d8f', '#3b82f6', '#2dd4bf', '#f97316'];
@@ -47,7 +48,7 @@ const centerTotalPlugin: Plugin<'doughnut'> = {
 @Component({
   selector: 'app-stats-view',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, BaseChartDirective, LoadingSpinnerComponent, EmptyStateComponent, MoneyDisplayComponent],
+  imports: [MatCardModule, MatIconModule, BaseChartDirective, LoadingSpinnerComponent, EmptyStateComponent, MoneyDisplayComponent, AnimateInDirective],
   templateUrl: './stats-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

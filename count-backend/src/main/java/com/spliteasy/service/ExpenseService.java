@@ -17,5 +17,5 @@ public interface ExpenseService {
     /** Replaces every share of the expense (shares are cleared, then recomputed from scratch). */
     ExpenseResponse update(Long groupId, Long expenseId, ExpenseRequest request, Long userId);
 
-    void delete(Long groupId, Long expenseId);
+    void delete(Long groupId, Long expenseId, Long userId);
 }

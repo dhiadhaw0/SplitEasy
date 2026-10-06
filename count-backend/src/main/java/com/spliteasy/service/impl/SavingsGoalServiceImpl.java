@@ -8,11 +8,15 @@ import com.spliteasy.entity.ExpenseGroup;
 import com.spliteasy.entity.Participant;
 import com.spliteasy.entity.SavingsContribution;
 import com.spliteasy.entity.SavingsGoal;
+import com.spliteasy.entity.User;
+import com.spliteasy.entity.enums.ActivityType;
 import com.spliteasy.exception.BadRequestException;
 import com.spliteasy.exception.ResourceNotFoundException;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.SavingsContributionRepository;
 import com.spliteasy.repository.SavingsGoalRepository;
+import com.spliteasy.repository.UserRepository;
+import com.spliteasy.service.ActivityService;
 import com.spliteasy.service.GroupAccessService;
 import com.spliteasy.service.SavingsGoalService;
 import com.spliteasy.util.MoneyUtils;
@@ -33,7 +37,9 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
     private final SavingsGoalRepository savingsGoalRepository;
     private final SavingsContributionRepository savingsContributionRepository;
     private final ParticipantRepository participantRepository;
+    private final UserRepository userRepository;
     private final GroupAccessService groupAccessService;
+    private final ActivityService activityService;
 
     @Override
     @Transactional(readOnly = true)
@@ -76,10 +82,13 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
     }
 
     @Override
-    public SavingsGoalResponse addContribution(Long groupId, Long goalId, SavingsContributionRequest request) {
+    public SavingsGoalResponse addContribution(Long groupId, Long goalId, SavingsContributionRequest request, Long userId) {
         SavingsGoal goal = getGoalOrThrow(groupId, goalId);
         Participant participant = participantRepository.findByIdAndGroupId(request.participantId(), groupId)
                 .orElseThrow(() -> new BadRequestException("Le participant n'appartient pas à ce groupe."));
+
+        BigDecimal currentAmountBefore = MoneyUtils.sum(goal.getContributions().stream().map(SavingsContribution::getAmount).toList());
+        boolean wasAchieved = currentAmountBefore.compareTo(goal.getTargetAmount()) >= 0;
 
         SavingsContribution contribution = SavingsContribution.builder()
                 .participant(participant)
@@ -92,7 +101,16 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         // both straight away to build the response.
         savingsContributionRepository.save(contribution);
 
-        return toResponse(goal);
+        SavingsGoalResponse response = toResponse(goal);
+
+        if (!wasAchieved && response.achieved()) {
+            User actor = userRepository.findById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable."));
+            activityService.log(goal.getGroup(), actor, ActivityType.SAVINGS_GOAL_ACHIEVED,
+                    "L'objectif « " + goal.getName() + " » a été atteint !");
+        }
+
+        return response;
     }
 
     @Override

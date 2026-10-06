@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 
 export type LegalPageType = 'privacy' | 'terms';
 
 @Component({
   selector: 'app-legal-page',
   standalone: true,
-  imports: [RouterLink, MatIconModule, TranslocoPipe],
+  imports: [RouterLink, MatIconModule, TranslocoPipe, AnimateInDirective],
   templateUrl: './legal-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -9,6 +9,7 @@ import com.spliteasy.entity.ExpenseGroup;
 import com.spliteasy.entity.ExpenseShare;
 import com.spliteasy.entity.Participant;
 import com.spliteasy.entity.User;
+import com.spliteasy.entity.enums.ActivityType;
 import com.spliteasy.entity.enums.Category;
 import com.spliteasy.entity.enums.ExpenseType;
 import com.spliteasy.entity.enums.SplitType;
@@ -18,6 +19,7 @@ import com.spliteasy.mapper.ExpenseMapper;
 import com.spliteasy.repository.ExpenseRepository;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.UserRepository;
+import com.spliteasy.service.ActivityService;
 import com.spliteasy.service.BalanceService;
 import com.spliteasy.service.GroupAccessService;
 import com.spliteasy.service.SettlementService;
@@ -42,6 +44,7 @@ public class SettlementServiceImpl implements SettlementService {
     private final UserRepository userRepository;
     private final ExpenseRepository expenseRepository;
     private final ExpenseMapper expenseMapper;
+    private final ActivityService activityService;
 
     @Override
     @Transactional(readOnly = true)
@@ -121,6 +124,11 @@ public class SettlementServiceImpl implements SettlementService {
                 .build());
 
         transfer = expenseRepository.save(transfer);
+
+        activityService.log(group, createdBy, ActivityType.SETTLEMENT_RECORDED,
+                createdBy.getDisplayName() + " a enregistré un remboursement de " + amount + " "
+                        + group.getCurrency() + " de " + from.getName() + " à " + to.getName());
+
         return expenseMapper.toResponse(transfer);
     }
 

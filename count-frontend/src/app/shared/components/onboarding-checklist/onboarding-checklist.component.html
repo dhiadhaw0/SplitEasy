@@ -1,0 +1,46 @@
+@if (visible()) {
+  <div class="se-card mb-6 !shadow-none border border-black/[0.06] bg-[var(--se-surface)] p-4 dark:border-white/10">
+    <div class="mb-3 flex items-center justify-between gap-2">
+      <div>
+        <h2 class="se-font-display m-0 text-base font-bold text-[var(--se-ink)]">Pour bien démarrer</h2>
+        <p class="m-0 text-xs text-[var(--se-color-neutral)]">{{ doneCount() }}/{{ items().length }} terminé{{ doneCount() > 1 ? 's' : '' }}</p>
+      </div>
+      <button mat-icon-button type="button" aria-label="Masquer" (click)="dismiss()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="mb-3 h-1.5 overflow-hidden rounded-full bg-[var(--se-color-neutral-bg)]">
+      <div
+        class="h-full rounded-full bg-[var(--se-accent)] transition-[width] duration-300"
+        [style.width.%]="(doneCount() / items().length) * 100"
+      ></div>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      @for (item of items(); track item.label) {
+        @if (item.link && !item.done) {
+          <a
+            [routerLink]="item.link"
+            class="flex items-center gap-3 rounded-xl px-2 py-2 text-sm no-underline text-[var(--se-ink)] hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
+          >
+            <mat-icon class="!text-lg text-[var(--se-color-neutral)]">{{ item.icon }}</mat-icon>
+            <span class="flex-1">{{ item.label }}</span>
+            <mat-icon class="!text-lg text-[var(--se-color-neutral)]">chevron_right</mat-icon>
+          </a>
+        } @else {
+          <div
+            class="flex items-center gap-3 rounded-xl px-2 py-2 text-sm"
+            [class]="item.done ? 'text-[var(--se-color-neutral)]' : 'cursor-pointer text-[var(--se-ink)] hover:bg-black/[0.03] dark:hover:bg-white/[0.04]'"
+            (click)="onItemClick(item)"
+          >
+            <mat-icon class="!text-lg" [class]="item.done ? 'text-[var(--se-color-positive)]' : 'text-[var(--se-color-neutral)]'">
+              {{ item.done ? 'check_circle' : item.icon }}
+            </mat-icon>
+            <span class="flex-1" [class.line-through]="item.done">{{ item.label }}</span>
+          </div>
+        }
+      }
+    </div>
+  </div>
+}

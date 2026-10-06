@@ -12,14 +12,15 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display.component';
 import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
+import { OnboardingChecklistComponent } from '../../../shared/components/onboarding-checklist/onboarding-checklist.component';
 import { GroupFormDialogComponent, GroupFormDialogResult } from '../group-form-dialog/group-form-dialog.component';
 
 const ACCENT_GRADIENTS = [
-  'linear-gradient(135deg, #8b5cf6, #ec4899)',
-  'linear-gradient(135deg, #ff5d8f, #ffb703)',
-  'linear-gradient(135deg, #0d9488, #2dd4bf)',
-  'linear-gradient(135deg, #3b82f6, #67e8f9)',
-  'linear-gradient(135deg, #ffb703, #ff5d8f)'
+  'linear-gradient(135deg, #2563eb, #2563eb)',
+  'linear-gradient(135deg, #0d9488, #0d9488)',
+  'linear-gradient(135deg, #4f46e5, #4f46e5)',
+  'linear-gradient(135deg, #0891b2, #0891b2)',
+  'linear-gradient(135deg, #0f766e, #0f766e)'
 ];
 
 @Component({
@@ -32,7 +33,8 @@ const ACCENT_GRADIENTS = [
     LoadingSpinnerComponent,
     EmptyStateComponent,
     MoneyDisplayComponent,
-    AnimateInDirective
+    AnimateInDirective,
+    OnboardingChecklistComponent
   ],
   templateUrl: './group-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

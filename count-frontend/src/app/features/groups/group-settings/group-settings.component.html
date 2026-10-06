@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-4">
-  <mat-card class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
+  <mat-card [appAnimateIn]="0" class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
     <mat-card-header>
       <div class="flex items-center gap-2">
-        <span class="se-blob flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-image]="'var(--se-gradient-brand)'">
+        <span class="rounded-2xl flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-image]="'var(--se-gradient-brand)'">
           <mat-icon class="!text-lg">tune</mat-icon>
         </span>
         <mat-card-title class="!m-0 !text-base !font-semibold">Informations générales</mat-card-title>
@@ -32,7 +32,7 @@
         <button
           mat-flat-button
           type="submit"
-          class="se-pop !rounded-full !text-white"
+          class="se-pop !rounded-lg !text-white"
           [style.background-image]="'var(--se-gradient-brand)'"
           [disabled]="form.invalid || saving()"
         >
@@ -42,10 +42,10 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
+  <mat-card [appAnimateIn]="1" class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
     <mat-card-header>
       <div class="flex items-center gap-2">
-        <span class="se-blob flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-image]="'var(--se-gradient-warm)'">
+        <span class="rounded-2xl flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-image]="'var(--se-gradient-warm)'">
           <mat-icon class="!text-lg">link</mat-icon>
         </span>
         <mat-card-title class="!m-0 !text-base !font-semibold">Invitation</mat-card-title>
@@ -55,14 +55,14 @@
       @if (groupStore.group(); as group) {
         <p class="mb-3 flex items-center gap-2 text-sm text-[var(--se-color-neutral)]">
           Code :
-          <strong class="rounded-lg bg-[var(--se-mint-bg)] px-2 py-1 font-mono text-base tracking-widest text-[var(--se-teal)]">{{ group.inviteCode }}</strong>
+          <strong class="rounded-lg bg-[var(--se-teal-bg)] px-2 py-1 font-mono text-base tracking-widest text-[var(--se-teal)]">{{ group.inviteCode }}</strong>
         </p>
         <div class="flex flex-wrap gap-2">
-          <button mat-stroked-button type="button" class="se-pop !rounded-full" (click)="copyInviteCode()">
+          <button mat-stroked-button type="button" class="se-pop !rounded-lg" (click)="copyInviteCode()">
             <mat-icon>content_copy</mat-icon>
             Copier le lien
           </button>
-          <button mat-stroked-button type="button" class="se-pop !rounded-full" [disabled]="regenerating()" (click)="regenerateInviteCode()">
+          <button mat-stroked-button type="button" class="se-pop !rounded-lg" [disabled]="regenerating()" (click)="regenerateInviteCode()">
             <mat-icon>autorenew</mat-icon>
             Régénérer le code
           </button>
@@ -71,10 +71,10 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
+  <mat-card [appAnimateIn]="2" class="se-card !shadow-none border border-black/[0.06] dark:border-white/10">
     <mat-card-header>
       <div class="flex items-center gap-2">
-        <span class="se-blob flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-color]="'var(--se-violet)'">
+        <span class="rounded-2xl flex h-9 w-9 items-center justify-center text-white shadow-sm" [style.background-color]="'var(--se-accent)'">
           <mat-icon class="!text-lg">file_download</mat-icon>
         </span>
         <mat-card-title class="!m-0 !text-base !font-semibold">Exporter les dépenses</mat-card-title>
@@ -85,7 +85,7 @@
         Téléchargez le relevé complet du groupe, pratique pour la comptabilité ou un remboursement.
       </p>
       <div class="flex flex-wrap gap-2">
-        <button mat-stroked-button type="button" class="se-pop !rounded-full" [disabled]="exporting() !== null" (click)="exportCsv()">
+        <button mat-stroked-button type="button" class="se-pop !rounded-lg" [disabled]="exporting() !== null" (click)="exportCsv()">
           @if (exporting() === 'csv') {
             <mat-spinner diameter="18" />
           } @else {
@@ -93,7 +93,7 @@
           }
           Exporter en CSV
         </button>
-        <button mat-stroked-button type="button" class="se-pop !rounded-full" [disabled]="exporting() !== null" (click)="exportPdf()">
+        <button mat-stroked-button type="button" class="se-pop !rounded-lg" [disabled]="exporting() !== null" (click)="exportPdf()">
           @if (exporting() === 'pdf') {
             <mat-spinner diameter="18" />
           } @else {
@@ -106,10 +106,10 @@
   </mat-card>
 
   @if (groupStore.isCreator()) {
-    <mat-card class="se-card !border !border-[var(--se-color-negative)] !shadow-none bg-[var(--se-color-negative-bg)]">
+    <mat-card [appAnimateIn]="3" class="se-card !border !border-[var(--se-color-negative)] !shadow-none bg-[var(--se-color-negative-bg)]">
       <mat-card-header>
         <div class="flex items-center gap-2">
-          <span class="se-blob flex h-9 w-9 items-center justify-center bg-[var(--se-color-negative)] text-white shadow-sm">
+          <span class="rounded-2xl flex h-9 w-9 items-center justify-center bg-[var(--se-color-negative)] text-white shadow-sm">
             <mat-icon class="!text-lg">warning</mat-icon>
           </span>
           <mat-card-title class="!m-0 !text-base !font-semibold !text-[var(--se-color-negative)]">Zone de danger</mat-card-title>
@@ -117,7 +117,7 @@
       </mat-card-header>
       <mat-card-content class="pt-2">
         <p class="text-sm">La suppression du groupe est définitive et supprime toutes ses dépenses.</p>
-        <button mat-flat-button color="warn" type="button" class="se-pop !rounded-full" [disabled]="deleting()" (click)="deleteGroup()">
+        <button mat-flat-button color="warn" type="button" class="se-pop !rounded-lg" [disabled]="deleting()" (click)="deleteGroup()">
           <mat-icon>delete_forever</mat-icon>
           Supprimer le groupe
         </button>

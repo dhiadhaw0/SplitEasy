@@ -8,6 +8,7 @@ import com.spliteasy.dto.response.InvitePreviewResponse;
 import com.spliteasy.entity.ExpenseGroup;
 import com.spliteasy.entity.Participant;
 import com.spliteasy.entity.User;
+import com.spliteasy.entity.enums.ActivityType;
 import com.spliteasy.entity.enums.ExpenseType;
 import com.spliteasy.exception.ConflictException;
 import com.spliteasy.exception.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import com.spliteasy.repository.ExpenseGroupRepository;
 import com.spliteasy.repository.ExpenseRepository;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.UserRepository;
+import com.spliteasy.service.ActivityService;
 import com.spliteasy.service.BalanceService;
 import com.spliteasy.service.GroupAccessService;
 import com.spliteasy.service.GroupService;
@@ -42,6 +44,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupAccessService groupAccessService;
     private final BalanceService balanceService;
     private final GroupMapper groupMapper;
+    private final ActivityService activityService;
 
     @Override
     @Transactional(readOnly = true)
@@ -160,6 +163,9 @@ public class GroupServiceImpl implements GroupService {
             group.addParticipant(participant);
         }
         participant = participantRepository.save(participant);
+
+        activityService.log(group, user, ActivityType.PARTICIPANT_JOINED,
+                user.getDisplayName() + " a rejoint le groupe");
 
         return groupMapper.toDetailResponse(group, participant.getId());
     }

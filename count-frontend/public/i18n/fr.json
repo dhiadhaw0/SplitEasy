@@ -42,7 +42,7 @@
     "bubble1": "Je t'ai remboursé le resto ou pas ?",
     "bubble2": "Attends, c'est qui qui a pris les courses ?",
     "bubble3": "On fait moitié-moitié ?",
-    "bubbleFinal": "J'ai tout mis sur SplitEasy 👍"
+    "bubbleFinal": "J'ai tout mis sur SplitEasy"
   },
   "demo": {
     "title": "Essayez, là, tout de suite.",
@@ -55,7 +55,7 @@
     "share": "Part de chacun",
     "balances": "Soldes",
     "settlements": "Remboursements suggérés",
-    "noSettlements": "Tout le monde est quitte 🎉",
+    "noSettlements": "Tout le monde est quitte",
     "owes": "doit",
     "to": "à",
     "cta": "Créer un vrai groupe avec ces montants",
@@ -96,7 +96,7 @@
     },
     "secondary": {
       "splitTypes": "Parts égales, montants, parts ou pourcentages",
-      "noAccount": "Participants sans compte (comme Mamie 👵)",
+      "noAccount": "Participants sans compte (comme Mamie)",
       "inviteLink": "Rejoindre un groupe via un simple lien",
       "filters": "Dépenses filtrables par catégorie et participant",
       "editDelete": "Dépenses modifiables et supprimables",

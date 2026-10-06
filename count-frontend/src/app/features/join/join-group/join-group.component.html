@@ -1,4 +1,4 @@
-<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-neutral-50 p-4">
+<div class="flex min-h-screen items-center justify-center bg-[var(--se-bg)] p-4">
   @if (loading()) {
     <app-loading-spinner label="Chargement de l'invitation…" />
   } @else if (error()) {
@@ -47,7 +47,7 @@
               }
             </mat-radio-group>
 
-            <button mat-flat-button color="primary" type="submit" class="se-pop mt-4 !h-11 w-full !rounded-full" [disabled]="!canSubmit()">
+            <button mat-flat-button color="primary" type="submit" class="se-pop mt-4 !h-11 w-full !rounded-lg" [disabled]="!canSubmit()">
               @if (submitting()) {
                 <mat-spinner diameter="20" />
               } @else {

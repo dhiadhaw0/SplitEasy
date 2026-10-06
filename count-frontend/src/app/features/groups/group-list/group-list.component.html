@@ -1,17 +1,21 @@
 <div class="se-page group-list">
   <div class="mb-6 flex items-center justify-between">
-    <h1 class="se-font-display m-0 text-2xl font-extrabold">Mes groupes <span class="se-wiggle inline-block">👥</span></h1>
+    <h1 class="se-font-display m-0 text-2xl font-extrabold">Mes groupes</h1>
     <button
       mat-flat-button
       type="button"
       (click)="openCreateDialog()"
-      class="se-pop !hidden !rounded-full !text-white sm:!inline-flex"
+      class="se-pop !hidden !rounded-lg !text-white sm:!inline-flex"
       [style.background-image]="'var(--se-gradient-brand)'"
     >
       <mat-icon>add</mat-icon>
       Nouveau groupe
     </button>
   </div>
+
+  @if (!loading() && !error()) {
+    <app-onboarding-checklist [groups]="groups()" (createGroup)="openCreateDialog()" />
+  }
 
   @if (loading()) {
     <app-loading-spinner label="Chargement de vos groupes…" />
@@ -34,12 +38,12 @@
           tabindex="0"
           role="button"
           [attr.aria-label]="group.name"
-          class="se-card se-bounce-in !overflow-hidden cursor-pointer"
+          class="se-card !overflow-hidden cursor-pointer"
           [style.animation-delay]="(i * 0.06) + 's'"
         >
           <div class="relative h-14 w-full overflow-hidden" [style.background-image]="accentFor(group.name)">
-            <span class="se-blob pointer-events-none absolute -right-4 -top-6 h-20 w-20 bg-white/15" aria-hidden="true"></span>
-            <span class="se-blob pointer-events-none absolute -bottom-8 left-6 h-14 w-14 bg-white/10" aria-hidden="true"></span>
+            <span class="rounded-2xl pointer-events-none absolute -right-4 -top-6 h-20 w-20 bg-white/15" aria-hidden="true"></span>
+            <span class="rounded-2xl pointer-events-none absolute -bottom-8 left-6 h-14 w-14 bg-white/10" aria-hidden="true"></span>
           </div>
           <mat-card-header>
             <mat-card-title

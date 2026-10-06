@@ -1,5 +1,5 @@
-<section class="se-tilt-up relative -mt-10 bg-[var(--se-coral-bg)] pt-10 sm:-mt-14 sm:pt-14">
-  <div class="mx-auto grid max-w-[1120px] gap-12 px-4 pb-20 pt-10 sm:px-6 lg:grid-cols-2 lg:items-center">
+<section class="bg-[var(--se-color-neutral-bg)] py-20">
+  <div class="mx-auto grid max-w-[1120px] gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
     <div [appAnimateIn]="0">
       <h2 class="se-font-display max-w-[18ch] text-3xl font-extrabold leading-tight text-[var(--se-ink)] sm:text-4xl">
         {{ 'problem.title' | transloco }}
@@ -9,25 +9,22 @@
       </p>
     </div>
 
-    <div class="relative flex flex-col gap-3 py-4">
-      <div [appAnimateIn]="1" class="se-pop max-w-[78%] -rotate-1 self-start rounded-3xl rounded-ss-md bg-[var(--se-surface)] px-5 py-3 text-sm font-medium text-[var(--se-ink)] shadow-[0_8px_20px_rgba(29,42,58,0.08)]">
+    <div class="flex flex-col gap-3 py-4">
+      <div [appAnimateIn]="1" class="max-w-[78%] self-start rounded-2xl rounded-ss-md bg-[var(--se-surface)] px-5 py-3 text-sm font-medium text-[var(--se-ink)] shadow-sm">
         {{ 'problem.bubble1' | transloco }}
       </div>
-      <div [appAnimateIn]="2" class="se-pop max-w-[78%] rotate-1 self-start rounded-3xl rounded-ss-md bg-[var(--se-surface)] px-5 py-3 text-sm font-medium text-[var(--se-ink)] shadow-[0_8px_20px_rgba(29,42,58,0.08)]">
+      <div [appAnimateIn]="2" class="max-w-[78%] self-start rounded-2xl rounded-ss-md bg-[var(--se-surface)] px-5 py-3 text-sm font-medium text-[var(--se-ink)] shadow-sm">
         {{ 'problem.bubble2' | transloco }}
       </div>
-      <div [appAnimateIn]="3" class="se-pop max-w-[78%] -rotate-1 self-end rounded-3xl rounded-ee-md bg-[var(--se-violet-bg)] px-5 py-3 text-end text-sm font-medium text-[var(--se-ink)] shadow-[0_8px_20px_rgba(29,42,58,0.08)]">
+      <div [appAnimateIn]="3" class="max-w-[78%] self-end rounded-2xl rounded-ee-md bg-[var(--se-accent-bg)] px-5 py-3 text-end text-sm font-medium text-[var(--se-ink)] shadow-sm">
         {{ 'problem.bubble3' | transloco }}
       </div>
       <div
         [appAnimateIn]="4"
-        class="se-pop se-bounce-in flex max-w-[78%] items-center gap-2 self-end rounded-3xl rounded-ee-md px-5 py-3 text-end text-sm font-bold text-white shadow-[0_12px_28px_rgba(139,92,246,0.3)]"
-        [style.background-image]="'var(--se-gradient-brand)'"
+        class="flex max-w-[78%] items-center gap-2 self-end rounded-2xl rounded-ee-md bg-[var(--se-accent)] px-5 py-3 text-end text-sm font-semibold text-white shadow-sm"
       >
         {{ 'problem.bubbleFinal' | transloco }}
       </div>
-
-      <span class="se-sticker se-float pointer-events-none absolute -top-6 end-2 text-4xl [animation-delay:-1s]" aria-hidden="true">🤔</span>
     </div>
   </div>
 </section>

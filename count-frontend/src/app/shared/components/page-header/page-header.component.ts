@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, inject, input, output } from '@angu
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AnimateInDirective } from '../../directives/animate-in.directive';
 
 @Component({
   selector: 'app-page-header',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, AnimateInDirective],
   templateUrl: './page-header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

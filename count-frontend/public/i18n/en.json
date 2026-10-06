@@ -42,7 +42,7 @@
     "bubble1": "Did I pay you back for dinner or not?",
     "bubble2": "Wait, who bought the groceries again?",
     "bubble3": "Should we just split it evenly?",
-    "bubbleFinal": "I put it all on SplitEasy 👍"
+    "bubbleFinal": "I put it all on SplitEasy"
   },
   "demo": {
     "title": "Try it, right now.",
@@ -55,7 +55,7 @@
     "share": "Each person's share",
     "balances": "Balances",
     "settlements": "Suggested settlements",
-    "noSettlements": "Everyone is settled up 🎉",
+    "noSettlements": "Everyone is settled up",
     "owes": "owes",
     "to": "to",
     "cta": "Create a real group with these amounts",
@@ -96,7 +96,7 @@
     },
     "secondary": {
       "splitTypes": "Equal shares, amounts, weighted shares or percentages",
-      "noAccount": "Participants without an account (like Grandma 👵)",
+      "noAccount": "Participants without an account (like Grandma)",
       "inviteLink": "Join a group with a single link",
       "filters": "Expenses filterable by category and participant",
       "editDelete": "Expenses can be edited and deleted",

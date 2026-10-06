@@ -8,7 +8,7 @@
   <div class="se-page pb-8">
     <div class="mb-2 flex items-center gap-3">
       <span
-        class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-xl text-white shadow-md"
+        class="rounded-2xl flex h-11 w-11 flex-shrink-0 items-center justify-center text-xl text-white shadow-md"
         [style.background-image]="isEditMode() ? 'var(--se-gradient-warm)' : 'var(--se-gradient-brand)'"
       >
         <mat-icon>{{ isEditMode() ? 'edit' : 'receipt_long' }}</mat-icon>
@@ -20,9 +20,9 @@
       />
     </div>
 
-    <div class="se-card mb-4 flex items-center justify-between gap-3 !shadow-none border border-dashed border-[var(--se-teal)]/40 bg-[var(--se-mint-bg)] p-3">
+    <div class="se-card mb-4 flex items-center justify-between gap-3 !shadow-none border border-dashed border-[var(--se-teal)]/40 bg-[var(--se-teal-bg)] p-3">
       <div class="flex min-w-0 items-center gap-3">
-        <span class="se-blob se-wiggle flex h-10 w-10 flex-shrink-0 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
+        <span class="rounded-2xl flex h-10 w-10 flex-shrink-0 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
           <mat-icon>document_scanner</mat-icon>
         </span>
         <div class="min-w-0">
@@ -36,7 +36,7 @@
       <button
         mat-stroked-button
         type="button"
-        class="se-pop flex-shrink-0 !rounded-full"
+        class="se-pop flex-shrink-0 !rounded-lg"
         [disabled]="scanning()"
         (click)="receiptInput.click()"
       >
@@ -153,7 +153,7 @@
 
       <div class="mb-4 mt-1">
         <label class="mb-2 block text-xs text-[var(--se-color-neutral)]">Type de répartition</label>
-        <mat-button-toggle-group formControlName="splitType" aria-label="Type de répartition" class="!rounded-full w-full sm:w-auto">
+        <mat-button-toggle-group formControlName="splitType" aria-label="Type de répartition" class="!rounded-lg w-full sm:w-auto">
           @for (type of splitTypes; track type) {
             <mat-button-toggle [value]="type" class="flex-1 sm:flex-none">{{ splitTypeLabels[type] }}</mat-button-toggle>
           }
@@ -238,7 +238,7 @@
         <button
           mat-flat-button
           type="submit"
-          class="se-pop !h-11 w-full !rounded-full !text-base !font-bold !text-white sm:w-auto sm:!px-8"
+          class="se-pop !h-11 w-full !rounded-lg !text-base !font-bold !text-white sm:w-auto sm:!px-8"
           [style.background-image]="'var(--se-gradient-brand)'"
           [disabled]="!canSubmit()"
         >

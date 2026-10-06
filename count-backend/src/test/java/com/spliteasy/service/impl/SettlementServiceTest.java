@@ -6,6 +6,7 @@ import com.spliteasy.mapper.ExpenseMapper;
 import com.spliteasy.repository.ExpenseRepository;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.UserRepository;
+import com.spliteasy.service.ActivityService;
 import com.spliteasy.service.BalanceService;
 import com.spliteasy.service.GroupAccessService;
 import org.junit.jupiter.api.Test;
@@ -34,10 +35,13 @@ class SettlementServiceTest {
     private ExpenseRepository expenseRepository;
     @Mock
     private ExpenseMapper expenseMapper;
+    @Mock
+    private ActivityService activityService;
 
     private SettlementServiceImpl newService() {
         return new SettlementServiceImpl(
-                balanceService, groupAccessService, participantRepository, userRepository, expenseRepository, expenseMapper);
+                balanceService, groupAccessService, participantRepository, userRepository, expenseRepository, expenseMapper,
+                activityService);
     }
 
     @Test

@@ -1,10 +1,10 @@
 <footer class="relative overflow-hidden bg-[var(--se-ink)] px-4 pb-8 pt-14 text-white/70 sm:px-6">
-  <div class="se-blob pointer-events-none absolute -end-20 -top-20 h-64 w-64 bg-[var(--se-violet)] opacity-20 blur-3xl" aria-hidden="true"></div>
+  <div class="rounded-2xl pointer-events-none absolute -end-20 -top-20 h-64 w-64 bg-[var(--se-accent)] opacity-20 blur-3xl" aria-hidden="true"></div>
 
   <div class="relative z-[1] mx-auto flex max-w-[1120px] flex-col gap-10 sm:flex-row sm:justify-between">
     <div class="max-w-[32ch]">
-      <a routerLink="/" class="se-font-display se-sticker flex items-center gap-2 text-lg font-extrabold text-white no-underline">
-        <span class="se-blob flex h-9 w-9 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
+      <a routerLink="/" class="se-font-display flex items-center gap-2 text-lg font-extrabold text-white no-underline">
+        <span class="rounded-2xl flex h-9 w-9 items-center justify-center text-white" [style.background-image]="'var(--se-gradient-brand)'">
           <mat-icon class="!text-lg">payments</mat-icon>
         </span>
         {{ 'app.name' | transloco }}

@@ -21,6 +21,9 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>, JpaSpec
 
     boolean existsByGroupId(Long groupId);
 
+    /** For the "getting started" checklist: has this user ever added an expense (any group)? */
+    boolean existsByCreatedById(Long userId);
+
     @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e WHERE e.group.id = :groupId AND e.type = :type")
     BigDecimal sumAmountByGroupIdAndType(@Param("groupId") Long groupId, @Param("type") ExpenseType type);
 

@@ -1,13 +1,7 @@
-<div class="relative flex min-h-screen flex-col overflow-hidden bg-[var(--se-mint-bg)]">
-  <div class="se-float se-blob pointer-events-none absolute -top-16 -end-16 h-64 w-64 bg-[var(--se-sun)] opacity-30 blur-3xl" aria-hidden="true"></div>
-  <div class="se-float se-blob pointer-events-none absolute bottom-0 -start-16 h-72 w-72 bg-[var(--se-violet)] opacity-25 blur-3xl [animation-delay:-1.5s]" aria-hidden="true"></div>
-
-  <div [appAnimateIn]="0" class="relative z-[1] flex min-h-[34vh] flex-1 flex-col items-center justify-center gap-4 px-6 pb-14 pt-14 text-center">
-    <span
-      class="se-blob se-bounce-in flex h-16 w-16 items-center justify-center text-white shadow-[0_16px_40px_rgba(139,92,246,0.35)]"
-      [style.background-image]="'var(--se-gradient-brand)'"
-    >
-      <span class="se-wiggle text-3xl">👋</span>
+<div class="flex min-h-screen flex-col bg-[var(--se-bg)]">
+  <div [appAnimateIn]="0" class="flex min-h-[30vh] flex-1 flex-col items-center justify-center gap-4 px-6 pb-12 pt-14 text-center">
+    <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--se-accent)] text-white">
+      <mat-icon class="!h-7 !w-7 !text-[28px]">payments</mat-icon>
     </span>
     <div class="max-w-[280px]">
       <h1 class="se-font-display text-2xl font-extrabold text-[var(--se-ink)]">Content de vous revoir</h1>
@@ -15,7 +9,7 @@
     </div>
   </div>
 
-  <div [appAnimateIn]="1" class="relative z-[1] -mt-8 rounded-t-[32px] bg-[var(--se-surface)] px-6 pb-10 pt-8 shadow-[0_-12px_40px_rgba(15,25,35,0.12)]">
+  <div [appAnimateIn]="1" class="mx-auto w-full max-w-[420px] rounded-t-2xl border-t border-[var(--se-color-neutral-bg)] bg-[var(--se-surface)] px-6 pb-10 pt-8 sm:rounded-2xl sm:border">
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="mx-auto w-full max-w-[400px]">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Email</mat-label>
@@ -62,7 +56,7 @@
         mat-flat-button
         color="primary"
         type="submit"
-        class="se-pop !h-12 w-full !rounded-full !text-base !font-bold"
+        class="se-pop !h-12 w-full !rounded-lg !text-base !font-semibold"
         [disabled]="form.invalid || loading()"
       >
         @if (loading()) {
@@ -76,7 +70,7 @@
         <button
           mat-stroked-button
           type="button"
-          class="se-pop mt-3 !h-12 w-full !rounded-full !border-2 !border-[var(--se-teal)] !text-base !font-bold !text-[var(--se-teal)]"
+          class="se-pop mt-3 !h-12 w-full !rounded-lg !border !border-[var(--se-teal)] !text-base !font-semibold !text-[var(--se-teal)]"
           [disabled]="loading()"
           (click)="unlockWithBiometrics()"
         >

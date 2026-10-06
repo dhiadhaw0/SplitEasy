@@ -13,7 +13,7 @@ import { ParticipantAvatarComponent } from '../../../shared/components/participa
 import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 import { ConfirmDialogComponent, ConfirmDialogResult } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
-const ACCENT_BACKGROUNDS = ['var(--se-mint-bg)', 'var(--se-sun-bg)', 'var(--se-coral-bg)', 'var(--se-violet-bg)'];
+const ACCENT_BACKGROUNDS = ['var(--se-teal-bg)', 'var(--se-accent-bg)', 'var(--se-color-neutral-bg)'];
 
 @Component({
   selector: 'app-settlement-list',

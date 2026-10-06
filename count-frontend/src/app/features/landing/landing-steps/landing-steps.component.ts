@@ -13,7 +13,7 @@ import { AnimateInDirective } from '../../../shared/directives/animate-in.direct
 export class LandingStepsComponent implements AfterViewInit {
   protected readonly steps = [
     { number: 1, titleKey: 'steps.step1Title', textKey: 'steps.step1Text', icon: 'group_add', bg: 'var(--se-gradient-brand)' },
-    { number: 2, titleKey: 'steps.step2Title', textKey: 'steps.step2Text', icon: 'receipt_long', bg: 'linear-gradient(135deg, #8b5cf6, #c4b5fd)' },
+    { number: 2, titleKey: 'steps.step2Title', textKey: 'steps.step2Text', icon: 'receipt_long', bg: 'linear-gradient(135deg, #4f46e5, #4f46e5)' },
     { number: 3, titleKey: 'steps.step3Title', textKey: 'steps.step3Text', icon: 'handshake', bg: 'var(--se-gradient-warm)' }
   ];
 

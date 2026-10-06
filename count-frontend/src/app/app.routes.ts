@@ -80,6 +80,10 @@ export const routes: Routes = [
             loadComponent: () => import('./features/budget/budget-view/budget-view.component').then(m => m.BudgetViewComponent)
           },
           {
+            path: 'activity',
+            loadComponent: () => import('./features/activity/activity-view/activity-view.component').then(m => m.ActivityViewComponent)
+          },
+          {
             path: 'settings',
             loadComponent: () => import('./features/groups/group-settings/group-settings.component').then(m => m.GroupSettingsComponent)
           }

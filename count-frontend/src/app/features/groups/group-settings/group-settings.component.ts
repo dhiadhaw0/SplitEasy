@@ -18,6 +18,7 @@ import { CURRENCIES, Currency } from '../../../core/models/enums';
 import { GroupDetail } from '../../../core/models/group.model';
 import { Expense } from '../../../core/models/expense.model';
 import { ConfirmDialogComponent, ConfirmDialogResult } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 import { GroupStore } from '../group-detail/group-store';
 
 @Component({
@@ -31,7 +32,8 @@ import { GroupStore } from '../group-detail/group-store';
     MatInputModule,
     MatSelectModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    AnimateInDirective
   ],
   templateUrl: './group-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

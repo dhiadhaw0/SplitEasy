@@ -37,6 +37,7 @@ export class GroupDetailComponent {
     { path: 'balances', label: 'Équilibre', icon: 'balance' },
     { path: 'stats', label: 'Statistiques', icon: 'bar_chart' },
     { path: 'budget', label: 'Budget', icon: 'savings' },
+    { path: 'activity', label: 'Activité', icon: 'history' },
     { path: 'participants', label: 'Participants', icon: 'group' },
     { path: 'settings', label: 'Paramètres', icon: 'settings' }
   ];

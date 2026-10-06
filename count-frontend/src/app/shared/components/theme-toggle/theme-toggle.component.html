@@ -1,3 +1,3 @@
-<button mat-icon-button type="button" [attr.aria-label]="label" (click)="themeService.toggle()">
+<button mat-icon-button type="button" class="se-pop" [attr.aria-label]="label" (click)="themeService.toggle()">
   <mat-icon>{{ themeService.theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
 </button>

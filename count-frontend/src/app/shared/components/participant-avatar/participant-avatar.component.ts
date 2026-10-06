@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-// Fun gradient pairs so the same name always maps to the same colorful avatar.
-const GRADIENTS: [string, string][] = [
-  ['#00897b', '#4fd1c5'],
-  ['#3949ab', '#7c8cf8'],
-  ['#8e24aa', '#e879f9'],
-  ['#d81b60', '#ff8fab'],
-  ['#f4511e', '#ffb26b'],
-  ['#00838f', '#4dd0e1'],
-  ['#7cb342', '#c6e377'],
-  ['#5e35b1', '#b39ddb'],
-  ['#ef6c00', '#ffca7a'],
-  ['#c2185b', '#f48fb1']
+// Flat colors so the same name always maps to the same avatar — enough variety to tell people
+// apart at a glance, all drawn from one cohesive, muted palette (no neon, no gradients).
+const COLORS = [
+  '#2563eb', // blue
+  '#0d9488', // teal
+  '#4f46e5', // indigo
+  '#0891b2', // cyan
+  '#7c3aed', // violet
+  '#be185d', // rose
+  '#b45309', // amber
+  '#059669' // emerald
 ];
 
 @Component({
@@ -35,12 +34,11 @@ export class ParticipantAvatarComponent {
     return (words[0][0] + words[1][0]).toUpperCase();
   });
 
-  protected readonly gradient = computed(() => {
+  protected readonly color = computed(() => {
     let hash = 0;
     for (const char of this.name()) {
       hash = char.charCodeAt(0) + ((hash << 5) - hash);
     }
-    const [from, to] = GRADIENTS[Math.abs(hash) % GRADIENTS.length];
-    return `linear-gradient(135deg, ${from}, ${to})`;
+    return COLORS[Math.abs(hash) % COLORS.length];
   });
 }

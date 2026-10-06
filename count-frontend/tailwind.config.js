@@ -8,31 +8,9 @@ module.exports = {
   corePlugins: {
     preflight: false
   },
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          50: '#e6f4f1',
-          100: '#c1e4dc',
-          300: '#5cb8a4',
-          500: '#00897b',
-          600: '#00786c',
-          700: '#00695c'
-        },
-        positive: '#2e7d32',
-        negative: '#c62828'
-      },
-      borderRadius: {
-        se: '12px'
-      },
-      boxShadow: {
-        card: '0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 8px 24px rgba(0, 0, 0, 0.12)'
-      },
-      fontFamily: {
-        sans: ['Roboto', 'Helvetica Neue', 'sans-serif']
-      }
-    }
-  },
+  // Colors, radius, shadows and fonts all come from the --se-* custom properties in styles.scss
+  // instead of Tailwind theme tokens, so every value stays in one place and themes (light/dark)
+  // for free — no `extend` needed here.
+  theme: {},
   plugins: []
 };

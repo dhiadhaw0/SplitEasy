@@ -1,8 +1,6 @@
 <section class="relative mx-auto max-w-[820px] px-4 py-20 sm:px-6">
-  <div class="se-float se-blob pointer-events-none absolute end-0 top-0 h-64 w-64 bg-[var(--se-mint)] opacity-15 blur-3xl" aria-hidden="true"></div>
-
-  <div class="relative z-[1] text-center">
-    <span class="se-sticker inline-flex items-center gap-1.5 rounded-full bg-[var(--se-mint-bg)] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--se-teal)]">
+  <div class="text-center">
+    <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--se-teal-bg)] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--se-teal)]">
       <mat-icon class="!text-sm" inline>bolt</mat-icon>
       {{ 'demo.title' | transloco }}
     </span>
@@ -62,7 +60,7 @@
         <button
           mat-stroked-button
           type="button"
-          class="se-pop mt-3 !rounded-full !border-white/40 !text-white"
+          class="se-pop mt-3 !rounded-lg !border-white/40 !text-white"
           (click)="addParticipant()"
         >
           <mat-icon>person_add</mat-icon>
@@ -120,7 +118,7 @@
             <p class="se-pop m-0 flex flex-wrap items-center gap-1 rounded-full bg-[var(--se-color-neutral-bg)] px-3 py-2 text-sm text-[var(--se-ink)]">
               <strong>{{ settlement.fromName }}</strong>
               {{ 'demo.owes' | transloco }}
-              <app-money-display class="font-bold text-[var(--se-violet)]" [amount]="settlement.amount" currency="EUR" />
+              <app-money-display class="font-bold text-[var(--se-accent)]" [amount]="settlement.amount" currency="EUR" />
               {{ 'demo.to' | transloco }}
               <strong>{{ settlement.toName }}</strong>
             </p>
@@ -131,7 +129,7 @@
       <button
         mat-flat-button
         type="button"
-        class="se-pop mt-6 !h-14 !w-full !rounded-full !text-base !font-bold !text-white"
+        class="se-pop mt-6 !h-14 !w-full !rounded-lg !text-base !font-bold !text-white"
         [style.background-image]="'var(--se-gradient-brand)'"
         (click)="createRealGroup()"
       >

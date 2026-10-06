@@ -68,7 +68,8 @@ public class ExpenseController {
     @DeleteMapping("/{expenseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long groupId, @PathVariable Long expenseId) {
-        groupAccessService.checkMember(groupId, SecurityUtils.getCurrentUserId());
-        expenseService.delete(groupId, expenseId);
+        Long userId = SecurityUtils.getCurrentUserId();
+        groupAccessService.checkMember(groupId, userId);
+        expenseService.delete(groupId, expenseId, userId);
     }
 }

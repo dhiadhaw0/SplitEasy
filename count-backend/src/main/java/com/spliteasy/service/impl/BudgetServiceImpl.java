@@ -4,10 +4,14 @@ import com.spliteasy.dto.request.BudgetRequest;
 import com.spliteasy.dto.response.BudgetResponse;
 import com.spliteasy.entity.Budget;
 import com.spliteasy.entity.ExpenseGroup;
+import com.spliteasy.entity.User;
+import com.spliteasy.entity.enums.ActivityType;
+import com.spliteasy.entity.enums.Category;
 import com.spliteasy.exception.ConflictException;
 import com.spliteasy.exception.ResourceNotFoundException;
 import com.spliteasy.repository.BudgetRepository;
 import com.spliteasy.repository.ExpenseRepository;
+import com.spliteasy.service.ActivityService;
 import com.spliteasy.service.BudgetService;
 import com.spliteasy.service.GroupAccessService;
 import com.spliteasy.util.MoneyUtils;
@@ -30,6 +34,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final BudgetRepository budgetRepository;
     private final ExpenseRepository expenseRepository;
     private final GroupAccessService groupAccessService;
+    private final ActivityService activityService;
 
     @Override
     @Transactional(readOnly = true)
@@ -90,17 +95,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     private BudgetResponse toResponse(Budget budget) {
-        LocalDate periodStart = switch (budget.getPeriod()) {
-            case MONTHLY -> LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-            case YEARLY -> LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
-        };
-        LocalDate periodEnd = switch (budget.getPeriod()) {
-            case MONTHLY -> LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-            case YEARLY -> LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
-        };
-
+        LocalDate[] period = periodFor(budget.getPeriod());
         BigDecimal spent = MoneyUtils.scale(
-                expenseRepository.sumAmountForBudget(budget.getGroup().getId(), budget.getCategory(), periodStart, periodEnd));
+                expenseRepository.sumAmountForBudget(budget.getGroup().getId(), budget.getCategory(), period[0], period[1]));
         BigDecimal limit = budget.getAmountLimit();
         BigDecimal remaining = MoneyUtils.scale(limit.subtract(spent));
         int percentage = limit.compareTo(BigDecimal.ZERO) == 0
@@ -118,5 +115,54 @@ public class BudgetServiceImpl implements BudgetService {
                 percentage,
                 exceeded,
                 budget.getCreatedAt());
+    }
+
+    @Override
+    public void checkExceededByExpense(ExpenseGroup group, Category expenseCategory, BigDecimal expenseAmount, User actor) {
+        // A category-specific budget only reacts to expenses in that exact category; the group's
+        // overall budget (category == null) reacts to every expense regardless of its category.
+        List<Budget> matching = budgetRepository.findByGroupIdOrderByCreatedAtAsc(group.getId()).stream()
+                .filter(budget -> budget.getCategory() == null || budget.getCategory() == expenseCategory)
+                .toList();
+
+        for (Budget budget : matching) {
+            LocalDate[] period = periodFor(budget.getPeriod());
+            BigDecimal spentAfter = MoneyUtils.scale(
+                    expenseRepository.sumAmountForBudget(group.getId(), budget.getCategory(), period[0], period[1]));
+            BigDecimal spentBefore = spentAfter.subtract(expenseAmount);
+
+            boolean justCrossed = spentBefore.compareTo(budget.getAmountLimit()) <= 0
+                    && spentAfter.compareTo(budget.getAmountLimit()) > 0;
+            if (justCrossed) {
+                String label = budget.getCategory() == null ? "Toutes catégories" : categoryLabel(budget.getCategory());
+                activityService.log(group, actor, ActivityType.BUDGET_EXCEEDED,
+                        actor.getDisplayName() + " a dépassé le budget « " + label + " »");
+            }
+        }
+    }
+
+    private LocalDate[] periodFor(com.spliteasy.entity.enums.BudgetPeriod period) {
+        LocalDate start = switch (period) {
+            case MONTHLY -> LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+            case YEARLY -> LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
+        };
+        LocalDate end = switch (period) {
+            case MONTHLY -> LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+            case YEARLY -> LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
+        };
+        return new LocalDate[] { start, end };
+    }
+
+    private String categoryLabel(Category category) {
+        return switch (category) {
+            case FOOD -> "Nourriture";
+            case TRANSPORT -> "Transport";
+            case ACCOMMODATION -> "Hébergement";
+            case ACTIVITIES -> "Activités";
+            case SHOPPING -> "Shopping";
+            case GROCERIES -> "Courses";
+            case BILLS -> "Factures";
+            case OTHER -> "Autre";
+        };
     }
 }

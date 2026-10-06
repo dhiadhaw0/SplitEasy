@@ -8,6 +8,7 @@ import com.spliteasy.entity.ExpenseGroup;
 import com.spliteasy.entity.ExpenseShare;
 import com.spliteasy.entity.Participant;
 import com.spliteasy.entity.User;
+import com.spliteasy.entity.enums.ActivityType;
 import com.spliteasy.entity.enums.Category;
 import com.spliteasy.entity.enums.Currency;
 import com.spliteasy.entity.enums.ExpenseType;
@@ -18,6 +19,8 @@ import com.spliteasy.repository.ExpenseRepository;
 import com.spliteasy.repository.ParticipantRepository;
 import com.spliteasy.repository.UserRepository;
 import com.spliteasy.repository.spec.ExpenseSpecifications;
+import com.spliteasy.service.ActivityService;
+import com.spliteasy.service.BudgetService;
 import com.spliteasy.service.ExchangeRateService;
 import com.spliteasy.service.ExpenseService;
 import com.spliteasy.service.GroupAccessService;
@@ -53,6 +56,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final SplitCalculator splitCalculator;
     private final ExpenseMapper expenseMapper;
     private final ExchangeRateService exchangeRateService;
+    private final ActivityService activityService;
+    private final BudgetService budgetService;
 
     @Override
     @Transactional(readOnly = true)
@@ -111,6 +116,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         shares.forEach(expense::addShare);
 
         expense = expenseRepository.save(expense);
+
+        activityService.log(group, createdBy, ActivityType.EXPENSE_CREATED,
+                createdBy.getDisplayName() + " a ajouté « " + expense.getTitle() + " » ("
+                        + expense.getAmount() + " " + group.getCurrency() + ")");
+        budgetService.checkExceededByExpense(group, expense.getCategory(), expense.getAmount(), createdBy);
+
         return expenseMapper.toResponse(expense);
     }
 
@@ -149,13 +160,27 @@ public class ExpenseServiceImpl implements ExpenseService {
         newShares.forEach(expense::addShare);
 
         expense = expenseRepository.save(expense);
+
+        User editor = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable."));
+        activityService.log(expense.getGroup(), editor, ActivityType.EXPENSE_UPDATED,
+                editor.getDisplayName() + " a modifié « " + expense.getTitle() + " »");
+
         return expenseMapper.toResponse(expense);
     }
 
     @Override
-    public void delete(Long groupId, Long expenseId) {
+    public void delete(Long groupId, Long expenseId, Long userId) {
         Expense expense = getExpenseOrThrow(groupId, expenseId);
+        User deletedBy = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable."));
+        String title = expense.getTitle();
+        ExpenseGroup group = expense.getGroup();
+
         expenseRepository.delete(expense);
+
+        activityService.log(group, deletedBy, ActivityType.EXPENSE_DELETED,
+                deletedBy.getDisplayName() + " a supprimé « " + title + " »");
     }
 
     private Expense getExpenseOrThrow(Long groupId, Long expenseId) {

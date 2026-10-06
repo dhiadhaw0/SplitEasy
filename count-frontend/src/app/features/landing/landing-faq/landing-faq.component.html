@@ -1,6 +1,6 @@
 <section id="faq" class="mx-auto max-w-[760px] px-4 py-20 sm:px-6">
   <div class="text-center">
-    <span class="se-sticker inline-flex items-center gap-1.5 rounded-full bg-[var(--se-mint-bg)] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--se-teal)]">
+    <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--se-teal-bg)] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--se-teal)]">
       <mat-icon class="!text-sm" inline>help</mat-icon>
       {{ 'faq.title' | transloco }}
     </span>
@@ -12,7 +12,7 @@
       <mat-expansion-panel [appAnimateIn]="i" class="se-faq-panel">
         <mat-expansion-panel-header class="!h-auto !py-4">
           <mat-panel-title class="items-center gap-3">
-            <span class="se-blob flex h-9 w-9 flex-shrink-0 items-center justify-center text-white" [style.background-image]="item.accent">
+            <span class="rounded-2xl flex h-9 w-9 flex-shrink-0 items-center justify-center text-white" [style.background-image]="item.accent">
               <mat-icon class="!text-lg">{{ item.icon }}</mat-icon>
             </span>
             <span class="se-font-display !font-bold !text-[var(--se-ink)]">{{ 'faq.q' + item.n | transloco }}</span>

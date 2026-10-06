@@ -4,7 +4,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import type { SwiperContainer } from 'swiper/element';
 import { AnimateInDirective } from '../../../shared/directives/animate-in.directive';
 
-const ACCENT_BACKGROUNDS = ['var(--se-mint-bg)', 'var(--se-sun-bg)', 'var(--se-coral-bg)', 'var(--se-violet-bg)'];
+const ACCENT_BACKGROUNDS = ['var(--se-teal-bg)', 'var(--se-accent-bg)', 'var(--se-color-neutral-bg)'];
 
 @Component({
   selector: 'app-landing-features',

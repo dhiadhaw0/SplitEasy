@@ -1,9 +1,9 @@
 <div class="se-page">
   <div class="mb-4 flex items-center gap-3">
-    <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-warm)'">
+    <span class="rounded-2xl flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-warm)'">
       <mat-icon>bar_chart</mat-icon>
     </span>
-    <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">Statistiques 📊</h1>
+    <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">Statistiques</h1>
   </div>
 
   @if (loading()) {
@@ -15,17 +15,17 @@
   } @else {
     @if (stats(); as stats) {
       <div class="mb-4 flex gap-4">
-        <mat-card class="se-card flex flex-1 flex-col gap-1 !shadow-none border border-black/[0.06] p-4 dark:border-white/10">
+        <mat-card [appAnimateIn]="0" class="se-card flex flex-1 flex-col gap-1 !shadow-none border border-black/[0.06] p-4 dark:border-white/10">
           <span class="text-xs font-semibold uppercase tracking-wide text-[var(--se-color-neutral)]">Total dépensé</span>
           <app-money-display class="text-2xl font-bold text-[var(--se-teal)]" [amount]="stats.totalSpent" [currency]="groupStore.currency()" />
         </mat-card>
-        <mat-card class="se-card flex flex-1 flex-col gap-1 !shadow-none border border-black/[0.06] p-4 dark:border-white/10">
+        <mat-card [appAnimateIn]="1" class="se-card flex flex-1 flex-col gap-1 !shadow-none border border-black/[0.06] p-4 dark:border-white/10">
           <span class="text-xs font-semibold uppercase tracking-wide text-[var(--se-color-neutral)]">Nombre de dépenses</span>
           <span class="text-2xl font-bold text-[var(--se-ink)]">{{ stats.expenseCount }}</span>
         </mat-card>
       </div>
 
-      <mat-card class="se-card mb-4 !shadow-none border border-black/[0.06] dark:border-white/10">
+      <mat-card [appAnimateIn]="2" class="se-card mb-4 !shadow-none border border-black/[0.06] dark:border-white/10">
         <mat-card-header>
           <mat-card-title class="!text-base !font-semibold">Par catégorie</mat-card-title>
         </mat-card-header>
@@ -34,7 +34,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="se-card mb-4 !shadow-none border border-black/[0.06] dark:border-white/10">
+      <mat-card [appAnimateIn]="3" class="se-card mb-4 !shadow-none border border-black/[0.06] dark:border-white/10">
         <mat-card-header>
           <mat-card-title class="!text-base !font-semibold">Payé / consommé par participant</mat-card-title>
         </mat-card-header>

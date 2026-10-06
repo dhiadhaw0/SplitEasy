@@ -62,8 +62,9 @@ public class SavingsGoalController {
     @ResponseStatus(HttpStatus.CREATED)
     public SavingsGoalResponse addContribution(
             @PathVariable Long groupId, @PathVariable Long goalId, @Valid @RequestBody SavingsContributionRequest request) {
-        groupAccessService.checkMember(groupId, SecurityUtils.getCurrentUserId());
-        return savingsGoalService.addContribution(groupId, goalId, request);
+        Long userId = SecurityUtils.getCurrentUserId();
+        groupAccessService.checkMember(groupId, userId);
+        return savingsGoalService.addContribution(groupId, goalId, request, userId);
     }
 
     @DeleteMapping("/{goalId}/contributions/{contributionId}")

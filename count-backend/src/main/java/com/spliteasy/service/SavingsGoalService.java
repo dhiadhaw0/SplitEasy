@@ -16,7 +16,7 @@ public interface SavingsGoalService {
 
     void delete(Long groupId, Long goalId);
 
-    SavingsGoalResponse addContribution(Long groupId, Long goalId, SavingsContributionRequest request);
+    SavingsGoalResponse addContribution(Long groupId, Long goalId, SavingsContributionRequest request, Long userId);
 
     SavingsGoalResponse deleteContribution(Long groupId, Long goalId, Long contributionId);
 }

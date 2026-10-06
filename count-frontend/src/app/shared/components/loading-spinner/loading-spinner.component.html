@@ -1,5 +1,7 @@
-<div class="flex flex-col items-center justify-center gap-2 py-12 text-[var(--se-color-neutral)]" role="status" [attr.aria-label]="label()">
-  <mat-spinner [diameter]="diameter()"></mat-spinner>
+<div [appAnimateIn]="0" class="flex flex-col items-center justify-center gap-3 py-12 text-[var(--se-color-neutral)]" role="status" [attr.aria-label]="label()">
+  <div class="se-dot-loader" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
   @if (label()) {
     <span class="text-sm">{{ label() }}</span>
   }

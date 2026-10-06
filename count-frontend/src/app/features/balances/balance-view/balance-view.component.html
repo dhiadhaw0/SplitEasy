@@ -1,9 +1,9 @@
 <div class="se-page">
   <div class="mb-4 flex items-center gap-3">
-    <span class="se-blob se-bounce-in flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-brand)'">
+    <span class="rounded-2xl flex h-11 w-11 flex-shrink-0 items-center justify-center text-white shadow-md" [style.background-image]="'var(--se-gradient-brand)'">
       <mat-icon>balance</mat-icon>
     </span>
-    <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">Équilibre ⚖️</h1>
+    <h1 class="se-font-display m-0 text-xl font-extrabold text-[var(--se-ink)] sm:text-2xl">Équilibre</h1>
   </div>
 
   @if (loading()) {
@@ -16,7 +16,7 @@
         <div
           [appAnimateIn]="i"
           class="grid grid-cols-[100px_1fr_80px] items-center gap-2 px-4 py-3 transition-colors sm:grid-cols-[140px_1fr_90px]"
-          [class]="balance.participantId === groupStore.myParticipantId() ? 'bg-[var(--se-mint-bg)]' : ''"
+          [class]="balance.participantId === groupStore.myParticipantId() ? 'bg-[var(--se-teal-bg)]' : ''"
         >
           <div class="flex min-w-0 items-center gap-2">
             <app-participant-avatar [name]="balance.participantName" [size]="32" />

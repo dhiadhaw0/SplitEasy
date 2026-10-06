@@ -1,32 +1,24 @@
-<div class="relative flex min-h-screen flex-col items-center justify-center gap-12 overflow-hidden bg-[var(--se-mint-bg)] px-6 py-10 text-center">
-  <div class="se-float se-blob pointer-events-none absolute -top-20 -end-20 h-72 w-72 bg-[var(--se-sun)] opacity-30 blur-3xl" aria-hidden="true"></div>
-  <div class="se-float se-blob pointer-events-none absolute -bottom-24 -start-16 h-64 w-64 bg-[var(--se-violet)] opacity-25 blur-3xl [animation-delay:-1.5s]" aria-hidden="true"></div>
-  <div class="se-float se-blob pointer-events-none absolute end-4 top-1/3 h-40 w-40 bg-[var(--se-coral)] opacity-20 blur-3xl [animation-delay:-0.7s]" aria-hidden="true"></div>
-
-  <div [appAnimateIn]="0" class="relative z-[1] flex flex-col items-center">
-    <span
-      class="se-blob se-bounce-in mb-6 flex h-24 w-24 items-center justify-center text-white shadow-[0_20px_50px_rgba(139,92,246,0.4)]"
-      [style.background-image]="'var(--se-gradient-brand)'"
-    >
-      <mat-icon class="se-wiggle !h-12 !w-12 !text-[48px]">payments</mat-icon>
+<div class="flex min-h-screen flex-col items-center justify-center gap-12 bg-[var(--se-bg)] px-6 py-10 text-center">
+  <div [appAnimateIn]="0" class="flex flex-col items-center">
+    <span class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--se-accent)] text-white shadow-sm">
+      <mat-icon class="!h-10 !w-10 !text-[40px]">payments</mat-icon>
     </span>
     <h1 class="se-font-display text-3xl font-extrabold text-[var(--se-ink)]">SplitEasy</h1>
     <p class="mt-2 max-w-[26ch] text-base text-[var(--se-muted)]">Les bons comptes font les bons amis.</p>
   </div>
 
-  <div [appAnimateIn]="2" class="relative z-[1] flex w-full max-w-[360px] flex-col gap-3">
+  <div [appAnimateIn]="1" class="flex w-full max-w-[360px] flex-col gap-3">
     <a
       routerLink="/register"
       mat-flat-button
-      class="se-pop !h-12 !rounded-full !text-base !font-bold !text-white"
-      [style.background-image]="'var(--se-gradient-brand)'"
+      class="!h-12 !rounded-lg !bg-[var(--se-accent)] !text-base !font-semibold !text-white"
     >
       Créer un compte
     </a>
     <a
       routerLink="/login"
       mat-stroked-button
-      class="se-pop !h-12 !rounded-full !border-2 !border-[var(--se-teal)] !text-base !font-bold !text-[var(--se-teal)]"
+      class="!h-12 !rounded-lg !border !border-[var(--se-color-neutral)] !text-base !font-semibold !text-[var(--se-ink)]"
     >
       Se connecter
     </a>

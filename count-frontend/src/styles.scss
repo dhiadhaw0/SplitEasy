@@ -8,13 +8,14 @@
 
 @include mat.core();
 
-// SplitEasy palette v2: violet/pink primary ("cute & dynamic" identity, not generic bank-green),
-// warm orange tertiary accent. Green is kept only as the semantic "positive balance" color.
+// SplitEasy palette v3: clean & minimal, cool-neutral. Blue primary, cyan/teal tertiary —
+// a restrained two-hue system instead of the earlier multi-hue "playful" palette, so the UI
+// reads as calm and legible first, with color reserved for actions and meaning (positive/negative).
 $spliteasy-web-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$violet-palette,
-    tertiary: mat.$orange-palette,
+    primary: mat.$blue-palette,
+    tertiary: mat.$cyan-palette,
   ),
   density: (
     scale: 0,
@@ -24,21 +25,21 @@ $spliteasy-web-theme: mat.define-theme((
 $spliteasy-web-dark-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$violet-palette,
-    tertiary: mat.$orange-palette,
+    primary: mat.$blue-palette,
+    tertiary: mat.$cyan-palette,
   )
 ));
 
 :root {
   @include mat.all-component-themes($spliteasy-web-theme);
 
-  // ---- App-wide design tokens (used outside Material components too) ----
-  --se-color-positive: #1b9c6e;
-  --se-color-positive-bg: #e3f9ee;
-  --se-color-negative: #ef4565;
-  --se-color-negative-bg: #ffe8ec;
-  --se-color-neutral: #867ca3;
-  --se-color-neutral-bg: #f1edfb;
+  // ---- Semantic colors (balances, alerts) ----
+  --se-color-positive: #16a34a;
+  --se-color-positive-bg: #dcfce7;
+  --se-color-negative: #dc2626;
+  --se-color-negative-bg: #fee2e2;
+  --se-color-neutral: #64748b;
+  --se-color-neutral-bg: #f1f5f9;
 
   --se-space-xs: 4px;
   --se-space-sm: 8px;
@@ -47,35 +48,29 @@ $spliteasy-web-dark-theme: mat.define-theme((
   --se-space-xl: 32px;
 
   --se-content-max-width: 800px;
-  --se-radius: 16px;
-  // Extra-rounded "blobby" corners everywhere — the cute, friendly signature shape of this app.
-  --se-radius-lg: 28px;
-  --se-gradient-brand: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-  --se-gradient-warm: linear-gradient(135deg, #ffd166 0%, #ff6b81 100%);
-  --se-glow-brand: radial-gradient(circle at 85% -10%, rgba(139, 92, 246, 0.22), transparent 55%);
+  --se-radius: 10px;
+  --se-radius-lg: 16px;
 
-  // ---- Core palette ----
-  --se-ink: #2a2250;
+  // Kept as "gradient" custom properties (two identical stops) purely so the many existing
+  // `[style.background-image]` bindings across the app keep working unchanged — they render as
+  // flat fills, matching the new minimal direction without needing per-template edits.
+  --se-gradient-brand: linear-gradient(135deg, #2563eb, #2563eb);
+  --se-gradient-warm: linear-gradient(135deg, #0d9488, #0d9488);
+
+  // ---- Core palette: one primary accent (blue) + one secondary accent (teal), both cool/neutral ----
+  --se-accent: #2563eb;
+  --se-accent-bg: #eff6ff;
   --se-teal: #0d9488;
-  --se-mint: #2dd4bf;
-  --se-mint-bg: #e3fbf6;
-  --se-sun: #ffb703;
-  --se-sun-bg: #fff3d6;
-  --se-coral: #ff5d8f;
-  --se-coral-bg: #ffe3ec;
-  --se-violet: #8b5cf6;
-  --se-violet-bg: #f1eaff;
-  --se-leaf: #2dd4bf;
+  --se-teal-bg: #f0fdfa;
+  --se-ink: #0f172a;
   --se-surface: #ffffff;
-  --se-muted: #7a7196;
-  // Soft tinted page backdrop instead of sterile flat gray — part of the "cute" identity.
-  --se-bg: #fdf7ff;
-  /* Light, neutral backdrop so light-background illustrations stay readable in dark mode. */
-  --illustration-stage: #f2f6f5;
+  --se-muted: #64748b;
+  --se-bg: #f8fafc;
+  --illustration-stage: #f1f5f9;
 
-  // ---- Fonts ----
-  --se-font-display: 'Bricolage Grotesque', system-ui, sans-serif;
-  --se-font-body: 'Nunito Sans', system-ui, sans-serif;
+  // ---- Fonts: a single neutral, highly legible family everywhere ----
+  --se-font-display: 'Inter', system-ui, sans-serif;
+  --se-font-body: 'Inter', system-ui, sans-serif;
   --se-font-body-ar: 'IBM Plex Sans Arabic', system-ui, sans-serif;
 }
 
@@ -83,26 +78,22 @@ $spliteasy-web-dark-theme: mat.define-theme((
   @include mat.all-component-colors($spliteasy-web-dark-theme);
 
   --se-color-positive: #4ade80;
-  --se-color-positive-bg: #15301f;
-  --se-color-negative: #ff7a9c;
-  --se-color-negative-bg: #3a1a28;
-  --se-color-neutral: #ada3cf;
-  --se-color-neutral-bg: #2a2246;
+  --se-color-positive-bg: #14532d;
+  --se-color-negative: #f87171;
+  --se-color-negative-bg: #450a0a;
+  --se-color-neutral: #94a3b8;
+  --se-color-neutral-bg: #1e293b;
 
-  --se-ink: #f3f0ff;
-  // A soft dark plum rather than a charcoal/near-black — keeps the "cute", not "serious fintech".
-  --se-surface: #241c3f;
-  --se-muted: #ada3cf;
+  --se-gradient-brand: linear-gradient(135deg, #3b82f6, #3b82f6);
+  --se-gradient-warm: linear-gradient(135deg, #2dd4bf, #2dd4bf);
+  --se-accent: #3b82f6;
+  --se-accent-bg: #1e3a5f;
   --se-teal: #2dd4bf;
-  --se-mint-bg: #163833;
-  --se-sun-bg: #3d2f12;
-  --se-coral-bg: #3d1a2a;
-  --se-violet-bg: #332761;
-  --illustration-stage: #f2f6f5;
-
-  // Soft radial glow used behind hero-style sections (login, welcome, group header) — see
-  // `.se-glow` below. Kept as a token so both the color and its light-mode no-op live together.
-  --se-glow-brand: radial-gradient(circle at 85% -10%, rgba(236, 72, 153, 0.28), transparent 55%);
+  --se-teal-bg: #134e4a;
+  --se-ink: #f1f5f9;
+  --se-surface: #1e293b;
+  --se-muted: #94a3b8;
+  --illustration-stage: #f1f5f9;
 
   color-scheme: dark;
 }
@@ -120,30 +111,12 @@ body {
   margin: 0;
   font-family: var(--se-font-body);
   background-color: var(--se-bg);
-  background-image:
-    radial-gradient(circle at 92% -6%, rgba(255, 183, 3, 0.16), transparent 40%),
-    radial-gradient(circle at -8% 18%, rgba(139, 92, 246, 0.12), transparent 38%),
-    radial-gradient(circle at 100% 85%, rgba(255, 93, 143, 0.1), transparent 40%);
-  background-attachment: fixed;
   color: var(--se-ink);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 :root[data-theme='dark'] body {
-  // A soft deep plum rather than near-black, with colorful glows — "cute dark", not fintech-serious.
-  background-color: #15102b;
-  background-image:
-    radial-gradient(circle at 92% -6%, rgba(236, 72, 153, 0.18), transparent 42%),
-    radial-gradient(circle at -8% 20%, rgba(139, 92, 246, 0.22), transparent 40%),
-    radial-gradient(circle at 100% 90%, rgba(45, 212, 191, 0.12), transparent 42%);
-  background-attachment: fixed;
-}
-
-// Stronger, closer glow for hero-style sections (login/register/welcome screens, group header).
-// Layer it as a background-image alongside a section's own gradient/color — it composes cleanly
-// because it's `none` in light mode (see --se-glow-brand above).
-.se-glow {
-  background-image: var(--se-glow-brand);
+  background-color: #0b1220;
 }
 
 [lang='ar'] body {
@@ -186,44 +159,40 @@ h1, h2, h3, .se-font-display {
   inset-inline-end: var(--se-space-lg);
   bottom: var(--se-space-lg);
   z-index: 10;
-  animation: se-fab-pulse 2.4s ease-in-out infinite;
 }
 
-.se-fab-mobile:hover,
-.se-fab-mobile:focus-visible {
-  animation-play-state: paused;
-}
-
-// A slightly bouncier, friendlier standard for cards across the app.
 .se-card {
   border-radius: var(--se-radius-lg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+:root[data-theme='dark'] .se-card {
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .se-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 23, 42, 0.14);
 }
 
-// Every Material button (flat, stroked, icon, fab, mini-fab, menu-triggering...) gets the same
-// playful press feedback app-wide, for free — no need to remember to add a class per button.
+:root[data-theme='dark'] .se-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+// Subtle, functional tactile feedback on every Material button — not a "flourish", just confirms
+// a press registered. Scale stays close to 1 (no spring/bounce easing).
 .mat-mdc-button-base,
 .mat-mdc-fab,
 .mat-mdc-mini-fab {
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-}
-
-.mat-mdc-button-base:not(:disabled):hover,
-.mat-mdc-fab:not(:disabled):hover,
-.mat-mdc-mini-fab:not(:disabled):hover {
-  transform: scale(1.05);
+  transition: transform 0.1s ease, opacity 0.1s ease !important;
 }
 
 .mat-mdc-button-base:not(:disabled):active,
 .mat-mdc-fab:not(:disabled):active,
 .mat-mdc-mini-fab:not(:disabled):active {
-  transform: scale(0.93);
+  transform: scale(0.97);
 }
 
 // Frosted circular "chip" look for icon buttons projected into <app-page-header>'s actions
@@ -264,15 +233,15 @@ button[actions].mat-mdc-icon-button {
 }
 
 .se-snackbar-warning .mdc-snackbar__surface {
-  background-color: var(--se-sun) !important;
+  background-color: #d97706 !important;
 }
 
 .se-snackbar-warning .mdc-snackbar__label,
 .se-snackbar-warning .mat-mdc-snack-bar-action {
-  color: #2a2250 !important;
+  color: #ffffff !important;
 }
 
-// Rounded "cute" panel for every mat-dialog app-wide (see MAT_DIALOG_DEFAULT_OPTIONS in app.config.ts).
+// Rounded panel for every mat-dialog app-wide (see MAT_DIALOG_DEFAULT_OPTIONS in app.config.ts).
 .se-dialog-panel .mat-mdc-dialog-surface {
   border-radius: var(--se-radius-lg) !important;
   overflow: hidden;
@@ -282,112 +251,71 @@ button[actions].mat-mdc-icon-button {
   --mdc-dialog-container-color: var(--se-surface);
 }
 
-// Gradient blob header used at the top of redesigned dialogs (group/participant forms, confirm).
-// Sits as a plain sibling before <mat-dialog-content> (not wrapped in mat-dialog-title), so it
-// has no ambient Material padding to fight — it owns its own padding and bleeds edge-to-edge.
+// Plain, neutral header for the top of every dialog (group/participant/budget forms, confirm) —
+// an icon on a tinted chip, not a full-bleed color band. Sits as a plain sibling before
+// <mat-dialog-content> (not wrapped in mat-dialog-title), so it owns its own padding.
 .se-dialog-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 20px 24px;
-  color: white;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
-// Playful press feedback for non-Material elements (avatars, custom rows...): same idea, opt-in.
+:root[data-theme='dark'] .se-dialog-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+// Subtle press feedback for non-Material elements (avatars, custom rows...): same idea as the
+// Material button override above, opt-in via class.
 .se-pop {
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.se-pop:hover {
-  transform: scale(1.05);
+  transition: transform 0.1s ease;
 }
 
 .se-pop:active {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 
-@keyframes se-fab-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(15, 94, 92, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(15, 94, 92, 0);
-  }
-}
-
-@keyframes se-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
+// Fade/slide entrance for list items (see AnimateInDirective) — a loading cue, not decoration:
+// content appearing instantly in a stack reads as a layout jump, this smooths that out.
+@keyframes se-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }
 
-.se-float {
-  animation: se-float 3s ease-in-out infinite;
+// Three-dot loader used by <app-loading-spinner>.
+.se-dot-loader {
+  display: flex;
+  gap: 6px;
 }
 
-// Organic "blob" silhouette for decorative background shapes (replaces plain circles/blurs
-// with something less generic-SaaS, more hand-drawn/cute).
-.se-blob {
-  border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%;
+.se-dot-loader span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--se-accent);
+  animation: se-dot-bounce 1s ease-in-out infinite;
 }
 
-// A second blob variant (different corners) so two blobs stacked/overlapping don't read as
-// identical copy-pasted shapes — used on the landing page where several appear close together.
-.se-blob-alt {
-  border-radius: 58% 42% 37% 63% / 55% 60% 40% 45%;
+.se-dot-loader span:nth-child(2) {
+  animation-delay: 0.15s;
 }
 
-// Gradient text for emphasis words inside an otherwise plain headline (landing page only).
-.se-gradient-text {
-  background-image: var(--se-gradient-brand);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+.se-dot-loader span:nth-child(3) {
+  animation-delay: 0.3s;
 }
 
-// Diagonal section divider: put on a section's own top/bottom edge (via ::before positioned
-// off-canvas) to break the "stack of rectangles" look between landing page sections without
-// needing an SVG asset per divider. Use se-tilt-up / se-tilt-down for the two directions.
-.se-tilt-up {
-  clip-path: polygon(0 3.5vw, 100% 0, 100% 100%, 0 100%);
-}
-
-.se-tilt-down {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3.5vw));
-}
-
-// Small rotated "sticker" look for badges/chips/icons — part of the cute, scrapbook-y identity.
-.se-sticker {
-  display: inline-flex;
-  transform: rotate(-4deg);
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.se-sticker:hover {
-  transform: rotate(0deg) scale(1.08);
-}
-
-@keyframes se-wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-8deg); }
-  75% { transform: rotate(8deg); }
-}
-
-.se-wiggle:hover {
-  animation: se-wiggle 0.4s ease-in-out;
-}
-
-@keyframes se-bounce-in {
-  0% { opacity: 0; transform: scale(0.82) translateY(10px); }
-  60% { opacity: 1; transform: scale(1.03) translateY(-2px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.se-bounce-in {
-  animation: se-bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+@keyframes se-dot-bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 * {
@@ -395,13 +323,13 @@ button[actions].mat-mdc-icon-button {
 }
 
 // Angular Router's withViewTransitions() wraps every navigation in the native View Transitions
-// API; this just swaps the browser's plain cross-fade for something with the app's own easing.
+// API; this just swaps the browser's plain cross-fade for a quick, subtle fade.
 ::view-transition-old(root) {
-  animation: se-view-transition-out 0.18s cubic-bezier(0.4, 0, 1, 1) both;
+  animation: se-view-transition-out 0.15s ease both;
 }
 
 ::view-transition-new(root) {
-  animation: se-view-transition-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: se-view-transition-in 0.18s ease both;
 }
 
 @keyframes se-view-transition-out {
@@ -413,7 +341,6 @@ button[actions].mat-mdc-icon-button {
 @keyframes se-view-transition-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
 }
 

@@ -26,7 +26,7 @@
         <div class="p-5 text-white" [style.background]="'var(--se-gradient-brand)'">
           <div class="flex items-center gap-3">
             <span
-              class="se-blob se-bounce-in flex h-12 w-12 flex-shrink-0 items-center justify-center text-xl shadow-md"
+              class="rounded-2xl flex h-12 w-12 flex-shrink-0 items-center justify-center text-xl shadow-md"
               [style.background-color]="categoryColors[expense.category].bg"
               [style.color]="categoryColors[expense.category].fg"
             >
@@ -50,7 +50,7 @@
             </span>
           }
           @if (expense.originalCurrency) {
-            <span class="inline-flex items-center gap-1.5 text-[var(--se-violet)]">
+            <span class="inline-flex items-center gap-1.5 text-[var(--se-accent)]">
               <mat-icon inline class="!text-base">currency_exchange</mat-icon>
               {{ expense.originalAmount }} {{ expense.originalCurrency }} (taux {{ expense.exchangeRate }})
             </span>
@@ -66,7 +66,7 @@
         } @else if (rateHistory()?.available) {
           <div class="se-card mb-6 !shadow-none border border-black/[0.06] bg-[var(--se-surface)] p-4 dark:border-white/10">
             <p class="m-0 mb-2 flex items-center gap-1.5 text-sm font-semibold text-[var(--se-ink)]">
-              <mat-icon class="!text-lg text-[var(--se-violet)]">show_chart</mat-icon>
+              <mat-icon class="!text-lg text-[var(--se-accent)]">show_chart</mat-icon>
               {{ expense.originalCurrency }}/{{ currency() }} sur 30 jours
             </p>
             <div class="h-[100px]">
